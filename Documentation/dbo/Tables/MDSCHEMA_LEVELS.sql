@@ -1,0 +1,28 @@
+﻿CREATE TABLE [dbo].[MDSCHEMA_LEVELS] (
+    [CATALOG_NAME]                      VARCHAR (255)    NULL,
+    [SCHEMA_NAME]                       VARCHAR (255)    NULL,
+    [CUBE_NAME]                         VARCHAR (255)    NULL,
+    [DIMENSION_UNIQUE_NAME]             VARCHAR (255)    NULL,
+    [HIERARCHY_UNIQUE_NAME]             VARCHAR (255)    NULL,
+    [LEVEL_NAME]                        VARCHAR (255)    NULL,
+    [LEVEL_UNIQUE_NAME]                 VARCHAR (255)    NULL,
+    [LEVEL_GUID]                        UNIQUEIDENTIFIER NULL,
+    [LEVEL_CAPTION]                     VARCHAR (255)    NULL,
+    [LEVEL_NUMBER]                      INT              NULL,
+    [LEVEL_CARDINALITY]                 INT              NULL,
+    [LEVEL_TYPE]                        INT              NULL,
+    [DESCRIPTION]                       VARCHAR (255)    NULL,
+    [CUSTOM_ROLLUP_SETTINGS]            INT              NULL,
+    [LEVEL_UNIQUE_SETTINGS]             INT              NULL,
+    [LEVEL_IS_VISIBLE]                  BIT              NULL,
+    [LEVEL_ORDERING_PROPERTY]           VARCHAR (255)    NULL,
+    [LEVEL_DBTYPE]                      INT              NULL,
+    [LEVEL_MASTER_UNIQUE_NAME]          VARCHAR (255)    NULL,
+    [LEVEL_NAME_SQL_COLUMN_NAME]        VARCHAR (255)    NULL,
+    [LEVEL_KEY_SQL_COLUMN_NAME]         VARCHAR (255)    NULL,
+    [LEVEL_UNIQUE_NAME_SQL_COLUMN_NAME] VARCHAR (255)    NULL,
+    [LEVEL_ATTRIBUTE_HIERARCHY_NAME]    VARCHAR (255)    NULL,
+    [LEVEL_KEY_CARDINALITY]             INT              NULL,
+    [LEVEL_ORIGIN]                      INT              NULL
+);
+
