@@ -27,6 +27,48 @@ function SaveDoctoDb($SQLConnectionString, $Procedure, $ProcedureParamName, $Pro
 
 	$SQLconn.Close()
 }  
+
+function SQLDOCReferencedObjects()
+{
+	$query = @"
+WITH CTE AS (
+	SELECT OBJECT_schema_NAME(referencing_id) AS referencing_schema_name
+		,OBJECT_NAME(referencing_id) AS referencing_entity_name
+		,o.type_desc AS referencing_desciption
+		,referenced_server_name
+		,referenced_database_name
+		,coalesce(referenced_schema_name, object_schema_name(referenced_id)) AS referenced_schema_name
+		,referenced_entity_name
+
+	FROM sys.sql_expression_dependencies AS sed
+	INNER JOIN sys.objects AS o
+		ON sed.referencing_id = o.object_id
+	
+	UNION ALL 
+	
+	SELECT X.referencing_schema_name
+		,X.referencing_entity_name
+		,so.type_desc
+		,NULL AS referenced_server_name
+		,NULL AS referenced_database_name
+		,OBJECT_SCHEMA_NAME(t.object_id) AS referenced_schema_name
+		,OBJECT_NAME(t.object_id) AS referenced_entity_name
+	FROM sys.tables t
+	CROSS APPLY sys.dm_sql_referencing_entities(quotename(OBJECT_SCHEMA_NAME(t.object_id)) + '.' + Quotename(OBJECT_NAME(t.object_id)), 'OBJECT') X
+	LEFT JOIN sys.objects so
+		ON so.name = X.referencing_entity_name
+			AND schema_name(so.schema_id) = X.referencing_schema_name
+	)
+	SELECT DISTINCT  X.referencing_schema_name
+		,X.referencing_entity_name
+		,referenced_server_name
+		,referenced_database_name
+		,referenced_schema_name
+		,referenced_entity_name
+	 FROM CTE X ;
+"@
+return  $query
+}
 function  SQLDocColumnQuery ($extentedPropertyName)
 {
 $queryColumns = @"
@@ -121,8 +163,6 @@ AND p.CLASS = 1
 AND p.	minor_id=0
 AND p.name =  `'$extentedPropertyName`'
 WHERE c.TYPE IN ('U', 'V');
-
-
 
 "@
 return  $queryColumns
