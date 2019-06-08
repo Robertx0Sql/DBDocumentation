@@ -33,7 +33,7 @@
            ,[ReferencedTableObject_id]
            ,[ReferencedTableSchemaName]
            ,[ReferencedTableName]
-           ,[referenced_column])
+           ,[referenced_column],[objectTypeDescription] )
     
 	 
 	 SELECT [ServerName]
@@ -62,5 +62,6 @@
            ,[ReferencedTableSchemaName]
            ,[ReferencedTableName]
            ,[referenced_column]
+		   ,[objectTypeDescription] 
         FROM  @TVP;
 

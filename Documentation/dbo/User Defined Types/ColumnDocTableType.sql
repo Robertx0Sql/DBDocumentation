@@ -2,6 +2,7 @@
     [ServerName]                VARCHAR (100)  NULL,
     [DatabaseName]              NVARCHAR (128) NULL,
     [objectType]                VARCHAR (10)   NOT NULL,
+    [objectTypeDescription]     VARCHAR (100)  NULL,
     [object_id]                 INT            NOT NULL,
     [TableSchemaName]           NVARCHAR (128) NOT NULL,
     [TableName]                 NVARCHAR (128) NOT NULL,
@@ -25,4 +26,6 @@
     [ReferencedTableSchemaName] NVARCHAR (128) NULL,
     [ReferencedTableName]       NVARCHAR (128) NULL,
     [referenced_column]         [sysname]      NULL);
+
+
 

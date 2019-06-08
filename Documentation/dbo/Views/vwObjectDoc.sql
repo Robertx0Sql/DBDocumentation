@@ -1,14 +1,19 @@
 ﻿
+
+
 CREATE VIEW [dbo].[vwObjectDoc]
 AS
-SELECT [object_type]
-	,[ServerName]
+SELECT 
+	[ServerName]
 	,[DatabaseName]
-	,[objectType]
-	,[object_id]
+	,TypeCode 
+	, TypeDescriptionUser
+	,TypeDescriptionSQL
 	,[TableSchemaName]
 	,[TableName]
 	,[DocumentationDescription]
 	,QualifiedTableName
+	,TypeGroup
 FROM [dbo].[vwColumnDoc]
 WHERE column_id IS NULL
+and [typeCode]  is not null

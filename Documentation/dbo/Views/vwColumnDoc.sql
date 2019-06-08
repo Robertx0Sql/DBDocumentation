@@ -1,22 +1,17 @@
-﻿
-CREATE VIEW [dbo].[vwColumnDoc]
+﻿CREATE VIEW [dbo].[vwColumnDoc]
 AS
-SELECT CASE 
-		WHEN [objectType] IN ('U', 'V')
-			AND column_id IS NOT NULL
+SELECT  
+	IIF(column_id IS NOT NULL ,
+		CASE WHEN [objectType] IN ('U', 'V')
 			THEN 'Column'
-		WHEN [objectType] = 'U'
-			AND column_id IS NULL
-			THEN 'Table'
-		WHEN [objectType] = 'V'
-			AND column_id IS NULL
-			THEN 'View'
-		ELSE [objectType]
-		END AS object_type
+		ELSE 'Parameter'
+		END 
+		,T.[TypedescriptionUser]
+		)
+		AS [TypeDescriptionUser] 
 	, [ServerName]
 	, [DatabaseName]
-	, [objectType]
-	, [object_id]
+	, [objectType] as TypeCode
 	, [TableSchemaName]
 	, [TableName]
 	, [name]
@@ -40,4 +35,7 @@ SELECT CASE
 	, [ReferencedTableName]
 	, [referenced_column]
 	,  QUOTENAME([TableSchemaName]) + '.' + QUOTENAME( [TableName]) AS QualifiedTableName 
-FROM Staging.[ColumnDoc];
+	,t.TypeDescriptionSQL
+	,t.TypeGroup
+	FROM Staging.[ColumnDoc] d
+left join dbo.vwObjectType  t on t.TypeCode = d. [objectType]  ;

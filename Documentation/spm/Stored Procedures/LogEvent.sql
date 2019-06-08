@@ -20,7 +20,7 @@ BEGIN
 	 * http://www.sqlbits.com/Speakers/Dr_John_Tunnicliffe
 	 * https://www.linkedin.com/in/drjohntunnicliffe
 	 */
-	 print ''
+	 print''
 --	INSERT INTO spm.EventLog (LogTime, Thread, LogLevel, Logger, LogMessage) VALUES (@logTime, @thread, @logLevel, @logger, @logMessage);
 END
 

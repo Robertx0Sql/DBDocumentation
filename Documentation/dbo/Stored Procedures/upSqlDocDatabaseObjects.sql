@@ -1,12 +1,17 @@
-﻿CREATE PROCEDURE [dbo].[upSqlDocDatabaseObjects] (
+﻿
+CREATE PROCEDURE [dbo].[upSqlDocDatabaseObjects] (
 	@Server VARCHAR(255) = NULL
 	,@DatabaseName VARCHAR(255) = NULL
 	)
 AS
-SELECT [object_type]
-	,[ServerName]
+SELECT 
+	[ServerName]
 	,[DatabaseName]
-
+	,[TableSchemaName]
+	,[TableName]
+	,[TypeDescriptionUser]
+	,[DocumentationDescription]
+	,TypeGroup
 FROM dbo.vwObjectDoc
 WHERE DatabaseName = @DatabaseName
 	AND ServerName = @Server

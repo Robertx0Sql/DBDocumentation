@@ -60,7 +60,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Cube</Value>
+                              <Value>Database</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -122,14 +122,14 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="CATALOG_NAME">
+                    <Textbox Name="SERVERNAME">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!CATALOG_NAME.Value</Value>
+                              <Value>=Fields!SERVERNAME.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                               </Style>
@@ -138,7 +138,7 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>CATALOG_NAME</rd:DefaultName>
+                      <rd:DefaultName>SERVERNAME</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -154,14 +154,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="CUBE_NAME">
+                    <Textbox Name="DatabaseName">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!CUBE_NAME.Value</Value>
+                              <Value>=Fields!DatabaseName.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <TextDecoration>Underline</TextDecoration>
@@ -172,18 +172,18 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>CUBE_NAME</rd:DefaultName>
+                      <rd:DefaultName>DatabaseName</rd:DefaultName>
                       <ActionInfo>
                         <Actions>
                           <Action>
                             <Drillthrough>
-                              <ReportName>CubeDoc_Cube</ReportName>
+                              <ReportName>SQLDoc_Database</ReportName>
                               <Parameters>
-                                <Parameter Name="Catalog">
-                                  <Value>=Fields!CATALOG_NAME.Value</Value>
+                                <Parameter Name="Server">
+                                  <Value>=Fields!SERVERNAME.Value</Value>
                                 </Parameter>
-                                <Parameter Name="Cube">
-                                  <Value>=Fields!CUBE_NAME.Value</Value>
+                                <Parameter Name="Database">
+                                  <Value>=Fields!DatabaseName.Value</Value>
                                 </Parameter>
                               </Parameters>
                             </Drillthrough>
@@ -205,14 +205,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="DESCRIPTION">
+                    <Textbox Name="Description">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!DESCRIPTION.Value</Value>
+                              <Value>=Fields!Description.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                               </Style>
@@ -221,7 +221,7 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>DESCRIPTION</rd:DefaultName>
+                      <rd:DefaultName>Description</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -258,8 +258,8 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <DataSetName>dsCubes</DataSetName>
-        <Top>2.39061cm</Top>
+        <DataSetName>dsSQLDB</DataSetName>
+        <Top>2.07311cm</Top>
         <Left>0.00001cm</Left>
         <Height>1.1cm</Height>
         <Width>25.96791cm</Width>
@@ -276,7 +276,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Cubes</Value>
+                <Value>Databases</Value>
                 <Style>
                   <FontWeight>Bold</FontWeight>
                 </Style>
@@ -286,7 +286,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox77</rd:DefaultName>
-        <Top>1.75535cm</Top>
+        <Top>1.43785cm</Top>
         <Left>0.00001cm</Left>
         <Height>0.6cm</Height>
         <Width>4.5373cm</Width>
@@ -312,7 +312,7 @@
                   <TextRun>
                     <Value>Data Warehouse Content Guide</Value>
                     <Style>
-                      <FontSize>14pt</FontSize>
+                      <FontSize>18pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -396,73 +396,10 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Textbox Name="Textbox6">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>SEARCH</Value>
-                    <Style>
-                      <FontSize>12pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                      <TextDecoration>Underline</TextDecoration>
-                      <Color>Blue</Color>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Center</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox6</rd:DefaultName>
-            <ActionInfo>
-              <Actions>
-                <Action>
-                  <Drillthrough>
-                    <ReportName>CubeDoc_Search</ReportName>
-                    <Parameters>
-                      <Parameter Name="Catalog">
-                        <Value>=First(Fields!CATALOG_NAME.Value, "dsCubes")</Value>
-                      </Parameter>
-                    </Parameters>
-                  </Drillthrough>
-                </Action>
-              </Actions>
-            </ActionInfo>
-            <Left>22.0962cm</Left>
-            <Height>0.81167cm</Height>
-            <Width>3.87173cm</Width>
-            <ZIndex>3</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Image Name="logo">
-            <Source>Embedded</Source>
-            <Value>logo</Value>
-            <Sizing>FitProportional</Sizing>
-            <Height>1.64952cm</Height>
-            <Width>6.985cm</Width>
-            <ZIndex>4</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-            </Style>
-          </Image>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
         <Left>0.00881cm</Left>
-        <Height>1.64952cm</Height>
+        <Height>1.32292cm</Height>
         <Width>25.96793cm</Width>
         <ZIndex>2</ZIndex>
         <Style>
@@ -497,94 +434,24 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="dsCubes">
+    <DataSet Name="dsSQLDB">
       <Query>
         <DataSourceName>DB</DataSourceName>
-        <QueryParameters>
-          <QueryParameter Name="@Catalog">
-            <Value>=Nothing</Value>
-          </QueryParameter>
-        </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>dbo.upCubeDocCubes</CommandText>
-        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+        <CommandText>dbo.upSqlDocDatabases</CommandText>
       </Query>
       <Fields>
-        <Field Name="CATALOG_NAME">
-          <DataField>CATALOG_NAME</DataField>
+        <Field Name="SERVERNAME">
+          <DataField>ServerName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="SCHEMA_NAME">
-          <DataField>SCHEMA_NAME</DataField>
+        <Field Name="DatabaseName">
+          <DataField>DatabaseName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="CUBE_NAME">
-          <DataField>CUBE_NAME</DataField>
+        <Field Name="Description">
+          <DataField>Description</DataField>
           <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="CUBE_TYPE">
-          <DataField>CUBE_TYPE</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="CUBE_GUID">
-          <DataField>CUBE_GUID</DataField>
-          <rd:TypeName>System.Guid</rd:TypeName>
-        </Field>
-        <Field Name="CREATED_ON">
-          <DataField>CREATED_ON</DataField>
-          <rd:TypeName>System.DateTime</rd:TypeName>
-        </Field>
-        <Field Name="LAST_SCHEMA_UPDATE">
-          <DataField>LAST_SCHEMA_UPDATE</DataField>
-          <rd:TypeName>System.DateTime</rd:TypeName>
-        </Field>
-        <Field Name="SCHEMA_UPDATED_BY">
-          <DataField>SCHEMA_UPDATED_BY</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="LAST_DATA_UPDATE">
-          <DataField>LAST_DATA_UPDATE</DataField>
-          <rd:TypeName>System.DateTime</rd:TypeName>
-        </Field>
-        <Field Name="DATA_UPDATED_BY">
-          <DataField>DATA_UPDATED_BY</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="DESCRIPTION">
-          <DataField>DESCRIPTION</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="IS_DRILLTHROUGH_ENABLED">
-          <DataField>IS_DRILLTHROUGH_ENABLED</DataField>
-          <rd:TypeName>System.Boolean</rd:TypeName>
-        </Field>
-        <Field Name="IS_LINKABLE">
-          <DataField>IS_LINKABLE</DataField>
-          <rd:TypeName>System.Boolean</rd:TypeName>
-        </Field>
-        <Field Name="IS_WRITE_ENABLED">
-          <DataField>IS_WRITE_ENABLED</DataField>
-          <rd:TypeName>System.Boolean</rd:TypeName>
-        </Field>
-        <Field Name="IS_SQL_ENABLED">
-          <DataField>IS_SQL_ENABLED</DataField>
-          <rd:TypeName>System.Boolean</rd:TypeName>
-        </Field>
-        <Field Name="CUBE_CAPTION">
-          <DataField>CUBE_CAPTION</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="BASE_CUBE_NAME">
-          <DataField>BASE_CUBE_NAME</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="ANNOTATIONS">
-          <DataField>ANNOTATIONS</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="CUBE_SOURCE">
-          <DataField>CUBE_Source</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>

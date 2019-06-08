@@ -27,6 +27,9 @@
     [referenced_column]         [sysname]      NULL,
     [StagingId]                 INT            IDENTITY (1, 1) NOT NULL,
     [StagingDateTime]           DATETIME2 (7)  CONSTRAINT [DF_Staging_ColumnDoc_StagingDateTime] DEFAULT (getutcdate()) NOT NULL,
+    [objectTypeDescription]     VARCHAR (1000) NULL,
     CONSTRAINT [PK_ColumnDoc] PRIMARY KEY CLUSTERED ([StagingId] ASC)
 );
+
+
 

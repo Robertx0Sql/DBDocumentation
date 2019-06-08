@@ -1,16 +1,6 @@
-﻿CREATE PROCEDURE [dbo].[upSqlDocDatabases] (
-	@Server VARCHAR(255) = NULL
-	,@DatabaseName VARCHAR(255) = NULL
-	)
+﻿CREATE PROCEDURE [dbo].[upSqlDocDatabases]
 AS
-SELECT DISTINCT SERVERNAME
+SELECT DISTINCT ServerName
 	,DatabaseName
+	,cast(NULL as varchar(max))  as Description 
 FROM dbo.vwObjectDoc
-WHERE (
-		DatabaseName = @DatabaseName
-		OR @DatabaseName IS NULL
-		)
-	AND (
-		SERVERNAME = @Server
-		OR @Server IS NULL
-		);

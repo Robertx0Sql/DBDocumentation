@@ -1,19 +1,32 @@
-﻿CREATE PROCEDURE [dbo].[upSqlDocDatabaseTable] (
+﻿
+CREATE PROCEDURE [dbo].[upSqlDocDatabaseTable] 
 	@Server VARCHAR(255) 
 	,@DatabaseName VARCHAR(255) 
-	,@QualifiedTableName VARCHAR(255) 
-	)
+	,@Schema  VARCHAR(255) =NULL
+	,@Object VARCHAR(255) =NULL
+	,@ObjectType VARCHAR(255) =NULL
 AS
-SELECT [object_type]
-	,[ServerName]
+SELECT [ServerName]
 	,[DatabaseName]
-	,[objectType]
-	,[object_id]
 	,[TableSchemaName]
 	,[TableName]
+	,[TypeDescriptionUser]
 	,[DocumentationDescription]
 	,[QualifiedTableName]
+	,TypeGroup
 FROM dbo.vwObjectDoc
 WHERE DatabaseName = @DatabaseName
 	AND SERVERNAME = @Server
-	AND QualifiedTableName = @QualifiedTableName;
+	AND (
+		(
+			[TableSchemaName] = @Schema
+			AND [TableName] = @Object
+			AND ([TypeDescriptionUser] = @ObjectType
+			or @ObjectType is null)
+			)
+		OR (
+			@Schema IS NULL
+			AND @Object IS NULL
+			AND @ObjectType IS NULL
+			)
+		)
