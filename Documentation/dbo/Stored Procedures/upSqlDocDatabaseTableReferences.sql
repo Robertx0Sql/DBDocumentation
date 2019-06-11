@@ -27,6 +27,7 @@ SELECT [ServerName]
 	,referencing_schema_name + referencing_entity_name + TypeDescriptionUser AS Seq
 	,[referencing_entity_name] AS DimensionCaption
 	,[referenced_entity_name] AS MeasureGroupCaption
+	,DocumentationLoadDate 
 FROM dbo.vwObjectReference
 WHERE DatabaseName = @DatabaseName
 	AND SERVERNAME = @Server

@@ -1,5 +1,6 @@
 ﻿
 
+
 CREATE VIEW [dbo].[vwObjectDoc]
 AS
 SELECT 
@@ -16,6 +17,7 @@ SELECT
 	,TypeGroupOrder
 	,TypeOrder
 	,TypeCount
+	,DocumentationLoadDate
 FROM [dbo].[vwColumnDoc]
 WHERE column_id IS NULL
 and [typeCode]  is not null

@@ -14,6 +14,8 @@ SELECT [ServerName]
 	,[DocumentationDescription]
 	,[QualifiedTableName]
 	,TypeGroup
+	,TypeCode
+	,DocumentationLoadDate 
 FROM dbo.vwObjectDoc
 WHERE DatabaseName = @DatabaseName
 	AND SERVERNAME = @Server

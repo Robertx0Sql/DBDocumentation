@@ -4,6 +4,7 @@
 
 
 
+
 CREATE VIEW [dbo].[vwObjectReference]
 AS
 WITH cte as (
@@ -17,6 +18,7 @@ SELECT [ServerName]
 	,[referenced_database_name]
 	,[referenced_schema_name]
 	,[referenced_entity_name]
+	,StagingDateTime as DocumentationLoadDate 
 FROM [Staging].[ObjectReference]
 
 UNION ALL
@@ -31,6 +33,7 @@ SELECT COALESCE([referenced_server_name], r.[ServerName])
 	,R.[DatabaseName]
 	,[referencing_schema_name]
 	,[referencing_entity_name]
+	,R.StagingDateTime as DocumentationLoadDate 
 FROM [Staging].[ObjectReference] R
 LEFT JOIN [dbo].[vwObjectDoc] OD ON R.SERVERNAME = od.SERVERNAME
 	AND r.DatabaseName = od.DatabaseName
@@ -52,6 +55,7 @@ select [ServerName]
 	,t.TypeGroup
 		,T.TypeGroupOrder
 	,T.TypeOrder
+	,DocumentationLoadDate 
 	from cte 
 	left join dbo.vwObjectType T on t.TypeCode =cte.[referencing_TypeCode] 
 	where cte.[referencing_TypeDescriptionSQL] is not null

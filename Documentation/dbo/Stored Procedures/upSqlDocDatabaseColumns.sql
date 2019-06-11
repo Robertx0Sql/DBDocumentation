@@ -62,6 +62,7 @@ SELECT
 	,[ReferencedTableName] + '.' + [referenced_column] AS FK 
 	,'Table' as ReferencedObjectType 
 	, iif([FK_NAME] is NOT null, 'yes', NULL)  as isFK
+	,DocumentationLoadDate 
 FROM [dbo].[vwColumnDoc]
 WHERE [name] IS NOT NULL
 	AND DatabaseName = @DatabaseName

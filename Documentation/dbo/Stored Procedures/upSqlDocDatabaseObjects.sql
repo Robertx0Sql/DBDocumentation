@@ -14,6 +14,7 @@ SELECT [ServerName]
 	,TypeGroupOrder
 	,TypeOrder
 	,TypeCount
+	,DocumentationLoadDate 
 FROM dbo.vwObjectDoc
 WHERE DatabaseName = @DatabaseName
 	AND ServerName = @Server
