@@ -1,4 +1,6 @@
-﻿CREATE VIEW [dbo].[vwColumnDoc]
+﻿
+
+CREATE VIEW [dbo].[vwColumnDoc]
 AS
 SELECT  
 	IIF(column_id IS NOT NULL ,
@@ -37,5 +39,8 @@ SELECT
 	,  QUOTENAME([TableSchemaName]) + '.' + QUOTENAME( [TableName]) AS QualifiedTableName 
 	,t.TypeDescriptionSQL
 	,t.TypeGroup
+	,T.TypeGroupOrder
+	,t.TypeOrder
+	,t.TypeCount
 	FROM Staging.[ColumnDoc] d
 left join dbo.vwObjectType  t on t.TypeCode = d. [objectType]  ;

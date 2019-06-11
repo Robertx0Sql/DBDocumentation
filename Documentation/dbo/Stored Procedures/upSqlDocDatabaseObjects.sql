@@ -4,15 +4,26 @@ CREATE PROCEDURE [dbo].[upSqlDocDatabaseObjects] (
 	,@DatabaseName VARCHAR(255) = NULL
 	)
 AS
-SELECT 
-	[ServerName]
+SELECT [ServerName]
 	,[DatabaseName]
+	,TypeGroup
+	,[TypeDescriptionUser]
 	,[TableSchemaName]
 	,[TableName]
-	,[TypeDescriptionUser]
 	,[DocumentationDescription]
-	,TypeGroup
+	,TypeGroupOrder
+	,TypeOrder
+	,TypeCount
 FROM dbo.vwObjectDoc
 WHERE DatabaseName = @DatabaseName
 	AND ServerName = @Server
+	AND Typecode != 'C' -- Check Constraint
+ORDER BY [ServerName]
+	,[DatabaseName]
+	,TypeGroupOrder
+	,TypeOrder
+	,TypeGroup
+	,[TypeDescriptionUser]
+	,[TableSchemaName]
+	,[TableName]
 

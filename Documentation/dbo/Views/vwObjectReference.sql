@@ -3,6 +3,7 @@
 
 
 
+
 CREATE VIEW [dbo].[vwObjectReference]
 AS
 WITH cte as (
@@ -49,6 +50,8 @@ select [ServerName]
 	,[referenced_schema_name]
 	,[referenced_entity_name]
 	,t.TypeGroup
+		,T.TypeGroupOrder
+	,T.TypeOrder
 	from cte 
 	left join dbo.vwObjectType T on t.TypeCode =cte.[referencing_TypeCode] 
 	where cte.[referencing_TypeDescriptionSQL] is not null
