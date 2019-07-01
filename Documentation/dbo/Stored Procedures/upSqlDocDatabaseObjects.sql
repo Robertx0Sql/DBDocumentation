@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[upSqlDocDatabaseObjects] (
+﻿CREATE PROCEDURE [dbo].[upSqlDocDatabaseObjects] (
 	@Server VARCHAR(255) = NULL
 	,@DatabaseName VARCHAR(255) = NULL
 	)
@@ -8,8 +7,8 @@ SELECT [ServerName]
 	,[DatabaseName]
 	,TypeGroup
 	,[TypeDescriptionUser]
-	,[TableSchemaName]
-	,[TableName]
+	,SchemaName as [TableSchemaName]
+	,ObjectName as [TableName]
 	,[DocumentationDescription]
 	,TypeGroupOrder
 	,TypeOrder

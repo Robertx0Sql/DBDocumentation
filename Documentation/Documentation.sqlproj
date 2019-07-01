@@ -87,8 +87,8 @@
     <Build Include="dbo\Stored Procedures\usp_ColumnDocUpdate.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabases.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabaseObjects.sql" />
-    <Build Include="dbo\Stored Procedures\upSqlDocDatabaseTable.sql" />
-    <Build Include="dbo\Stored Procedures\upSqlDocDatabaseColumns.sql" />
+    <Build Include="dbo\Stored Procedures\upSqlDocObject.sql" />
+    <Build Include="dbo\Stored Procedures\upSqlDocObjectColumns.sql" />
     <Build Include="dbo\Stored Procedures\upCubeDocAttributesInDimension.sql" />
     <Build Include="dbo\Stored Procedures\upCubeDocBUSMatrix.sql" />
     <Build Include="dbo\Stored Procedures\upCubeDocCubes.sql" />
@@ -104,10 +104,23 @@
     <Build Include="Security\Staging.sql" />
     <Build Include="Staging\Tables\ObjectReference.sql" />
     <Build Include="dbo\Stored Procedures\usp_ObjectReferenceUpdate.sql" />
-    <Build Include="dbo\Stored Procedures\upSqlDocDatabaseTableReferences.sql" />
+    <Build Include="dbo\Stored Procedures\upSqlDocObjectReferences.sql" />
     <Build Include="dbo\User Defined Types\ObjectReferenceTableType.sql" />
     <Build Include="dbo\Views\vwObjectType.sql" />
     <Build Include="dbo\Views\vwObjectReference.sql" />
+    <Build Include="Staging\Tables\ObjectDocumentation.sql" />
+    <Build Include="dbo\Stored Procedures\usp_ObjectDocumentationUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\upSqlDocObjectChildObjects.sql" />
+    <Build Include="dbo\Stored Procedures\upSqlDocDatabaseObject.sql" />
+    <Build Include="dbo\User Defined Types\ObjectDocumentationTableType.sql" />
+    <Build Include="Staging\Tables\ViewColumn.sql" />
+    <Build Include="dbo\Views\vwViewColumnInformation.sql" />
+    <Build Include="dbo\Stored Procedures\usp_ViewColumnUpdate.sql" />
+    <Build Include="dbo\User Defined Types\ViewColumnTableType.sql" />
+    <Build Include="Staging\Tables\ObjectCode.sql" />
+    <Build Include="dbo\Stored Procedures\usp_ObjectCodeUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\upSqlDocObjectCode.sql" />
+    <Build Include="dbo\User Defined Types\ObjectCodeTableType.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">
@@ -115,5 +128,8 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseVariableLiteralValue>master</DatabaseVariableLiteralValue>
     </ArtifactReference>
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Documentation.refactorlog" />
   </ItemGroup>
 </Project>

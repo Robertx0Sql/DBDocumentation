@@ -1,14 +1,16 @@
+[CmdletBinding()]
 param(
 [string]$ServerSource="(local)"
 ,[string]$DatabaseSource="AdventureWorks2017"
 ,[string]$SqlServerDoc = "."
 ,[string]$SqlDatabaseDoc = "Documentation"
+,[string]$Description 
 )
 
 $extentedPropertyName="MS_Description"
 $SQLConnectionString = "Data Source={0};Initial Catalog={1};Integrated Security=SSPI;" -f $SqlServerDoc, $SqlDatabaseDoc
 
-function SaveDoctoDb($SQLConnectionString, $Procedure, $ProcedureParamName, $ProcedureParamValue)
+function Save-DoctoDb($SQLConnectionString, $Procedure, $ProcedureParamName, $ProcedureParamValue)
 {
 	#nvoke-SqlCmd does not support passing complex objects. need to use a System.Data.SQLClient.SQLCommand object
 	# https://social.technet.microsoft.com/Forums/en-US/9ed5b002-962e-4e07-a57c-0be2b87abe3c/invokesqlcmd-custom-table-as-parameter?forum=winserverpowershell
@@ -22,13 +24,14 @@ function SaveDoctoDb($SQLConnectionString, $Procedure, $ProcedureParamName, $Pro
 	$SQLCmd.CommandText = $Procedure #"[dbo].[usp_ColumnDocUpdate]"
 	$SQLCmd.CommandType = [System.Data.CommandType]::StoredProcedure
 	$SQLCmd.Connection = $SQLConn
-	$SQLCmd.Parameters.AddWithValue($ProcedureParamName,$ProcedureParamValue) #("@TVP", $dtX)
-	$SQLCmd.ExecuteNonQuery()
-
+	$SQLCmd.Parameters.AddWithValue($ProcedureParamName,$ProcedureParamValue) | Out-Null
+	$SQLCmd.ExecuteNonQuery()  | Out-Null
+	
 	$SQLconn.Close()
+	Write-Verbose  "$($ProcedureParamValue.Rows.Count) rows added /updated for $Procedure"
 }  
 
-function SQLDOCReferencedObjects()
+function SQLDOCReferencedObjects($ServerSource, $DatabaseSource, $extentedPropertyName)
 {
 	$query = @"
 	WITH CTE AS (
@@ -76,7 +79,7 @@ function SQLDOCReferencedObjects()
 "@
 return  $query
 }
-function  SQLDocColumnQuery ($extentedPropertyName)
+function  SQLDocColumnQuery ($ServerSource, $DatabaseSource, $extentedPropertyName)
 {
 $queryColumns = @"
 SELECT 
@@ -136,45 +139,6 @@ LEFT JOIN sys.columns col2 ON col2.column_id = referenced_column_id
 WHERE OBJECTPROPERTY(c.OBJECT_ID, 'IsMsShipped') = 0 
 	AND obj.TYPE IN ('U', 'V')
 
-	UNION ALL
-
-SELECT 
-SERVERNAME = `'$ServerSource`'
-,DatabaseName = `'$DatabaseSource`'
-,[objectType] = c.TYPE
-,[objectTypeDescription] = c.type_desc
-,c.OBJECT_ID
-,object_schema_name(C.OBJECT_ID) AS [TableSchemaName]
-,OBJECT_NAME(c.OBJECT_ID) AS [TableName]
-, NULL AS name 
-,CAST(p.value AS NVARCHAR(MAX) ) AS DocumentationDescription
-,NULL AS column_id
-,NULL AS datatype
-,NULL AS max_length
-,NULL AS PRECISION
-,NULL AS scale
-,NULL AS collation_name
-,NULL AS is_nullable
-,NULL AS is_identity
-,NULL AS ident_col_seed_value 
-,NULL AS ident_col_increment_value 
-,NULL AS is_computed
-,NULL AS Column_Default 
-,NULL AS PK 
-,NULL AS FK_NAME
-,NULL AS ReferencedTableObject_id
-,NULL AS [ReferencedTableSchemaName]
-,NULL AS [ReferencedTableName]
-,NULL AS [referenced_column]
-FROM 
-sys.objects AS c
-LEFT JOIN sys.extended_properties AS p ON p.major_id = c.OBJECT_ID
-	AND p.CLASS = 1
-	AND p.minor_id=0
-	AND p.name =  `'$extentedPropertyName`'
---WHERE c.TYPE IN ('U', 'V');
-WHERE  c.TYPE  not in ('S','IT','SQ')
-
 union all -- parameters
 
 SELECT 
@@ -219,20 +183,225 @@ Where par.name!='' --return value for functions
 "@
 return  $queryColumns
 }
+function SQLDOCObjects($ServerSource, $DatabaseSource, $extentedPropertyName)
+{
+	$query = @"
+	SELECT --1
+		SERVERNAME = `'$ServerSource`'
+		,DatabaseName = `'$DatabaseSource`'
+		,[objectType] = c.TYPE
+		,object_schema_name(ISNULL(NULLIF(c.parent_object_id, 0), C.OBJECT_ID)) AS [ParentSchemaName]
+		,OBJECT_NAME(ISNULL(NULLIF(c.parent_object_id, 0), C.OBJECT_ID)) AS [ParentObjectName]
+		,object_schema_name(C.OBJECT_ID) AS [SchemaName]
+		,OBJECT_NAME(c.OBJECT_ID) AS OBJECTNAME
+		,COALESCE(ic.fields, fk.fields, dcon.fields, ccon.fields) AS fields
+		,COALESCE(dcon.DEFINITION, ccon.DEFINITION) AS DEFINITION
+		,CAST(p.value AS NVARCHAR(MAX)) AS DocumentationDescription
+	FROM sys.objects AS c
+	LEFT JOIN sys.extended_properties AS p ON p.major_id = c.OBJECT_ID
+		AND p.CLASS = 1
+		AND p.minor_id = 0
+		AND p.name =  `'$extentedPropertyName`'
+	LEFT JOIN (
+		SELECT ic.OBJECT_ID
+			,STRING_AGG(COL_NAME(ic.OBJECT_ID, ic.column_id), ',') AS fields
+		FROM sys.index_columns ic
+		LEFT JOIN sys.indexes AS i ON i.OBJECT_ID = ic.OBJECT_ID
+			AND i.index_id = ic.index_id
+		GROUP BY ic.OBJECT_ID
+		) ic ON ic.OBJECT_ID = c.OBJECT_ID
+	LEFT JOIN (
+		SELECT constraint_object_id
+			,STRING_AGG(COL_NAME(fkc.parent_object_id, fkc.parent_column_id), ',') AS fields
+		FROM sys.foreign_key_columns fkc
+		GROUP BY constraint_object_id
+		) fk ON fk.constraint_object_id = c.OBJECT_ID
+	LEFT JOIN (
+		SELECT con.OBJECT_ID
+			,con.DEFINITION
+			,STRING_AGG(COL_NAME(con.parent_object_id, con.parent_column_id), ',') AS fields
+		FROM sys.default_constraints con
+		GROUP BY con.OBJECT_ID
+			,con.DEFINITION
+		) dcon ON dcon.OBJECT_ID = c.OBJECT_ID
+	LEFT JOIN (
+		SELECT con.OBJECT_ID
+			,con.DEFINITION
+			,STRING_AGG(COL_NAME(con.parent_object_id, con.parent_column_id), ',') AS fields
+		FROM sys.check_constraints con
+		GROUP BY con.OBJECT_ID
+			,con.DEFINITION
+		) ccon ON ccon.OBJECT_ID = c.OBJECT_ID
+	WHERE c.TYPE NOT IN ('S', 'IT', 'SQ')
 
-Write-host("SQLDocColumnQuery")
-$query =SQLDocColumnQuery($extentedPropertyName)
+	UNION ALL
+	
+	SELECT --1
+		SERVERNAME = `'$ServerSource`'
+		,DatabaseName = `'$DatabaseSource`'
+		,[objectType] = 'INDEX'
+		,object_schema_name(ISNULL(NULLIF(so.parent_object_id, 0), so.OBJECT_ID)) AS [ParentSchemaName]
+		,OBJECT_NAME(ISNULL(NULLIF(so.parent_object_id, 0), so.OBJECT_ID)) AS [ParentObjectName]
+		,NULL--object_schema_name(so.OBJECT_ID) AS [SchemaName]
+		,ix.name AS OBJECTNAME
+		,fields
+		,NULL  as Definition
+		,CAST(ep.value AS NVARCHAR(MAX)) AS DocumentationDescription
+	FROM sys.tables so
+	INNER JOIN sys.indexes ix ON so.object_id = ix.object_id
+	LEFT JOIN sys.extended_properties ep ON ep.major_id = ix.OBJECT_ID
+		AND CLASS = 7
+		AND ep.minor_id = ix.index_id
+		AND Ep.name =  `'$extentedPropertyName`'
+	INNER JOIN (
+		SELECT ic.OBJECT_ID
+			,STRING_AGG(COL_NAME(ic.OBJECT_ID, ic.column_id), ',') AS fields
+		FROM sys.index_columns AS ic
+		GROUP BY ic.OBJECT_ID
+	) ic ON ic.object_id = ix.object_id
 
-$QueryResult = Invoke-Sqlcmd -ServerInstance $ServerSource -Database $DatabaseSource -Query $query -OutputAs DataTables
-#$QueryResult.Rows[0]
-#$SQLConnectionString
-SaveDoctoDb $SQLConnectionString "[dbo].[usp_ColumnDocUpdate]"   "@TVP"  $QueryResult 
+	UNION ALL
+	SELECT 
+		SERVERNAME = `'$ServerSource`'
+		,DatabaseName = `'$DatabaseSource`'
+		,'-X-' [objectType] 
+		,NULL AS [ParentSchemaName]
+		,NULL  as [ParentObjectName]
+		,NULL AS [SchemaName]
+		,NULL AS OBJECTNAME
+		,NULL as fields
+		,NULL  as Definition
+		,`'$Description`' AS DocumentationDescription
+		where len(`'$Description`')>0
 
-Write-host("SQLDOCReferencedObjects")
+	; 
+"@
+return  $query
+}
 
-$query =SQLDOCReferencedObjects($extentedPropertyName)
+function SQLViewColumnUsage($ServerSource, $DatabaseSource, $extentedPropertyName)
+{
 
-$QueryResultRefObj = Invoke-Sqlcmd -ServerInstance $ServerSource -Database $DatabaseSource -Query $query -OutputAs DataTables
-SaveDoctoDb $SQLConnectionString "[dbo].[usp_ObjectReferenceUpdate]"   "@TVPObjRef"  $QueryResultRefObj 
+	$query=@"
+	WITH CTE
+		AS (
+			SELECT vcu.VIEW_SCHEMA
+				,vcu.VIEW_NAME
+				,vcu.TABLE_SCHEMA
+				,vcu.TABLE_NAME
+				,c.COLUMN_NAME
+				,c.ORDINAL_POSITION
+				,count(1) OVER (
+					PARTITION BY vcu.VIEW_SCHEMA
+						,vcu.VIEW_NAME
+						,c.ORDINAL_POSITION
+					) AS SourceColumnCount
+				,ROW_NUMBER() OVER (
+					PARTITION BY vcu.VIEW_SCHEMA
+						,vcu.VIEW_NAME
+						,c.ORDINAL_POSITION 
+					ORDER BY vcu.TABLE_SCHEMA
+						,vcu.TABLE_NAME
+						,c.COLUMN_NAME
+					) AS matchid
+			FROM INFORMATION_SCHEMA.VIEW_COLUMN_USAGE as vcu
+			INNER JOIN INFORMATION_SCHEMA.COLUMNS as c 
+				ON vcu.VIEW_NAME = c.TABLE_NAME
+					AND vcu.COLUMN_NAME = c.COLUMN_NAME
+			)
+			SELECT 
+			SERVERNAME = `'$ServerSource`'
+			,DatabaseName = `'$DatabaseSource`'
+			,VIEW_SCHEMA
+			,VIEW_NAME
+			,TABLE_SCHEMA
+			,TABLE_NAME
+			,COLUMN_NAME
+			,ORDINAL_POSITION
+			,iif(SourceColumnCount > 1, 1, 0) AS is_ambiguous
+			,cast(NULL as nvarchar(max)) AS Expression
+		FROM CTE
+		WHERE matchid = 1
+"@
+return $query
+}
+function Save-QueryResult ($ServerSource , $Database  , $Query , $SQLConnectionString, $Procedure, $ProcedureParamName){
+
+	$QueryResult = Invoke-Sqlcmd -ServerInstance $ServerSource -Database $Database  -Query $Query -OutputAs DataTables
+	Save-DoctoDb $SQLConnectionString  -Procedure  $Procedure  -ProcedureParamName $ProcedureParamName  -ProcedureParamValue $QueryResult
+}
+
+function Save-SQLObjectCode($ServerSource, $DatabaseSource )
+{
+	$Procedure="[dbo].[usp_ObjectCodeUpdate]"
+	$ProcedureParamName="@TVPObjectCode"
+
+	[System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.SMO') | out-null
+	$serverInstance = New-Object ('Microsoft.SqlServer.Management.Smo.Server') $ServerSource
+	$IncludeTypes = @("StoredProcedures", "Views") #object you want do backup. 
+	$ExcludeSchemas = @("sys", "Information_Schema")
+	$so = new-object ('Microsoft.SqlServer.Management.Smo.ScriptingOptions')
+
+	$db = $serverInstance.databases[$DatabaseSource]
+
+
+	$dt = New-Object System.Data.Datatable 
+	$col1 = New-Object system.Data.DataColumn SERVERNAME,([string])
+	$col2 = New-Object system.Data.DataColumn DatabaseName,([string])
+	$col3 = New-Object system.Data.DataColumn SchemaName,([string])
+	$col4 = New-Object system.Data.DataColumn ObjectName,([string])
+	$col5 = New-Object system.Data.DataColumn sql,([string])
+	$dt.columns.add($col1)
+	$dt.columns.add($col2)
+	$dt.columns.add($col3)
+	$dt.columns.add($col4)
+	$dt.columns.add($col5)
+
+	#$result =
+	 foreach ($Type in $IncludeTypes) {
+
+		foreach ($objs in $db.$Type) { 
+            If ($ExcludeSchemas -notcontains $objs.Schema ) {
+                        
+                $ObjName = "$objs".replace("[$($objs.Schema)].", "").replace("[", "").replace("]", "")                  
+
+				$ofs = ""
+                $sql =( [string]$objs.Script($so) ).replace("SET ANSI_NULLS ONSET QUOTED_IDENTIFIER ON`r`n","")
+
+				[void]$dt.Rows.Add($ServerSource,$DatabaseSource,"$($objs.Schema)" ,  $ObjName , $sql )
+              <#  [pscustomobject]@{ #Output object  prefix with Field_# as the ConvertTo-DataTable orders the fields by name
+                    Field_1_SERVERNAME   = $ServerSource
+                    Field_2_DatabaseName = $DatabaseSource
+                    Field_3_SchemaName   = "$($objs.Schema)"
+                    Field_4_ObjectName   = $ObjName
+                    Field_5_sql          = $sql
+				}
+				#>
+}
+        }
+    }     
+	
+
+
+	Save-DoctoDb $SQLConnectionString  -Procedure  $Procedure  -ProcedureParamName $ProcedureParamName  -ProcedureParamValue $dt
+}
+
+Write-Verbose "Start  SQLDocColumnQuery"
+$query =SQLDocColumnQuery -ServerSource $ServerSource -DatabaseSource $DatabaseSource -extentedPropertyName $extentedPropertyName 
+Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ColumnDocUpdate]" -ProcedureParamName  "@TVP"
+
+Write-Verbose "Start  SQLDOCReferencedObjects"
+$query = SQLDOCReferencedObjects -ServerSource $ServerSource -DatabaseSource $DatabaseSource -extentedPropertyName $extentedPropertyName 
+Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ObjectReferenceUpdate]" -ProcedureParamName  "@TVPObjRef"
 
  
+Write-Verbose "Start  SQLDOCObjects"
+$query =SQLDOCObjects -ServerSource $ServerSource -DatabaseSource $DatabaseSource -extentedPropertyName $extentedPropertyName 
+Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ObjectDocumentationUpdate]" -ProcedureParamName  "@TVPObjDoc"
+
+Write-Verbose "Start SQLViewColumnUsage"
+$query = SQLViewColumnUsage -ServerSource $ServerSource -DatabaseSource $DatabaseSource -extentedPropertyName $extentedPropertyName 
+Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ViewColumnUpdate]" -ProcedureParamName  "@TVPViewCol"
+
+Write-Verbose "Start Get-SQLObjectCode" #this has to happen all within the function as cannot marshall the dataset out of the function 
+Save-SQLObjectCode -ServerSource $ServerSource -DatabaseSource $DatabaseSource 

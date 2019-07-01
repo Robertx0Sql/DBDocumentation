@@ -5,6 +5,7 @@
 
 
 
+
 CREATE VIEW [dbo].[vwObjectReference]
 AS
 WITH cte as (
@@ -37,8 +38,8 @@ SELECT COALESCE([referenced_server_name], r.[ServerName])
 FROM [Staging].[ObjectReference] R
 LEFT JOIN [dbo].[vwObjectDoc] OD ON R.SERVERNAME = od.SERVERNAME
 	AND r.DatabaseName = od.DatabaseName
-	AND od.TableName = [referenced_entity_name]
-	AND od.TableSchemaName = referenced_schema_name
+	AND od.ObjectName = [referenced_entity_name]
+	AND od.SchemaName = referenced_schema_name
 WHERE referencing_schema_name IS NOT NULL
 )
 

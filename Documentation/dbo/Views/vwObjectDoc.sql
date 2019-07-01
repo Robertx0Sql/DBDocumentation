@@ -1,6 +1,7 @@
 ﻿
 
 
+
 CREATE VIEW [dbo].[vwObjectDoc]
 AS
 SELECT 
@@ -10,14 +11,15 @@ SELECT
 	,TypeCode 
 	, TypeDescriptionUser
 	,TypeDescriptionSQL
-	,[TableSchemaName]
-	,[TableName]
+	,[SchemaName]
+	,[ObjectName]
 	,[DocumentationDescription]
-	,QualifiedTableName
 	,TypeGroupOrder
 	,TypeOrder
 	,TypeCount
-	,DocumentationLoadDate
-FROM [dbo].[vwColumnDoc]
-WHERE column_id IS NULL
-and [typeCode]  is not null
+	,StagingDateTime as  DocumentationLoadDate
+	,QUOTENAME([SchemaName]) + '.' + QUOTENAME( [ObjectName]) AS QualifiedFullName 
+	,ParentObjectName
+	,ParentSchemaName
+FROM [Staging].[ObjectDocumentation] d
+left join dbo.vwObjectType  t on t.TypeCode = rtrim(d. [objectType] ) ;

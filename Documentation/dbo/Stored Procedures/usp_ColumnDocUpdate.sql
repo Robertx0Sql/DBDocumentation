@@ -1,10 +1,14 @@
 ﻿CREATE PROCEDURE [dbo].[usp_ColumnDocUpdate]
     @TVP [ColumnDocTableType]  READONLY  
-    AS  
-	 delete E 
-	 from [Staging].[ColumnDoc] E
-	 inner join @TVP X on x.	[ServerName] =E.[ServerName] 
-	 and X.[DatabaseName] = E.[DatabaseName]
+AS  
+BEGIN
+
+	SET NOCOUNT ON ;
+
+	 DELETE E 
+	 FROM [Staging].[ColumnDoc] E
+	 INNER JOIN @TVP X ON x.	[ServerName] =E.[ServerName] 
+	 AND X.[DatabaseName] = E.[DatabaseName];
 		   
 
 	 INSERT INTO [Staging].[ColumnDoc]
@@ -64,4 +68,5 @@
            ,[referenced_column]
 		   ,[objectTypeDescription] 
         FROM  @TVP;
+END
 

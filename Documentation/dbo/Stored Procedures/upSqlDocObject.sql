@@ -1,5 +1,6 @@
 ﻿
-CREATE PROCEDURE [dbo].[upSqlDocDatabaseTable] 
+
+CREATE PROCEDURE [dbo].[upSqlDocObject] 
 	@Server VARCHAR(255) 
 	,@DatabaseName VARCHAR(255) 
 	,@Schema  VARCHAR(255) =NULL
@@ -8,11 +9,11 @@ CREATE PROCEDURE [dbo].[upSqlDocDatabaseTable]
 AS
 SELECT [ServerName]
 	,[DatabaseName]
-	,[TableSchemaName]
-	,[TableName]
+	,SchemaName as [TableSchemaName]
+	,ObjectName as [TableName]
 	,[TypeDescriptionUser]
 	,[DocumentationDescription]
-	,[QualifiedTableName]
+	,QualifiedFullName as  [QualifiedTableName]
 	,TypeGroup
 	,TypeCode
 	,DocumentationLoadDate 
@@ -21,8 +22,8 @@ WHERE DatabaseName = @DatabaseName
 	AND SERVERNAME = @Server
 	AND (
 		(
-			[TableSchemaName] = @Schema
-			AND [TableName] = @Object
+			SchemaName = @Schema
+			AND ObjectName = @Object
 			AND ([TypeDescriptionUser] = @ObjectType
 			or @ObjectType is null)
 			)

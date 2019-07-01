@@ -81,7 +81,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>Data Warehouse Content Guide</Value>
+                        <Value>Database Guide</Value>
                         <Style>
                           <FontSize>14pt</FontSize>
                           <FontWeight>Bold</FontWeight>
@@ -95,38 +95,6 @@
                 <Left>6.985cm</Left>
                 <Height>0.81167cm</Height>
                 <Width>10.19938cm</Width>
-                <Style>
-                  <Border>
-                    <Style>None</Style>
-                  </Border>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Textbox Name="Textbox5">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>=Globals!ReportServerUrl</Value>
-                        <Style>
-                          <Color>DimGray</Color>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>Textbox5</rd:DefaultName>
-                <Top>0.81167cm</Top>
-                <Left>6.985cm</Left>
-                <Height>0.51125cm</Height>
-                <Width>15.12001cm</Width>
-                <ZIndex>1</ZIndex>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -156,7 +124,7 @@
                 <Left>17.18438cm</Left>
                 <Height>0.78521cm</Height>
                 <Width>4.91182cm</Width>
-                <ZIndex>2</ZIndex>
+                <ZIndex>1</ZIndex>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -170,7 +138,7 @@
             </ReportItems>
             <KeepTogether>true</KeepTogether>
             <Left>0.0088cm</Left>
-            <Height>1.32292cm</Height>
+            <Height>0.81167cm</Height>
             <Width>22.18439cm</Width>
             <Style>
               <Border>

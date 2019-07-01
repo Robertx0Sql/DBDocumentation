@@ -259,7 +259,7 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>dsSQLDB</DataSetName>
-        <Top>2.07311cm</Top>
+        <Top>1.43811cm</Top>
         <Left>0.00001cm</Left>
         <Height>1.1cm</Height>
         <Width>25.96791cm</Width>
@@ -286,7 +286,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox77</rd:DefaultName>
-        <Top>1.43785cm</Top>
+        <Top>0.80285cm</Top>
         <Left>0.00001cm</Left>
         <Height>0.6cm</Height>
         <Width>4.5373cm</Width>
@@ -310,7 +310,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Data Warehouse Content Guide</Value>
+                    <Value>Database Guide</Value>
                     <Style>
                       <FontSize>18pt</FontSize>
                       <FontWeight>Bold</FontWeight>
@@ -324,38 +324,6 @@
             <Left>6.985cm</Left>
             <Height>0.81167cm</Height>
             <Width>10.19938cm</Width>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Textbox5">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=Globals!ReportServerUrl</Value>
-                    <Style>
-                      <Color>DimGray</Color>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox5</rd:DefaultName>
-            <Top>0.81167cm</Top>
-            <Left>6.985cm</Left>
-            <Height>0.51125cm</Height>
-            <Width>15.12001cm</Width>
-            <ZIndex>1</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -385,7 +353,7 @@
             <Left>17.18438cm</Left>
             <Height>0.78521cm</Height>
             <Width>4.91182cm</Width>
-            <ZIndex>2</ZIndex>
+            <ZIndex>1</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -399,7 +367,7 @@
         </ReportItems>
         <KeepTogether>true</KeepTogether>
         <Left>0.00881cm</Left>
-        <Height>1.32292cm</Height>
+        <Height>0.81167cm</Height>
         <Width>25.96793cm</Width>
         <ZIndex>2</ZIndex>
         <Style>
@@ -409,7 +377,7 @@
         </Style>
       </Rectangle>
     </ReportItems>
-    <Height>1.37426in</Height>
+    <Height>1.02009in</Height>
     <Style />
   </Body>
   <Width>10.22706in</Width>

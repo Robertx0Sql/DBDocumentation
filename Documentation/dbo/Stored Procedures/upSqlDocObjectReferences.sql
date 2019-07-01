@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[upSqlDocDatabaseTableReferences] 
+CREATE PROCEDURE [dbo].[upSqlDocObjectReferences] 
 	@Server VARCHAR(255)
 	,@DatabaseName VARCHAR(255)
 	,@Schema VARCHAR(255)

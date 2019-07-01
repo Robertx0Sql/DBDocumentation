@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="a7633f21-58f4-4046-8ebc-d19be290188b" ChangeDateTime="06/11/2019 09:31:45">
+    <Property Name="ElementName" Value="[dbo].[upSqlDocDatabaseColumns]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[upSqlDocObjectColumns]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2a690ac7-0f28-4ffc-96c3-d2fe32ec6edc" ChangeDateTime="06/11/2019 09:32:51">
+    <Property Name="ElementName" Value="[dbo].[upSqlDocDatabaseTable]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[upSqlDocObject]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="62fd7809-73b4-4003-817d-f60a302f9b81" ChangeDateTime="06/11/2019 09:33:56">
+    <Property Name="ElementName" Value="[dbo].[upSqlDocDatabaseTableReferences]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[upSqlDocObjectReferences]" />
+  </Operation>
+</Operations>

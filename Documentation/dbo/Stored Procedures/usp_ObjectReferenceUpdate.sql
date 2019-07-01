@@ -1,6 +1,4 @@
-﻿
-
-CREATE PROCEDURE [dbo].[usp_ObjectReferenceUpdate] 
+﻿CREATE PROCEDURE [dbo].[usp_ObjectReferenceUpdate] 
 	@TVPObjRef ObjectReferenceTableType READONLY
 AS
 DELETE E
@@ -31,5 +29,3 @@ SELECT [ServerName]
 	,[referenced_schema_name]
 	,[referenced_entity_name]
 FROM @TVPObjRef
-
---Alter table [Staging].[ObjectReference] add [referencing_TypeCode]varchar(10)
