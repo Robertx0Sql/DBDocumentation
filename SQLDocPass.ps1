@@ -366,7 +366,7 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource )
                 $ObjName = "$objs".replace("[$($objs.Schema)].", "").replace("[", "").replace("]", "")                  
 
 				$ofs = ""
-                $sql =( [string]$objs.Script($so) ).replace("SET ANSI_NULLS ONSET QUOTED_IDENTIFIER ON`r`n","")
+                $sql =( [string]$objs.Script($so) ).replace("SET ANSI_NULLS ONSET QUOTED_IDENTIFIER ON","")
 
 				[void]$dt.Rows.Add($ServerSource,$DatabaseSource,"$($objs.Schema)" ,  $ObjName , $sql )
               <#  [pscustomobject]@{ #Output object  prefix with Field_# as the ConvertTo-DataTable orders the fields by name
