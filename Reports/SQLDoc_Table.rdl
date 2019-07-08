@@ -2,8 +2,8 @@
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
-    <DataSource Name="DB">
-      <DataSourceReference>DB</DataSourceReference>
+    <DataSource Name="DocumentationDB">
+      <DataSourceReference>DocumentationDB</DataSourceReference>
       <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>d3d02479-07ad-490c-a2b0-8b19ec5f8877</rd:DataSourceID>
     </DataSource>
@@ -11,7 +11,7 @@
   <DataSets>
     <DataSet Name="dsColumns">
       <Query>
-        <DataSourceName>DB</DataSourceName>
+        <DataSourceName>DocumentationDB</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@Server">
             <Value>=Parameters!Server.Value</Value>
@@ -138,7 +138,7 @@
     </DataSet>
     <DataSet Name="dsReferences">
       <Query>
-        <DataSourceName>DB</DataSourceName>
+        <DataSourceName>DocumentationDB</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@Server">
             <Value>=Parameters!Server.Value</Value>
@@ -241,7 +241,7 @@
     </DataSet>
     <DataSet Name="dsObject">
       <Query>
-        <DataSourceName>DB</DataSourceName>
+        <DataSourceName>DocumentationDB</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@Server">
             <Value>=Parameters!Server.Value</Value>
@@ -313,7 +313,7 @@
     </DataSet>
     <DataSet Name="dsCode">
       <Query>
-        <DataSourceName>DB</DataSourceName>
+        <DataSourceName>DocumentationDB</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@Server">
             <Value>=Parameters!Server.Value</Value>
@@ -2707,7 +2707,7 @@
             <rd:DefaultName>Textbox4</rd:DefaultName>
             <Top>0.79375cm</Top>
             <Height>0.6cm</Height>
-            <Width>22.06856cm</Width>
+            <Width>30.24418cm</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>

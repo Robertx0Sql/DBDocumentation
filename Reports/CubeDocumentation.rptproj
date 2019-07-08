@@ -8,11 +8,11 @@
     <OverwriteDataSources>False</OverwriteDataSources>
     <TargetServerVersion>SSRS2016</TargetServerVersion>
     <Platform>Win32</Platform>
-    <TargetReportFolder>CubeDocumentation</TargetReportFolder>
+    <TargetReportFolder>DWDocumentation</TargetReportFolder>
     <TargetDatasetFolder>Datasets</TargetDatasetFolder>
     <TargetDatasourceFolder>Data Sources</TargetDatasourceFolder>
     <TargetReportPartFolder>Report Parts</TargetReportPartFolder>
-    <TargetServerURL>http://localhost/reportserver</TargetServerURL>
+    <TargetServerURL>http://aplsqlbitest02/reportserver</TargetServerURL>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'DebugLocal' ">
     <FullPath>DebugLocal</FullPath>
@@ -49,7 +49,7 @@
     <Reports>@(Report)</Reports>
   </PropertyGroup>
   <ItemGroup>
-    <DataSource Include="DB.rds" />
+    <DataSource Include="DocumentationDB.rds" />
   </ItemGroup>
   <ItemGroup>
     <Report Include="CubeDoc_Cube.rdl" />

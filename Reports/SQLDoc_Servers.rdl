@@ -395,8 +395,8 @@
   </Page>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
-    <DataSource Name="DB">
-      <DataSourceReference>DB</DataSourceReference>
+    <DataSource Name="DocumentationDB">
+      <DataSourceReference>DocumentationDB</DataSourceReference>
       <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>d3d02479-07ad-490c-a2b0-8b19ec5f8877</rd:DataSourceID>
     </DataSource>
@@ -404,7 +404,7 @@
   <DataSets>
     <DataSet Name="dsSQLDB">
       <Query>
-        <DataSourceName>DB</DataSourceName>
+        <DataSourceName>DocumentationDB</DataSourceName>
         <CommandType>StoredProcedure</CommandType>
         <CommandText>dbo.upSqlDocDatabases</CommandText>
       </Query>

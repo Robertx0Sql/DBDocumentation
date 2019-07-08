@@ -10,6 +10,15 @@ param(
 $extentedPropertyName="MS_Description"
 $SQLConnectionString = "Data Source={0};Initial Catalog={1};Integrated Security=SSPI;" -f $SqlServerDoc, $SqlDatabaseDoc
 
+Write-Host "==================================================================================="
+Write-Host "ServerSource $ServerSource"
+Write-Host "DatabaseSource $DatabaseSource"
+Write-Host "SqlServerDoc $SqlServerDoc"
+Write-Host "SqlDatabaseDoc $SqlDatabaseDoc"
+Write-Host "Description $Description"
+Write-Host "==================================================================================="
+
+
 function Save-DoctoDb($SQLConnectionString, $Procedure, $ProcedureParamName, $ProcedureParamValue)
 {
 	#nvoke-SqlCmd does not support passing complex objects. need to use a System.Data.SQLClient.SQLCommand object
@@ -325,9 +334,16 @@ function SQLViewColumnUsage($ServerSource, $DatabaseSource, $extentedPropertyNam
 "@
 return $query
 }
-function Save-QueryResult ($ServerSource , $Database  , $Query , $SQLConnectionString, $Procedure, $ProcedureParamName){
-
-	$QueryResult = Invoke-Sqlcmd -ServerInstance $ServerSource -Database $Database  -Query $Query -OutputAs DataTables
+function Save-QueryResult ($ServerInstance , $Database  , $Query , $SQLConnectionString, $Procedure, $ProcedureParamName){
+	Write-Verbose "==================================================================================="
+	Write-Verbose "ServerInstance $ServerInstance"
+	Write-Verbose "Database $Database"
+	Write-Verbose "SQLConnectionString $SQLConnectionString"
+	Write-Verbose "Procedure $Procedure"
+	Write-Verbose "ProcedureParamName $ProcedureParamName"
+	Write-Verbose "==================================================================================="
+	
+	$QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $Query -OutputAs DataTables
 	Save-DoctoDb $SQLConnectionString  -Procedure  $Procedure  -ProcedureParamName $ProcedureParamName  -ProcedureParamValue $QueryResult
 }
 

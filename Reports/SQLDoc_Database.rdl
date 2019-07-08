@@ -3,8 +3,8 @@
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
-    <DataSource Name="DB">
-      <DataSourceReference>DB</DataSourceReference>
+    <DataSource Name="DocumentationDB">
+      <DataSourceReference>DocumentationDB</DataSourceReference>
       <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>115522f2-8be6-4ac2-bd62-cc5269d5246c</rd:DataSourceID>
     </DataSource>
@@ -12,7 +12,7 @@
   <DataSets>
     <DataSet Name="dsObjects">
       <Query>
-        <DataSourceName>DB</DataSourceName>
+        <DataSourceName>DocumentationDB</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@Server">
             <Value>=Parameters!Server.Value</Value>
@@ -231,7 +231,7 @@
             <Top>1.9839cm</Top>
             <Left>4.70658cm</Left>
             <Height>0.6cm</Height>
-            <Width>4.94708cm</Width>
+            <Width>17.48661cm</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
@@ -723,7 +723,7 @@
             <Top>1.29444cm</Top>
             <Left>4.70658cm</Left>
             <Height>0.6cm</Height>
-            <Width>4.94708cm</Width>
+            <Width>17.48661cm</Width>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
