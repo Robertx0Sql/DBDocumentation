@@ -4,7 +4,6 @@ param(
 ,[string]$DatabaseSource="AdventureWorks2017"
 ,[string]$SqlServerDoc = "."
 ,[string]$SqlDatabaseDoc = "Documentation"
-,[string]$Description 
 )
 
 $extentedPropertyName="MS_Description"
@@ -15,7 +14,6 @@ Write-Host "ServerSource $ServerSource"
 Write-Host "DatabaseSource $DatabaseSource"
 Write-Host "SqlServerDoc $SqlServerDoc"
 Write-Host "SqlDatabaseDoc $SqlDatabaseDoc"
-Write-Host "Description $Description"
 Write-Host "==================================================================================="
 
 
@@ -40,7 +38,7 @@ function Save-DoctoDb($SQLConnectionString, $Procedure, $ProcedureParamName, $Pr
 	Write-Verbose  "$($ProcedureParamValue.Rows.Count) rows added /updated for $Procedure"
 }  
 
-function SQLDOCReferencedObjects($ServerSource, $DatabaseSource, $extentedPropertyName)
+function SQLDOCReferencedObjects($extentedPropertyName)
 {
 	$query = @"
 	WITH CTE AS (
@@ -74,8 +72,8 @@ function SQLDOCReferencedObjects($ServerSource, $DatabaseSource, $extentedProper
 				AND schema_name(so.schema_id) = X.referencing_schema_name
 		)
 	SELECT DISTINCT 
-		SERVERNAME = `'$ServerSource`'
-		,DatabaseName = `'$DatabaseSource`'
+		 @@SERVERNAME AS ServerName
+		,DB_NAME() AS DatabaseName
 		,X.referencing_schema_name
 		,X.referencing_entity_name
 		,referencingTypeCode
@@ -88,116 +86,116 @@ function SQLDOCReferencedObjects($ServerSource, $DatabaseSource, $extentedProper
 "@
 return  $query
 }
-function  SQLDocColumnQuery ($ServerSource, $DatabaseSource, $extentedPropertyName)
+function  SQLDocColumnQuery ($extentedPropertyName)
 {
 $queryColumns = @"
 SELECT 
-SERVERNAME = `'$ServerSource`'
-,DatabaseName = `'$DatabaseSource`'
-,[objectType] =obj.TYPE
-,[objectTypeDescription] =NULL-- c.type_desc
-,c.OBJECT_ID
-
-,object_schema_name(C.OBJECT_ID) AS [TableSchemaName]
-,OBJECT_NAME(c.OBJECT_ID) AS [TableName]
-,c.name
-,CAST(p.value AS NVARCHAR(MAX) ) AS DocumentationDescription
-,c.column_id
-,t.name AS datatype
-,c.max_length
-,c.PRECISION
-,c.scale
-,c.collation_name
-,c.is_nullable
-,c.is_identity
-,CAST(ident_col.seed_value AS INT) AS ident_col_seed_value 
-,CAST(ident_col.increment_value AS INT) AS ident_col_increment_value 
-,c.is_computed
-,object_definition(c.default_object_id) AS Column_Default
-,ic.is_primary_key AS PK
-
-,fk_obj.name AS FK_NAME
-,fkc.referenced_object_id AS ReferencedTableObject_id
-,object_schema_name(fkc.referenced_object_id) AS [ReferencedTableSchemaName]
-,OBJECT_NAME(fkc.referenced_object_id) AS [ReferencedTableName]
-,col2.name AS [referenced_column]
-FROM 
-sys.columns AS c
-INNER JOIN sys.objects obj ON obj.OBJECT_ID=c.OBJECT_ID
-LEFT JOIN sys.types t ON t.user_type_id = c.user_type_id
-LEFT JOIN sys.extended_properties AS p ON p.major_id = c.OBJECT_ID
-	AND p.minor_id = c.column_id
-	AND p.CLASS = 1
-	AND p.name = `'$extentedPropertyName`'
-LEFT JOIN sys.identity_columns ident_col ON c.OBJECT_ID = ident_col.OBJECT_ID
-	AND c.column_id = ident_col.column_id
-LEFT JOIN (
-	SELECT ic.OBJECT_ID , ic.column_id  
-	, is_primary_key
-	FROM sys.index_columns  ic
-	LEFT JOIN sys.indexes AS i ON i.OBJECT_ID = ic.OBJECT_ID
-		AND i.index_id = ic.index_id
-	WHERE is_primary_key=1
-)ic ON ic.OBJECT_ID = c.OBJECT_ID
-	AND ic.column_id = c.column_id
-LEFT JOIN sys.foreign_key_columns fkc ON c.column_id = fkc.parent_column_id
-	AND c.OBJECT_ID = fkc.parent_object_id
-LEFT JOIN sys.objects fk_obj ON fk_obj.OBJECT_ID = fkc.constraint_object_id
-LEFT JOIN sys.columns col2 ON col2.column_id = referenced_column_id 
-	AND col2.OBJECT_ID = fkc.referenced_object_id
-WHERE OBJECTPROPERTY(c.OBJECT_ID, 'IsMsShipped') = 0 
-	AND obj.TYPE IN ('U', 'V')
-
-union all -- parameters
-
-SELECT 
-	SERVERNAME = `'$ServerSource`'
-	,DatabaseName = `'$DatabaseSource`'
-	,[objectType] =sp.TYPE
+	@@SERVERNAME AS ServerName
+	,DB_NAME() AS DatabaseName
+	,[objectType] =obj.TYPE
 	,[objectTypeDescription] =NULL-- c.type_desc
-	,sp.OBJECT_ID
+	,c.OBJECT_ID
 
-	,object_schema_name(sp.OBJECT_ID) AS [TableSchemaName]
-	,OBJECT_NAME(sp.OBJECT_ID) AS [TableName]
-	,par.name
+	,object_schema_name(C.OBJECT_ID) AS [TableSchemaName]
+	,OBJECT_NAME(c.OBJECT_ID) AS [TableName]
+	,c.name
 	,CAST(p.value AS NVARCHAR(MAX) ) AS DocumentationDescription
-	,par.parameter_id
+	,c.column_id
 	,t.name AS datatype
-	,par.max_length
-	,par.PRECISION
-	,par.scale
-	,NULL AS collation_name
-	,NULL AS is_nullable
-	,NULL AS is_identity
-	,NULL AS ident_col_seed_value 
-	,NULL AS ident_col_increment_value 
-	,NULL AS is_computed
-	,NULL AS Column_Default 
-	,NULL AS PK 
-	,NULL AS FK_NAME
-	,NULL AS ReferencedTableObject_id
-	,NULL AS [ReferencedTableSchemaName]
-	,NULL AS [ReferencedTableName]
-	,NULL AS [referenced_column]
-FROM
-   sys.all_objects AS sp
-INNER JOIN sys.parameters par ON sp.Object_id = par.Object_id
-LEFT JOIN sys.types t ON t.user_type_id = par.user_type_id
-   left JOIN sys.extended_properties AS p ON p.major_id=sp.object_id AND p.class=2
-		AND p.minor_id = par.parameter_id
-		AND p.name =  `'$extentedPropertyName`'
-Where par.name!='' --return value for functions
+	,c.max_length
+	,c.PRECISION
+	,c.scale
+	,c.collation_name
+	,c.is_nullable
+	,c.is_identity
+	,CAST(ident_col.seed_value AS INT) AS ident_col_seed_value 
+	,CAST(ident_col.increment_value AS INT) AS ident_col_increment_value 
+	,c.is_computed
+	,object_definition(c.default_object_id) AS Column_Default
+	,ic.is_primary_key AS PK
+
+	,fk_obj.name AS FK_NAME
+	,fkc.referenced_object_id AS ReferencedTableObject_id
+	,object_schema_name(fkc.referenced_object_id) AS [ReferencedTableSchemaName]
+	,OBJECT_NAME(fkc.referenced_object_id) AS [ReferencedTableName]
+	,col2.name AS [referenced_column]
+	FROM 
+	sys.columns AS c
+	INNER JOIN sys.objects obj ON obj.OBJECT_ID=c.OBJECT_ID
+	LEFT JOIN sys.types t ON t.user_type_id = c.user_type_id
+	LEFT JOIN sys.extended_properties AS p ON p.major_id = c.OBJECT_ID
+		AND p.minor_id = c.column_id
+		AND p.CLASS = 1
+		AND p.name = `'$extentedPropertyName`'
+	LEFT JOIN sys.identity_columns ident_col ON c.OBJECT_ID = ident_col.OBJECT_ID
+		AND c.column_id = ident_col.column_id
+	LEFT JOIN (
+		SELECT ic.OBJECT_ID , ic.column_id  
+		, is_primary_key
+		FROM sys.index_columns  ic
+		LEFT JOIN sys.indexes AS i ON i.OBJECT_ID = ic.OBJECT_ID
+			AND i.index_id = ic.index_id
+		WHERE is_primary_key=1
+	)ic ON ic.OBJECT_ID = c.OBJECT_ID
+		AND ic.column_id = c.column_id
+	LEFT JOIN sys.foreign_key_columns fkc ON c.column_id = fkc.parent_column_id
+		AND c.OBJECT_ID = fkc.parent_object_id
+	LEFT JOIN sys.objects fk_obj ON fk_obj.OBJECT_ID = fkc.constraint_object_id
+	LEFT JOIN sys.columns col2 ON col2.column_id = referenced_column_id 
+		AND col2.OBJECT_ID = fkc.referenced_object_id
+	WHERE OBJECTPROPERTY(c.OBJECT_ID, 'IsMsShipped') = 0 
+		AND obj.TYPE IN ('U', 'V')
+
+	union all -- parameters
+
+	SELECT 
+		@@SERVERNAME AS ServerName
+		,DB_NAME() AS DatabaseName
+		,[objectType] =sp.TYPE
+		,[objectTypeDescription] =NULL-- c.type_desc
+		,sp.OBJECT_ID
+
+		,object_schema_name(sp.OBJECT_ID) AS [TableSchemaName]
+		,OBJECT_NAME(sp.OBJECT_ID) AS [TableName]
+		,par.name
+		,CAST(p.value AS NVARCHAR(MAX) ) AS DocumentationDescription
+		,par.parameter_id
+		,t.name AS datatype
+		,par.max_length
+		,par.PRECISION
+		,par.scale
+		,NULL AS collation_name
+		,NULL AS is_nullable
+		,NULL AS is_identity
+		,NULL AS ident_col_seed_value 
+		,NULL AS ident_col_increment_value 
+		,NULL AS is_computed
+		,NULL AS Column_Default 
+		,NULL AS PK 
+		,NULL AS FK_NAME
+		,NULL AS ReferencedTableObject_id
+		,NULL AS [ReferencedTableSchemaName]
+		,NULL AS [ReferencedTableName]
+		,NULL AS [referenced_column]
+	FROM
+	sys.all_objects AS sp
+	INNER JOIN sys.parameters par ON sp.Object_id = par.Object_id
+	LEFT JOIN sys.types t ON t.user_type_id = par.user_type_id
+	left JOIN sys.extended_properties AS p ON p.major_id=sp.object_id AND p.class=2
+			AND p.minor_id = par.parameter_id
+			AND p.name =  `'$extentedPropertyName`'
+	Where par.name!='' --return value for functions
 
 ; 
 "@
 return  $queryColumns
 }
-function SQLDOCObjects($ServerSource, $DatabaseSource, $extentedPropertyName)
+function SQLDOCObjects($extentedPropertyName)
 {
 	$query = @"
-	SELECT --1
-		SERVERNAME = `'$ServerSource`'
-		,DatabaseName = `'$DatabaseSource`'
+	SELECT 
+		@@SERVERNAME AS ServerName
+		,DB_NAME() AS DatabaseName
 		,[objectType] = c.TYPE
 		,object_schema_name(ISNULL(NULLIF(c.parent_object_id, 0), C.OBJECT_ID)) AS [ParentSchemaName]
 		,OBJECT_NAME(ISNULL(NULLIF(c.parent_object_id, 0), C.OBJECT_ID)) AS [ParentObjectName]
@@ -245,9 +243,9 @@ function SQLDOCObjects($ServerSource, $DatabaseSource, $extentedPropertyName)
 
 	UNION ALL
 	
-	SELECT --1
-		SERVERNAME = `'$ServerSource`'
-		,DatabaseName = `'$DatabaseSource`'
+	SELECT 
+		@@SERVERNAME AS ServerName
+		,DB_NAME() AS DatabaseName
 		,[objectType] = 'INDEX'
 		,object_schema_name(ISNULL(NULLIF(so.parent_object_id, 0), so.OBJECT_ID)) AS [ParentSchemaName]
 		,OBJECT_NAME(ISNULL(NULLIF(so.parent_object_id, 0), so.OBJECT_ID)) AS [ParentObjectName]
@@ -269,26 +267,12 @@ function SQLDOCObjects($ServerSource, $DatabaseSource, $extentedPropertyName)
 		GROUP BY ic.OBJECT_ID
 	) ic ON ic.object_id = ix.object_id
 
-	UNION ALL
-	SELECT 
-		SERVERNAME = `'$ServerSource`'
-		,DatabaseName = `'$DatabaseSource`'
-		,'-X-' [objectType] 
-		,NULL AS [ParentSchemaName]
-		,NULL  as [ParentObjectName]
-		,NULL AS [SchemaName]
-		,NULL AS OBJECTNAME
-		,NULL as fields
-		,NULL  as Definition
-		,`'$Description`' AS DocumentationDescription
-		where len(`'$Description`')>0
-
 	; 
 "@
 return  $query
 }
 
-function SQLViewColumnUsage($ServerSource, $DatabaseSource, $extentedPropertyName)
+function SQLViewColumnUsage($extentedPropertyName)
 {
 
 	$query=@"
@@ -319,8 +303,8 @@ function SQLViewColumnUsage($ServerSource, $DatabaseSource, $extentedPropertyNam
 					AND vcu.COLUMN_NAME = c.COLUMN_NAME
 			)
 			SELECT 
-			SERVERNAME = `'$ServerSource`'
-			,DatabaseName = `'$DatabaseSource`'
+			 @@SERVERNAME AS ServerName
+			,DB_NAME() AS DatabaseName
 			,VIEW_SCHEMA
 			,VIEW_NAME
 			,TABLE_SCHEMA
@@ -334,6 +318,47 @@ function SQLViewColumnUsage($ServerSource, $DatabaseSource, $extentedPropertyNam
 "@
 return $query
 }
+function SQLDatabaseInformation($extentedPropertyName)
+{
+$query=@"
+SELECT @@SERVERNAME AS ServerName
+	,DB_NAME() AS DatabaseName
+	,is_auto_close_on
+	,is_auto_shrink_on
+	,is_in_standby
+	,is_ansi_null_default_on
+	,is_ansi_nulls_on
+	,is_ansi_padding_on
+	,is_ansi_warnings_on
+	,is_arithabort_on
+	,is_auto_create_stats_on
+	,is_auto_update_stats_on
+	,is_cursor_close_on_commit_on
+	,is_fulltext_enabled
+	,is_local_cursor_default
+	,is_concat_null_yields_null_on
+	,is_numeric_roundabort_on
+	,is_quoted_identifier_on
+	,is_recursive_triggers_on
+	,is_published
+	,is_subscribed
+	,is_sync_with_backup
+	,recovery_model_desc
+	,snapshot_isolation_state_desc
+	,collation_name
+	,compatibility_level
+	,create_date
+	,CAST(ep.value AS NVARCHAR(MAX)) AS DocumentationDescription
+FROM sys.databases db
+LEFT JOIN sys.extended_properties ep
+	ON ep.class = 0
+	AND ep.name =  `'$extentedPropertyName`'
+WHERE db.name = db_name()
+"@
+return $query
+}
+
+
 function Save-QueryResult ($ServerInstance , $Database  , $Query , $SQLConnectionString, $Procedure, $ProcedureParamName){
 	Write-Verbose "==================================================================================="
 	Write-Verbose "ServerInstance $ServerInstance"
@@ -403,21 +428,27 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource )
 }
 
 Write-Verbose "Start  SQLDocColumnQuery"
-$query =SQLDocColumnQuery -ServerSource $ServerSource -DatabaseSource $DatabaseSource -extentedPropertyName $extentedPropertyName 
+$query =SQLDocColumnQuery  -extentedPropertyName $extentedPropertyName 
 Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ColumnDocUpdate]" -ProcedureParamName  "@TVP"
 
 Write-Verbose "Start  SQLDOCReferencedObjects"
-$query = SQLDOCReferencedObjects -ServerSource $ServerSource -DatabaseSource $DatabaseSource -extentedPropertyName $extentedPropertyName 
+$query = SQLDOCReferencedObjects  -extentedPropertyName $extentedPropertyName 
 Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ObjectReferenceUpdate]" -ProcedureParamName  "@TVPObjRef"
 
  
 Write-Verbose "Start  SQLDOCObjects"
-$query =SQLDOCObjects -ServerSource $ServerSource -DatabaseSource $DatabaseSource -extentedPropertyName $extentedPropertyName 
+$query =SQLDOCObjects -extentedPropertyName $extentedPropertyName 
 Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ObjectDocumentationUpdate]" -ProcedureParamName  "@TVPObjDoc"
 
 Write-Verbose "Start SQLViewColumnUsage"
-$query = SQLViewColumnUsage -ServerSource $ServerSource -DatabaseSource $DatabaseSource -extentedPropertyName $extentedPropertyName 
+$query = SQLViewColumnUsage -extentedPropertyName $extentedPropertyName 
 Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ViewColumnUpdate]" -ProcedureParamName  "@TVPViewCol"
+
+
+Write-Verbose "Start Database Info"
+$query = SQLDatabaseInformation -extentedPropertyName $extentedPropertyName 
+Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_DatabaseInformationUpdate]" -ProcedureParamName  "@TVPDbInfo"
+
 
 Write-Verbose "Start Get-SQLObjectCode" #this has to happen all within the function as cannot marshall the dataset out of the function 
 Save-SQLObjectCode -ServerSource $ServerSource -DatabaseSource $DatabaseSource 

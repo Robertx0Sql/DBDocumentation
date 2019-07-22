@@ -1,0 +1,72 @@
+﻿
+
+CREATE PROCEDURE [dbo].[usp_DatabaseInformationUpdate] 
+	@TVPDbInfo [DatabaseInformationTableType] READONLY
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	DELETE E
+	FROM [Staging].[DatabaseInformation] E
+	INNER JOIN @TVPDbInfo X
+		ON x.[ServerName] = E.[ServerName]
+			AND X.[DatabaseName] = E.[DatabaseName]
+INSERT INTO [Staging].[DatabaseInformation]
+           ([ServerName]
+           ,[DatabaseName]
+           ,[is_auto_close_on]
+           ,[is_auto_shrink_on]
+           ,[is_in_standby]
+           ,[is_ansi_null_default_on]
+           ,[is_ansi_nulls_on]
+           ,[is_ansi_padding_on]
+           ,[is_ansi_warnings_on]
+           ,[is_arithabort_on]
+           ,[is_auto_create_stats_on]
+           ,[is_auto_update_stats_on]
+           ,[is_cursor_close_on_commit_on]
+           ,[is_fulltext_enabled]
+           ,[is_local_cursor_default]
+           ,[is_concat_null_yields_null_on]
+           ,[is_numeric_roundabort_on]
+           ,[is_quoted_identifier_on]
+           ,[is_recursive_triggers_on]
+           ,[is_published]
+           ,[is_subscribed]
+           ,[is_sync_with_backup]
+           ,[recovery_model_desc]
+           ,[snapshot_isolation_state_desc]
+           ,[collation_name]
+           ,[compatibility_level]
+           ,[create_date]
+           ,[DocumentationDescription])
+		   SELECT [ServerName]
+           ,[DatabaseName]
+           ,[is_auto_close_on]
+           ,[is_auto_shrink_on]
+           ,[is_in_standby]
+           ,[is_ansi_null_default_on]
+           ,[is_ansi_nulls_on]
+           ,[is_ansi_padding_on]
+           ,[is_ansi_warnings_on]
+           ,[is_arithabort_on]
+           ,[is_auto_create_stats_on]
+           ,[is_auto_update_stats_on]
+           ,[is_cursor_close_on_commit_on]
+           ,[is_fulltext_enabled]
+           ,[is_local_cursor_default]
+           ,[is_concat_null_yields_null_on]
+           ,[is_numeric_roundabort_on]
+           ,[is_quoted_identifier_on]
+           ,[is_recursive_triggers_on]
+           ,[is_published]
+           ,[is_subscribed]
+           ,[is_sync_with_backup]
+           ,[recovery_model_desc]
+           ,[snapshot_isolation_state_desc]
+           ,[collation_name]
+           ,[compatibility_level]
+           ,[create_date]
+           ,[DocumentationDescription]
+		   FROM @TVPDbInfo
+END

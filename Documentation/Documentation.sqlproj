@@ -121,6 +121,9 @@
     <Build Include="dbo\Stored Procedures\usp_ObjectCodeUpdate.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocObjectCode.sql" />
     <Build Include="dbo\User Defined Types\ObjectCodeTableType.sql" />
+    <Build Include="Staging\Tables\DatabaseInformation.sql" />
+    <Build Include="dbo\Stored Procedures\usp_DatabaseInformationUpdate.sql" />
+    <Build Include="dbo\User Defined Types\DatabaseInformationTableType.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">
