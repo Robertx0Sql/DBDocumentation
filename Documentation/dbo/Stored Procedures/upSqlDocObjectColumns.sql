@@ -49,7 +49,7 @@ SELECT cd.[ServerName]
 	,iif(cd.TypeCode = 'V', vc.TABLE_SCHEMA, ISNULL(cd.[ReferencedTableSchemaName], afk.[ReferencedTableSchemaName])) AS [ReferencedTableSchemaName]
 	,iif(cd.TypeCode = 'V', vc.TABLE_NAME, ISNULL(cd.[ReferencedTableName], afk.[ReferencedTableName])) AS [ReferencedTableName]
 	,iif(cd.TypeCode = 'V', vc.COLUMN_NAME, ISNULL(cd.[referenced_column], afk.[referenced_column])) AS [referenced_column]
-	,iif(cd.TypeCode = 'V', vc.TABLE_NAME + '.' + vc.COLUMN_NAME, ISNULL(cd.[ReferencedTableName] + '.' + cd.[referenced_column], AFK.[ReferencedTableName] + '.' + AFK.[referenced_column])) AS FK
+	,iif(cd.TypeCode = 'V', vc.TABLE_NAME + '.' + vc.COLUMN_NAME, ISNULL(cd.ReferencedTableSchemaName + '.'+ cd.[ReferencedTableName] + '.' + cd.[referenced_column], AFK.ReferencedTableSchemaName + '.' + AFK.[ReferencedTableName] + '.' + AFK.[referenced_column])) AS FK
 	,iif(cd.TypeCode = 'V', vc.TypeDescriptionUser, 'Table') AS ReferencedObjectType
 	,iif(cd.[FK_NAME] IS NOT NULL
 		OR AFK.fk_Name IS NOT NULL, 'yes', NULL) AS isFK

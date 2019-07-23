@@ -1,6 +1,7 @@
 ﻿
 
 
+
 CREATE PROCEDURE [dbo].[upSqlDocObjectChildFK] (
 	@Server VARCHAR(255)
 	,@DatabaseName VARCHAR(255)
@@ -31,8 +32,8 @@ WITH BaseData
 				,ObjectName
 				,referenced_column
 				) AS Seq
-			,ReferencedTableName AS DimensionCaption
-			,ParentObjectName AS MeasureGroupCaption
+			, concat(ReferencedTableSchemaName, '.',ReferencedTableName) AS DimensionCaption
+			,ParentObjectName  AS MeasureGroupCaption
 			,referenced_column
 			,ReferencedTableName
 			,ReferencedTableSchemaName

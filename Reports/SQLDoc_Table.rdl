@@ -721,6 +721,7 @@
                                 <TextRun>
                                   <Value>name</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -753,6 +754,7 @@
                                 <TextRun>
                                   <Value>type</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -788,7 +790,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!referencing_entity_name.Value</Value>
+                                  <Value>=Fields!referencing_schema_name.Value &amp; "." &amp;  Fields!referencing_entity_name.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <TextDecoration>Underline</TextDecoration>

@@ -1,4 +1,5 @@
-﻿CREATE VIEW [dbo].[vwChildObjects]
+﻿
+CREATE VIEW [dbo].[vwChildObjects]
 AS
 SELECT d.[ServerName]
 	,d.[DatabaseName]
@@ -11,7 +12,7 @@ SELECT d.[ServerName]
 	,d.TypeCode
 	,d.DocumentationLoadDate
 	,d.fields
-	,ISNULL(d.[Definition], cd.ReferencedTableName + '.' + cd.referenced_column) AS [Definition]
+	,ISNULL(d.[Definition], cd.ReferencedTableSchemaName + '.' + cd.ReferencedTableName + '.' + cd.referenced_column) AS [Definition]
 	,ParentSchemaName
 	,ParentObjectName
 	,cd.referenced_column
@@ -43,7 +44,7 @@ SELECT d.[ServerName]
 	,d.TypeCode
 	,d.DocumentationLoadDate
 	,d.name AS fields
-	,d.ReferencedTableName + '.' + d.referenced_column AS [Definition]
+	,d.ReferencedTableSchemaName + '.' +  d.ReferencedTableName + '.' + d.referenced_column AS [Definition]
 	,ParentSchemaName = [TableSchemaName]
 	,ParentObjectName = [TableName]
 	,d.referenced_column
