@@ -14,3 +14,10 @@
     CONSTRAINT [PK_ViewColumn] PRIMARY KEY CLUSTERED ([StagingId] ASC)
 );
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_ViewColumn_Server_Database_Schema_Object]
+    ON [Staging].[ViewColumn]([ServerName] ASC, [DatabaseName] ASC, [VIEW_SCHEMA] ASC, [VIEW_NAME] ASC);
+

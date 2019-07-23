@@ -33,3 +33,10 @@
 
 
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_ColumnDoc_Server_Database_Schema_Object]
+    ON [Staging].[ColumnDoc]([ServerName] ASC, [DatabaseName] ASC, [TableSchemaName] ASC, [TableName] ASC);
+

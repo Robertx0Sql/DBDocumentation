@@ -16,3 +16,10 @@
 
 
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_ObjectDocumentation_Server_Database_Schema_Object]
+    ON [Staging].[ObjectDocumentation]([ServerName] ASC, [DatabaseName] ASC, [ParentSchemaName] ASC, [ParentObjectName] ASC);
+

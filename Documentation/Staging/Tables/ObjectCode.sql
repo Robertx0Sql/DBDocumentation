@@ -9,3 +9,10 @@
     CONSTRAINT [PK_ObjectCode] PRIMARY KEY CLUSTERED ([StagingId] ASC)
 );
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_ObjectCode_Server_Database_Schema_Object]
+    ON [Staging].[ObjectCode]([ServerName] ASC, [DatabaseName] ASC, [SchemaName] ASC, [ObjectName] ASC);
+

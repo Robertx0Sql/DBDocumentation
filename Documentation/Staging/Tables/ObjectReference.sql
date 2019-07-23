@@ -18,3 +18,10 @@
 
 
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_ObjectReference_Server_Database_Schema_Object]
+    ON [Staging].[ObjectReference]([ServerName] ASC, [DatabaseName] ASC, [referencing_schema_name] ASC, [referencing_entity_name] ASC);
+

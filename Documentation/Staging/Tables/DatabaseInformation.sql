@@ -32,3 +32,10 @@
     CONSTRAINT [PK_DatabaseInformation] PRIMARY KEY CLUSTERED ([StagingId] ASC)
 );
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_DatabaseInformation_Server_Database_Schema_Object]
+    ON [Staging].[DatabaseInformation]([ServerName] ASC, [DatabaseName] ASC);
+
