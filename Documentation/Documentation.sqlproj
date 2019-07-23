@@ -126,6 +126,7 @@
     <Build Include="dbo\Views\vwAutoMapFK.sql" />
     <Build Include="dbo\Views\vwChildObjects.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabaseInformation.sql" />
+    <Build Include="dbo\Stored Procedures\upSqlDocObjectChildFK.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">

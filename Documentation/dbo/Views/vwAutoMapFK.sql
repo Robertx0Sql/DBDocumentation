@@ -1,5 +1,6 @@
 ﻿
 
+
 CREATE view [dbo].[vwAutoMapFK] 
 	AS 
 SELECT fk.ServerName
@@ -12,7 +13,7 @@ SELECT fk.ServerName
 	,pk.tableSchemaName AS ReferencedTableSchemaName
 	,pk.TableName AS ReferencedTableName
 	,pk.name AS referenced_column
-	,'** AUTO MAP **' AS FK_NAME
+	,CONCAT ('** AUTO MAP ** '  ,'FK_',fk.TableName 	,'_',pk.TableName, '_',fk.name ) AS FK_NAME
 	
 ,matchid = row_number () over (partition by fk.ServerName
 	,fk.DatabaseName 
