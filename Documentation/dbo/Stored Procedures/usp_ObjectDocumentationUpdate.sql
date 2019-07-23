@@ -1,5 +1,8 @@
-﻿
-CREATE PROCEDURE [dbo].[usp_ObjectDocumentationUpdate] (@TVPObjDoc [dbo].[ObjectDocumentationTableType] READONLY)
+
+CREATE PROCEDURE [dbo].[usp_ObjectDocumentationUpdate] 
+(
+	@TVPObjDoc [dbo].[ObjectDocumentationTableType] READONLY
+)
 AS
 BEGIN
 	SET NOCOUNT ON;

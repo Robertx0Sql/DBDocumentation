@@ -1233,6 +1233,9 @@
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>fk_title</rd:DefaultName>
+                              <Visibility>
+                                <Hidden>=iif(Fields!TypeCode.Value="V",true, false)</Hidden>
+                              </Visibility>
                               <Style>
                                 <Border>
                                   <Color>LightGrey</Color>
