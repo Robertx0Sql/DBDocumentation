@@ -16,6 +16,18 @@ Write-Host "SqlServerDoc $SqlServerDoc"
 Write-Host "SqlDatabaseDoc $SqlDatabaseDoc"
 Write-Host "==================================================================================="
 
+function Get-ServerInstance($ServerInstance , $Database )
+{
+	$query ="SELECT @@SERVERNAME AS ServerName ,DB_NAME() AS DatabaseName "
+
+	$QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $query -OutputAs DataTables
+	
+	if($null -eq $QueryResult)
+	{
+		Write-Error "QueryResult is null"}
+	return $QueryResult[0].rows[0].ServerName
+}
+
 
 function Save-DoctoDb($SQLConnectionString, $Procedure, $ProcedureParamName, $ProcedureParamValue)
 {
@@ -392,8 +404,10 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource )
 	$IncludeTypes = @("StoredProcedures", "Views") #object you want do backup. 
 	$ExcludeSchemas = @("sys", "Information_Schema")
 	$so = new-object ('Microsoft.SqlServer.Management.Smo.ScriptingOptions')
-
+	
 	$db = $serverInstance.databases[$DatabaseSource]
+	#get the "proper names for the server and Database"
+	$ServerSource = Get-ServerInstance -ServerInstance $ServerSource -Database $DatabaseSource
 
 
 	$dt = New-Object System.Data.Datatable 
