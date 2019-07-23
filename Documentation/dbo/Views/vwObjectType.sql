@@ -1,6 +1,7 @@
 ﻿
 
 
+
 CREATE VIEW [dbo].[vwObjectType] 
 AS
 SELECT TG.TypeGroup
@@ -18,6 +19,7 @@ SELECT TG.TypeGroup
 	,( N'Triggers' ,4)
 	,( N'Functions' ,5)
 	,( N'Constraints', 6)
+	,( N'Indexes', 10)
 	,( N'Other' ,99)
 ) AS TG (TypeGroup,TypeGroupOrder) 
 LEFT JOIN 
@@ -33,6 +35,7 @@ LEFT JOIN
 		,( N'D' , N'DEFAULT_CONSTRAINT' , N'Default Constraint'  , 'Constraints')
 		,( N'F' , N'FOREIGN_KEY_CONSTRAINT' , N'Foreign Key Constraint'  , 'Constraints')
 		,( N'UQ' , N'UNIQUE_CONSTRAINT' , N'Unique Constraint'  , 'Constraints')
+		,( N'INDEX' , N'INDEX' , N'Index'  , 'Indexes')
 		,( N'SQ' , N'SERVICE_QUEUE' , N'Service Queue'  , 'Other')
 	)	AS T ([TypeCode], [TypeDescriptionSQL], [TypeDescriptionUser], TypeGroup)
 ON tg.TypeGroup= T.TypeGroup;

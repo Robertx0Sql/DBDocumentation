@@ -2,7 +2,7 @@
 <RptDataSource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="DocumentationDB">
   <ConnectionProperties>
     <Extension>SQL</Extension>
-    <ConnectString>Data Source=(localdb)\SSISTEST;Initial Catalog=Documentation</ConnectString>
+    <ConnectString>Data Source=(local);Initial Catalog=Documentation</ConnectString>
     <IntegratedSecurity>true</IntegratedSecurity>
   </ConnectionProperties>
   <DataSourceID>15c3547f-3183-4f4e-8d59-8f5efb20c3f3</DataSourceID>

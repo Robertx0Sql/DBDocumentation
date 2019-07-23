@@ -1,22 +1,22 @@
 ﻿
-
-CREATE PROCEDURE [dbo].[upSqlDocObject] 
-	@Server VARCHAR(255) 
-	,@DatabaseName VARCHAR(255) 
-	,@Schema  VARCHAR(255) =NULL
-	,@Object VARCHAR(255) =NULL
-	,@ObjectType VARCHAR(255) =NULL
+CREATE PROCEDURE [dbo].[upSqlDocObject] (
+	@Server VARCHAR(255)
+	,@DatabaseName VARCHAR(255)
+	,@Schema VARCHAR(255) = NULL
+	,@Object VARCHAR(255) = NULL
+	,@ObjectType VARCHAR(255) = NULL
+	)
 AS
 SELECT [ServerName]
 	,[DatabaseName]
-	,SchemaName as [TableSchemaName]
-	,ObjectName as [TableName]
+	,SchemaName AS [TableSchemaName]
+	,ObjectName AS [TableName]
 	,[TypeDescriptionUser]
 	,[DocumentationDescription]
-	,QualifiedFullName as  [QualifiedTableName]
+	,QualifiedFullName AS [QualifiedTableName]
 	,TypeGroup
 	,TypeCode
-	,DocumentationLoadDate 
+	,DocumentationLoadDate
 FROM dbo.vwObjectDoc
 WHERE DatabaseName = @DatabaseName
 	AND SERVERNAME = @Server
@@ -24,12 +24,14 @@ WHERE DatabaseName = @DatabaseName
 		(
 			SchemaName = @Schema
 			AND ObjectName = @Object
-			AND ([TypeDescriptionUser] = @ObjectType
-			or @ObjectType is null)
+			AND (
+				[TypeDescriptionUser] = @ObjectType
+				OR @ObjectType IS NULL
+				)
 			)
 		OR (
 			@Schema IS NULL
 			AND @Object IS NULL
 			AND @ObjectType IS NULL
 			)
-		)
+		);

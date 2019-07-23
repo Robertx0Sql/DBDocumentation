@@ -1,6 +1,7 @@
-﻿CREATE PROCEDURE [dbo].[upSqlDocDatabases]
+﻿
+CREATE PROCEDURE [dbo].[upSqlDocDatabases]
 AS
 SELECT DISTINCT ServerName
 	,DatabaseName
-	,cast(NULL as varchar(max))  as Description 
-FROM dbo.vwObjectDoc
+	,CAST(d.DocumentationDescription AS VARCHAR(MAX))  as Description 
+FROM Staging.DatabaseInformation d

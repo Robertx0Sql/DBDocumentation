@@ -1,10 +1,11 @@
-﻿CREATE PROCEDURE [dbo].[usp_ObjectReferenceUpdate] 
-	@TVPObjRef ObjectReferenceTableType READONLY
+﻿
+CREATE PROCEDURE [dbo].[usp_ObjectReferenceUpdate] (@TVPObjRef ObjectReferenceTableType READONLY)
 AS
 DELETE E
 FROM [Staging].[ObjectReference] E
-INNER JOIN @TVPObjRef X ON x.[ServerName] = E.[ServerName]
-	AND X.[DatabaseName] = E.[DatabaseName]
+INNER JOIN @TVPObjRef X
+	ON x.[ServerName] = E.[ServerName]
+		AND X.[DatabaseName] = E.[DatabaseName];
 
 INSERT INTO [Staging].[ObjectReference] (
 	[ServerName]
@@ -28,4 +29,4 @@ SELECT [ServerName]
 	,[referenced_database_name]
 	,[referenced_schema_name]
 	,[referenced_entity_name]
-FROM @TVPObjRef
+FROM @TVPObjRef;

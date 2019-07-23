@@ -211,7 +211,7 @@ function SQLDOCObjects($extentedPropertyName)
 		AND p.name =  `'$extentedPropertyName`'
 	LEFT JOIN (
 		SELECT ic.OBJECT_ID
-			,STRING_AGG(COL_NAME(ic.OBJECT_ID, ic.column_id), ',') AS fields
+			,STRING_AGG(COL_NAME(ic.OBJECT_ID, ic.column_id), ', ') AS fields
 		FROM sys.index_columns ic
 		LEFT JOIN sys.indexes AS i ON i.OBJECT_ID = ic.OBJECT_ID
 			AND i.index_id = ic.index_id
@@ -219,14 +219,14 @@ function SQLDOCObjects($extentedPropertyName)
 		) ic ON ic.OBJECT_ID = c.OBJECT_ID
 	LEFT JOIN (
 		SELECT constraint_object_id
-			,STRING_AGG(COL_NAME(fkc.parent_object_id, fkc.parent_column_id), ',') AS fields
+			,STRING_AGG(COL_NAME(fkc.parent_object_id, fkc.parent_column_id), ', ') AS fields
 		FROM sys.foreign_key_columns fkc
 		GROUP BY constraint_object_id
 		) fk ON fk.constraint_object_id = c.OBJECT_ID
 	LEFT JOIN (
 		SELECT con.OBJECT_ID
 			,con.DEFINITION
-			,STRING_AGG(COL_NAME(con.parent_object_id, con.parent_column_id), ',') AS fields
+			,STRING_AGG(COL_NAME(con.parent_object_id, con.parent_column_id), ', ') AS fields
 		FROM sys.default_constraints con
 		GROUP BY con.OBJECT_ID
 			,con.DEFINITION
@@ -234,7 +234,7 @@ function SQLDOCObjects($extentedPropertyName)
 	LEFT JOIN (
 		SELECT con.OBJECT_ID
 			,con.DEFINITION
-			,STRING_AGG(COL_NAME(con.parent_object_id, con.parent_column_id), ',') AS fields
+			,STRING_AGG(COL_NAME(con.parent_object_id, con.parent_column_id), ', ') AS fields
 		FROM sys.check_constraints con
 		GROUP BY con.OBJECT_ID
 			,con.DEFINITION
@@ -252,21 +252,31 @@ function SQLDOCObjects($extentedPropertyName)
 		,NULL--object_schema_name(so.OBJECT_ID) AS [SchemaName]
 		,ix.name AS OBJECTNAME
 		,fields
-		,NULL  as Definition
+		,concat (lower(ix.type_desc) collate SQL_Latin1_General_CP1_CI_AS
+			,iif(ix.is_unique =1, ', unique','')
+			,iif(ix.is_unique_constraint =1, ', unique constraint','')
+			,iif(ix.is_primary_key =1, ', primary key','')
+			,' located on ', ds.name collate SQL_Latin1_General_CP1_CI_AS)  as Definition
 		,CAST(ep.value AS NVARCHAR(MAX)) AS DocumentationDescription
 	FROM sys.tables so
 	INNER JOIN sys.indexes ix ON so.object_id = ix.object_id
+	LEFT JOIN sys.data_spaces ds 
+		ON ds.data_space_id = ix.data_space_id
 	LEFT JOIN sys.extended_properties ep ON ep.major_id = ix.OBJECT_ID
 		AND CLASS = 7
 		AND ep.minor_id = ix.index_id
 		AND Ep.name =  `'$extentedPropertyName`'
-	INNER JOIN (
+	LEFT JOIN (
 		SELECT ic.OBJECT_ID
-			,STRING_AGG(COL_NAME(ic.OBJECT_ID, ic.column_id), ',') AS fields
+			,index_id
+			,STRING_AGG(COL_NAME(ic.OBJECT_ID, ic.column_id), ', ') AS fields
 		FROM sys.index_columns AS ic
 		GROUP BY ic.OBJECT_ID
-	) ic ON ic.object_id = ix.object_id
-
+			,index_id
+		) ic
+		ON ic.object_id = ix.object_id
+			AND ic.index_id = ix.index_id
+		
 	; 
 "@
 return  $query

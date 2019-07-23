@@ -111,7 +111,6 @@
     <Build Include="Staging\Tables\ObjectDocumentation.sql" />
     <Build Include="dbo\Stored Procedures\usp_ObjectDocumentationUpdate.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocObjectChildObjects.sql" />
-    <Build Include="dbo\Stored Procedures\upSqlDocDatabaseObject.sql" />
     <Build Include="dbo\User Defined Types\ObjectDocumentationTableType.sql" />
     <Build Include="Staging\Tables\ViewColumn.sql" />
     <Build Include="dbo\Views\vwViewColumnInformation.sql" />
@@ -124,6 +123,9 @@
     <Build Include="Staging\Tables\DatabaseInformation.sql" />
     <Build Include="dbo\Stored Procedures\usp_DatabaseInformationUpdate.sql" />
     <Build Include="dbo\User Defined Types\DatabaseInformationTableType.sql" />
+    <Build Include="dbo\Views\vwAutoMapFK.sql" />
+    <Build Include="dbo\Views\vwChildObjects.sql" />
+    <Build Include="dbo\Stored Procedures\upSqlDocDatabaseInformation.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">

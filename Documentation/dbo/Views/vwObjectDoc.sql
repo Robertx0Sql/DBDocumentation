@@ -4,12 +4,11 @@
 
 CREATE VIEW [dbo].[vwObjectDoc]
 AS
-SELECT 
-	[ServerName]
+SELECT [ServerName]
 	,[DatabaseName]
 	,TypeGroup
-	,TypeCode 
-	, TypeDescriptionUser
+	,rtrim(d.[objectType]) AS TypeCode
+	,TypeDescriptionUser
 	,TypeDescriptionSQL
 	,[SchemaName]
 	,[ObjectName]
@@ -17,9 +16,11 @@ SELECT
 	,TypeGroupOrder
 	,TypeOrder
 	,TypeCount
-	,StagingDateTime as  DocumentationLoadDate
-	,QUOTENAME([SchemaName]) + '.' + QUOTENAME( [ObjectName]) AS QualifiedFullName 
+	,StagingDateTime AS DocumentationLoadDate
+	,QUOTENAME([SchemaName]) + '.' + QUOTENAME([ObjectName]) AS QualifiedFullName
 	,ParentObjectName
 	,ParentSchemaName
+	,fields
+	,d.Definition
 FROM [Staging].[ObjectDocumentation] d
-left join dbo.vwObjectType  t on t.TypeCode = rtrim(d. [objectType] ) ;
+LEFT JOIN dbo.vwObjectType t ON t.TypeCode = rtrim(d.[objectType]);

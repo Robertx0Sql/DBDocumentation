@@ -1,9 +1,10 @@
 ﻿
-CREATE PROCEDURE [dbo].[upSqlDocObjectCode]
-	 @Server VARCHAR(255)
+CREATE PROCEDURE [dbo].[upSqlDocObjectCode] (
+	@Server VARCHAR(255)
 	,@DatabaseName VARCHAR(255)
-	,@Schema VARCHAR(255) 
-	,@Object VARCHAR(255) 
+	,@Schema VARCHAR(255)
+	,@Object VARCHAR(255)
+	)
 AS
 SELECT code
 FROM [Staging].[ObjectCode] oc

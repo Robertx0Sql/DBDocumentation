@@ -1,15 +1,14 @@
 ﻿
-CREATE PROCEDURE [dbo].[usp_ObjectCodeUpdate] 
-	@TVPObjectCode [ObjectCodeTableType] READONLY
+CREATE PROCEDURE [dbo].[usp_ObjectCodeUpdate] (@TVPObjectCode [ObjectCodeTableType] READONLY)
 AS
 BEGIN
-	SET NOCOUNT ON
+	SET NOCOUNT ON;
 
 	DELETE E
 	FROM [Staging].[ObjectCode] E
 	INNER JOIN @TVPObjectCode X
 		ON x.[ServerName] = E.[ServerName]
-			AND X.[DatabaseName] = E.[DatabaseName]
+			AND X.[DatabaseName] = E.[DatabaseName];
 
 	INSERT INTO [Staging].[ObjectCode] (
 		[ServerName]
@@ -23,5 +22,5 @@ BEGIN
 		,[SchemaName]
 		,[ObjectName]
 		,[Code]
-	FROM @TVPObjectCode
-END
+	FROM @TVPObjectCode;
+END;

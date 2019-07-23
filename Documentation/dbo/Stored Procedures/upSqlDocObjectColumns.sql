@@ -1,10 +1,10 @@
 ﻿
-
-CREATE PROCEDURE [dbo].[upSqlDocObjectColumns] 
+CREATE PROCEDURE [dbo].[upSqlDocObjectColumns] (
 	@Server VARCHAR(255)
 	,@DatabaseName VARCHAR(255)
 	,@Schema VARCHAR(255) = NULL
 	,@Object VARCHAR(255) = NULL
+	)
 AS
 SELECT cd.[ServerName]
 	,cd.[DatabaseName]
@@ -13,7 +13,7 @@ SELECT cd.[ServerName]
 	,cd.[TableSchemaName]
 	,cd.[TableName]
 	,cd.[name]
-	,coalesce(cd.[DocumentationDescription], vc.[DocumentationDescription]) AS [DocumentationDescription]
+	,COALESCE(cd.[DocumentationDescription], vc.[DocumentationDescription]) AS [DocumentationDescription]
 	,cd.[column_id]
 	,cd.[datatype] + iif(cd.[is_identity] = 1, ' identity(' + CAST(ISNULL(cd.[ident_col_seed_value], 1) AS VARCHAR(10)) + ',' + CAST(ISNULL(cd.[ident_col_increment_value], 1) AS VARCHAR(10)) + ')', '') + iif(cd.[datatype] LIKE '%char%', '(' + CASE 
 			WHEN cd.[max_length] = - 1
@@ -45,13 +45,14 @@ SELECT cd.[ServerName]
 					,cd.[TableSchemaName]
 					,cd.[TableName]
 					) > 1, 'composite PK', 'yes'), NULL) AS VARCHAR(25)) AS [PK]
-	,cd.[FK_NAME]
-	,iif(cd.TypeCode = 'V', vc.TABLE_SCHEMA, cd.[ReferencedTableSchemaName]) AS [ReferencedTableSchemaName]
-	,iif(cd.TypeCode = 'V', vc.TABLE_NAME, cd.[ReferencedTableName]) AS [ReferencedTableName]
-	,iif(cd.TypeCode = 'V', vc.COLUMN_NAME, cd.[referenced_column]) AS [referenced_column]
-	,iif(cd.TypeCode = 'V', vc.TABLE_NAME + '.' + vc.COLUMN_NAME, cd.[ReferencedTableName] + '.' + cd.[referenced_column]) AS FK
+	,ISNULL(cd.[FK_NAME], AFK.[FK_NAME]) AS [FK_NAME]
+	,iif(cd.TypeCode = 'V', vc.TABLE_SCHEMA, ISNULL(cd.[ReferencedTableSchemaName], afk.[ReferencedTableSchemaName])) AS [ReferencedTableSchemaName]
+	,iif(cd.TypeCode = 'V', vc.TABLE_NAME, ISNULL(cd.[ReferencedTableName], afk.[ReferencedTableName])) AS [ReferencedTableName]
+	,iif(cd.TypeCode = 'V', vc.COLUMN_NAME, ISNULL(cd.[referenced_column], afk.[referenced_column])) AS [referenced_column]
+	,iif(cd.TypeCode = 'V', vc.TABLE_NAME + '.' + vc.COLUMN_NAME, ISNULL(cd.[ReferencedTableName] + '.' + cd.[referenced_column], AFK.[ReferencedTableName] + '.' + AFK.[referenced_column])) AS FK
 	,iif(cd.TypeCode = 'V', vc.TypeDescriptionUser, 'Table') AS ReferencedObjectType
-	,iif(cd.[FK_NAME] IS NOT NULL, 'yes', NULL) AS isFK
+	,iif(cd.[FK_NAME] IS NOT NULL
+		OR AFK.fk_Name IS NOT NULL, 'yes', NULL) AS isFK
 	,iif(cd.TypeCode = 'V', 'Source', 'FK') AS fk_title
 	,cd.DocumentationLoadDate
 FROM [dbo].[vwColumnDoc] cd
@@ -62,7 +63,14 @@ LEFT JOIN dbo.[vwViewColumnInformation] vc
 		AND cd.[TableName] = vc.[VIEW_NAME]
 		AND cd.column_id = vc.ORDINAL_POSITION
 		AND cd.TypeCode = 'V'
-WHERE [name] IS NOT NULL
+LEFT JOIN dbo.vwAutoMapFK AS AFK
+	ON cd.SERVERNAME = afk.SERVERNAME
+		AND cd.DatabaseName = afk.DatabaseName
+		AND cd.[TableSchemaName] = afk.TableSchemaName
+		AND cd.TableName = afk.TableName
+		AND cd.column_id = afk.column_id
+		AND afk.matchid = 1
+WHERE cd.[name] IS NOT NULL
 	AND cd.SERVERNAME = @Server
 	AND cd.DatabaseName = @DatabaseName
 	AND (

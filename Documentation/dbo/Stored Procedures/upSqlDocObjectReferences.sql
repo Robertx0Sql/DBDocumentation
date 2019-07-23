@@ -1,69 +1,74 @@
 ﻿
-CREATE PROCEDURE [dbo].[upSqlDocObjectReferences] 
+CREATE PROCEDURE [dbo].[upSqlDocObjectReferences] (
 	@Server VARCHAR(255)
 	,@DatabaseName VARCHAR(255)
 	,@Schema VARCHAR(255)
 	,@Object VARCHAR(255)
+	)
 AS
+BEGIN
+	DECLARE @BoxSize INT;
+	DECLARE @Stretch FLOAT;
 
- DECLARE @BoxSize INT;
- DECLARE @Stretch FLOAT;
- SET @BoxSize = 250;
- SET @Stretch = 1.4;
+	SET @BoxSize = 250;
+	SET @Stretch = 1.4;
 
-
-WITH BaseData  AS (
- 
-
-SELECT [ServerName]
-	,[DatabaseName]
-	,[referencing_schema_name]
-	,[referencing_entity_name]
-	,[TypeDescriptionUser]
-	,[referenced_server_name]
-	,[referenced_database_name]
-	,[referenced_schema_name]
-	,[referenced_entity_name]
-	,referencing_schema_name + referencing_entity_name + TypeDescriptionUser AS Seq
-	,[referencing_entity_name] AS DimensionCaption
-	,[referenced_entity_name] AS MeasureGroupCaption
-	,DocumentationLoadDate 
-FROM dbo.vwObjectReference
-WHERE DatabaseName = @DatabaseName
-	AND SERVERNAME = @Server
-	AND [referenced_schema_name] = @Schema
-	AND [referenced_entity_name] = @Object
-	AND NOT (
-		[referencing_schema_name] = @Schema
-		AND [referencing_entity_name] = @Object
+	WITH BaseData
+	AS (
+		SELECT [ServerName]
+			,[DatabaseName]
+			,[referencing_schema_name]
+			,[referencing_entity_name]
+			,[TypeDescriptionUser]
+			,[referenced_server_name]
+			,[referenced_database_name]
+			,[referenced_schema_name]
+			,[referenced_entity_name]
+			,referencing_schema_name + referencing_entity_name + TypeDescriptionUser AS Seq
+			,[referencing_entity_name] AS DimensionCaption
+			,[referenced_entity_name] AS MeasureGroupCaption
+			,DocumentationLoadDate
+		FROM dbo.vwObjectReference
+		WHERE DatabaseName = @DatabaseName
+			AND SERVERNAME = @Server
+			AND [referenced_schema_name] = @Schema
+			AND [referenced_entity_name] = @Object
+			AND NOT (
+				[referencing_schema_name] = @Schema
+				AND [referencing_entity_name] = @Object
+				)
+			AND typecode != 'C'
 		)
-	AND typecode != 'C'
-
-
-)
-,TotCount AS
-(
-    SELECT COUNT(*) AS RecCount FROM BaseData 
-)
-, RecCount AS
-(
-    SELECT RANK() OVER (ORDER BY CAST(Seq AS VARCHAR(255))) AS RecID
-        , RecCount
-        , BaseData.* 
-    FROM 
-        BaseData CROSS JOIN TotCount 
-)
-, Angles AS
-(
-    SELECT 
+		,TotCount
+	AS (
+		SELECT COUNT(*) AS RecCount
+		FROM BaseData
+		)
+		,RecCount
+	AS (
+		SELECT RANK() OVER (
+				ORDER BY CAST(Seq AS VARCHAR(255))
+				) AS RecID
+			,RecCount
+			,BaseData.*
+		FROM BaseData
+		CROSS JOIN TotCount
+		)
+		,Angles
+	AS (
+		--[noformat]
+(    SELECT 
         * 
         , SIN(RADIANS((CAST(RecID AS FLOAT)/CAST(RecCount AS FLOAT)) * 360)) * 1000 AS x
         , COS(RADIANS((CAST(RecID AS FLOAT)/CAST(RecCount AS FLOAT)) * 360)) * 1000 AS y
     FROM RecCount
 )
-,Results AS
-(
-    SELECT 
+			--[/noformat]
+		)
+		,Results
+	AS (
+		--[noformat]
+(    SELECT 
         *
         , geometry::STGeomFromText('POINT(' + CAST(y AS VARCHAR(20)) + ' ' + CAST(x AS VARCHAR(20))  + ')',4326) AS Posn
         , geometry::STPolyFromText('POLYGON ((' + 
@@ -85,4 +90,8 @@ WHERE DatabaseName = @DatabaseName
          
     FROM Angles
 )
-SELECT * FROM Results
+			--[/noformat]
+		)
+	SELECT *
+	FROM Results;
+END
