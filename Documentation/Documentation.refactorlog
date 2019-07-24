@@ -21,4 +21,88 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[upSqlDocObjectReferences]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="6d5c022d-9252-44a4-9c57-b9fde95da8ca" ChangeDateTime="07/23/2019 22:57:35">
+    <Property Name="ElementName" Value="[Staging].[ViewColumn]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="ParentElementName" Value="[Staging]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[SQLDocViewDefinitionColumnMap]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4af9ccd0-f67e-4d87-8297-f1ad84ad7816" ChangeDateTime="07/23/2019 22:58:23">
+    <Property Name="ElementName" Value="[Staging].[SQLDocViewDefinitionColumnMap].[VIEW_SCHEMA]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Staging].[SQLDocViewDefinitionColumnMap]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[ViewSchema]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="19351a90-807c-4211-b2e2-c015614ae2d3" ChangeDateTime="07/23/2019 22:58:47">
+    <Property Name="ElementName" Value="[Staging].[SQLDocViewDefinitionColumnMap].[VIEW_NAME]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Staging].[SQLDocViewDefinitionColumnMap]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[ViewName]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="af6c950c-6c28-45ef-864a-1a5e04fcb5f1" ChangeDateTime="07/23/2019 22:59:12">
+    <Property Name="ElementName" Value="[Staging].[SQLDocViewDefinitionColumnMap].[TABLE_SCHEMA]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Staging].[SQLDocViewDefinitionColumnMap]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[SourceTableSchema]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="cb6462ae-182b-42ce-814d-fd7340a75f14" ChangeDateTime="07/23/2019 22:59:34">
+    <Property Name="ElementName" Value="[Staging].[SQLDocViewDefinitionColumnMap].[TABLE_NAME]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Staging].[SQLDocViewDefinitionColumnMap]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[SourceTableName]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="23d933bd-59e6-4518-a181-5b175e973416" ChangeDateTime="07/23/2019 23:00:09">
+    <Property Name="ElementName" Value="[Staging].[SQLDocViewDefinitionColumnMap].[COLUMN_NAME]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Staging].[SQLDocViewDefinitionColumnMap]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[ColumnName]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5c594036-3b80-4aba-a0de-a313ce967687" ChangeDateTime="07/23/2019 23:00:32">
+    <Property Name="ElementName" Value="[Staging].[SQLDocViewDefinitionColumnMap].[ORDINAL_POSITION]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Staging].[SQLDocViewDefinitionColumnMap]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[ColumnId]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4a7bfe3e-6a5c-4ab0-83f9-c54c3117f153" ChangeDateTime="07/23/2019 23:03:50">
+    <Property Name="ElementName" Value="[dbo].[ViewColumnTableType]" />
+    <Property Name="ElementType" Value="SqlTableType" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[SQLDocViewDefinitionColumnMapTableType]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="bec00bff-67e6-48ea-a563-71f25bf1d6c1" ChangeDateTime="07/23/2019 23:08:39">
+    <Property Name="ElementName" Value="[Staging].[PK_ViewColumn]" />
+    <Property Name="ElementType" Value="SqlPrimaryKeyConstraint" />
+    <Property Name="ParentElementName" Value="[Staging].[SQLDocViewDefinitionColumnMap]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[PK_SQLDocViewDefinitionColumnMap]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="dfba7a76-d109-4527-9f0a-a29692236ad3" ChangeDateTime="07/23/2019 23:09:11">
+    <Property Name="ElementName" Value="[Staging].[DF_Staging_ViewColumn_StagingDateTime]" />
+    <Property Name="ElementType" Value="SqlDefaultConstraint" />
+    <Property Name="ParentElementName" Value="[Staging].[SQLDocViewDefinitionColumnMap]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[DF_SQLDocViewDefinitionColumnMap_StagingDateTime]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e5fc743a-d2f4-4eef-9e50-616ba082569f" ChangeDateTime="07/23/2019 23:11:48">
+    <Property Name="ElementName" Value="[dbo].[vwViewColumnInformation]" />
+    <Property Name="ElementType" Value="SqlView" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[vwSQLDocViewDefinitionColumnMap]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="0f936a33-488a-48ea-a380-9d4fde273a74" ChangeDateTime="07/23/2019 23:14:25">
+    <Property Name="ElementName" Value="[dbo].[usp_ViewColumnUpdate]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[uspUpdateSQLDocViewDefinitionColumnMap]" />
+  </Operation>
 </Operations>

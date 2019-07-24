@@ -292,7 +292,8 @@ function SQLDOCObjects($extentedPropertyName) {
     return  $query
 }
 
-function SQLViewColumnUsage($extentedPropertyName) {
+function Get-ViewColumnMapQuery($extentedPropertyName)
+{
 
     $query = @"
 	WITH CTE
@@ -478,9 +479,9 @@ Write-Verbose "Start  SQLDOCObjects"
 $query = SQLDOCObjects -extentedPropertyName $extentedPropertyName 
 Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ObjectDocumentationUpdate]" -ProcedureParamName  "@TVPObjDoc"
 
-Write-Verbose "Start SQLViewColumnUsage"
-$query = SQLViewColumnUsage -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ViewColumnUpdate]" -ProcedureParamName  "@TVPViewCol"
+Write-Verbose "Start ViewColumnMap Query"
+$query = Get-ViewColumnMapQuery -extentedPropertyName $extentedPropertyName 
+Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocViewColumnMap]" -ProcedureParamName  "@TVPViewCol"
 
 
 Write-Verbose "Start Database Info"

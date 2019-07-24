@@ -67,10 +67,7 @@
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
     <Folder Include="dbo\Views\" />
-    <Folder Include="spm\" />
-    <Folder Include="spm\Views\" />
     <Folder Include="dbo\Stored Procedures\" />
-    <Folder Include="spm\Stored Procedures\" />
     <Folder Include="dbo\User Defined Types\" />
     <Folder Include="Security\" />
   </ItemGroup>
@@ -98,7 +95,6 @@
     <Build Include="dbo\Stored Procedures\upCubeDocMeasureGroupsInCube.sql" />
     <Build Include="dbo\Stored Procedures\upCubeDocMeasuresInMeasureGroup.sql" />
     <Build Include="dbo\Stored Procedures\upCubeDocSearch.sql" />
-    <Build Include="spm\Stored Procedures\LogEvent.sql" />
     <Build Include="dbo\User Defined Types\ColumnDocTableType.sql" />
     <Build Include="Security\spm.sql" />
     <Build Include="Security\Staging.sql" />
@@ -112,9 +108,9 @@
     <Build Include="dbo\Stored Procedures\usp_ObjectDocumentationUpdate.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocObjectChildObjects.sql" />
     <Build Include="dbo\User Defined Types\ObjectDocumentationTableType.sql" />
-    <Build Include="Staging\Tables\ViewColumn.sql" />
-    <Build Include="dbo\Views\vwViewColumnInformation.sql" />
-    <Build Include="dbo\Stored Procedures\usp_ViewColumnUpdate.sql" />
+    <Build Include="Staging\Tables\SQLDocViewDefinitionColumnMap.sql" />
+    <Build Include="dbo\Views\vwSQLDocViewDefinitionColumnMap.sql" />
+    <Build Include="dbo\Stored Procedures\uspUpdateSQLDocViewColumnMap.sql" />
     <Build Include="dbo\User Defined Types\ViewColumnTableType.sql" />
     <Build Include="Staging\Tables\ObjectCode.sql" />
     <Build Include="dbo\Stored Procedures\usp_ObjectCodeUpdate.sql" />
