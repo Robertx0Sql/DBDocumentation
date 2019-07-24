@@ -1,12 +1,13 @@
 [CmdletBinding()]
 param(
-[string]$ServerSource="(local)"
-,[string]$DatabaseSource="AdventureWorks2017"
-,[string]$SqlServerDoc = "."
-,[string]$SqlDatabaseDoc = "Documentation"
+    [string]$ServerSource = "(local)"
+    , [string]$DatabaseSource = "AdventureWorks2017"
+    , [string]$SqlServerDoc = "."
+    , [string]$SqlDatabaseDoc = "Documentation"
+    , [PSCredential]$Credential 
 )
 
-$extentedPropertyName="MS_Description"
+$extentedPropertyName = "MS_Description"
 $SQLConnectionString = "Data Source={0};Initial Catalog={1};Integrated Security=SSPI;" -f $SqlServerDoc, $SqlDatabaseDoc
 
 Write-Host "==================================================================================="
@@ -16,43 +17,42 @@ Write-Host "SqlServerDoc $SqlServerDoc"
 Write-Host "SqlDatabaseDoc $SqlDatabaseDoc"
 Write-Host "==================================================================================="
 
-function Get-ServerInstance($ServerInstance , $Database )
-{
-	$query ="SELECT @@SERVERNAME AS ServerName ,DB_NAME() AS DatabaseName "
-
-	$QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $query -OutputAs DataTables
+function Get-ServerInstance($ServerInstance , $Database ) {
+    $query = "SELECT @@SERVERNAME AS ServerName ,DB_NAME() AS DatabaseName "
+    if ($null -ne $Credential )
+    { $QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $query -OutputAs DataTables -Credential $Credential }
+    else
+    { $QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $query -OutputAs DataTables }
 	
-	if($null -eq $QueryResult)
-	{
-		Write-Error "QueryResult is null"}
-	return $QueryResult[0].rows[0].ServerName
+    if ($null -eq $QueryResult) {
+        Write-Error "QueryResult is null"
+    }
+    return $QueryResult[0].rows[0].ServerName
 }
 
 
-function Save-DoctoDb($SQLConnectionString, $Procedure, $ProcedureParamName, $ProcedureParamValue)
-{
-	#nvoke-SqlCmd does not support passing complex objects. need to use a System.Data.SQLClient.SQLCommand object
-	# https://social.technet.microsoft.com/Forums/en-US/9ed5b002-962e-4e07-a57c-0be2b87abe3c/invokesqlcmd-custom-table-as-parameter?forum=winserverpowershell
-	#$SQLConnectionString
+function Save-DoctoDb($SQLConnectionString, $Procedure, $ProcedureParamName, $ProcedureParamValue) {
+    #nvoke-SqlCmd does not support passing complex objects. need to use a System.Data.SQLClient.SQLCommand object
+    # https://social.technet.microsoft.com/Forums/en-US/9ed5b002-962e-4e07-a57c-0be2b87abe3c/invokesqlcmd-custom-table-as-parameter?forum=winserverpowershell
+    #$SQLConnectionString
 
-	$SQLConn = new-object System.Data.SQLClient.SQLConnection
-	$SQLConn.ConnectionString = $SQLConnectionString
-	$SQLConn.Open()
+    $SQLConn = new-object System.Data.SQLClient.SQLConnection
+    $SQLConn.ConnectionString = $SQLConnectionString
+    $SQLConn.Open()
 
-	$SQLCmd = New-object System.Data.SQLClient.SQLCommand
-	$SQLCmd.CommandText = $Procedure #"[dbo].[usp_ColumnDocUpdate]"
-	$SQLCmd.CommandType = [System.Data.CommandType]::StoredProcedure
-	$SQLCmd.Connection = $SQLConn
-	$SQLCmd.Parameters.AddWithValue($ProcedureParamName,$ProcedureParamValue) | Out-Null
-	$SQLCmd.ExecuteNonQuery()  | Out-Null
+    $SQLCmd = New-object System.Data.SQLClient.SQLCommand
+    $SQLCmd.CommandText = $Procedure #"[dbo].[usp_ColumnDocUpdate]"
+    $SQLCmd.CommandType = [System.Data.CommandType]::StoredProcedure
+    $SQLCmd.Connection = $SQLConn
+    $SQLCmd.Parameters.AddWithValue($ProcedureParamName, $ProcedureParamValue) | Out-Null
+    $SQLCmd.ExecuteNonQuery() | Out-Null
 	
-	$SQLconn.Close()
-	Write-Verbose  "$($ProcedureParamValue.Rows.Count) rows added /updated for $Procedure"
+    $SQLconn.Close()
+    Write-Verbose  "$($ProcedureParamValue.Rows.Count) rows added /updated for $Procedure"
 }  
 
-function SQLDOCReferencedObjects($extentedPropertyName)
-{
-	$query = @"
+function SQLDOCReferencedObjects($extentedPropertyName) {
+    $query = @"
 	WITH CTE AS (
 		SELECT OBJECT_schema_NAME(referencing_id) AS referencing_schema_name
 			,OBJECT_NAME(referencing_id) AS referencing_entity_name
@@ -96,11 +96,10 @@ function SQLDOCReferencedObjects($extentedPropertyName)
 		,referenced_entity_name
 	 FROM CTE X ;
 "@
-return  $query
+    return  $query
 }
-function  SQLDocColumnQuery ($extentedPropertyName)
-{
-$queryColumns = @"
+function  SQLDocColumnQuery ($extentedPropertyName) {
+    $queryColumns = @"
 SELECT 
 	@@SERVERNAME AS ServerName
 	,DB_NAME() AS DatabaseName
@@ -200,11 +199,10 @@ SELECT
 
 ; 
 "@
-return  $queryColumns
+    return  $queryColumns
 }
-function SQLDOCObjects($extentedPropertyName)
-{
-	$query = @"
+function SQLDOCObjects($extentedPropertyName) {
+    $query = @"
 	SELECT 
 		@@SERVERNAME AS ServerName
 		,DB_NAME() AS DatabaseName
@@ -291,13 +289,12 @@ function SQLDOCObjects($extentedPropertyName)
 		
 	; 
 "@
-return  $query
+    return  $query
 }
 
-function SQLViewColumnUsage($extentedPropertyName)
-{
+function SQLViewColumnUsage($extentedPropertyName) {
 
-	$query=@"
+    $query = @"
 	WITH CTE
 		AS (
 			SELECT vcu.VIEW_SCHEMA
@@ -338,11 +335,10 @@ function SQLViewColumnUsage($extentedPropertyName)
 		FROM CTE
 		WHERE matchid = 1
 "@
-return $query
+    return $query
 }
-function SQLDatabaseInformation($extentedPropertyName)
-{
-$query=@"
+function SQLDatabaseInformation($extentedPropertyName) {
+    $query = @"
 SELECT @@SERVERNAME AS ServerName
 	,DB_NAME() AS DatabaseName
 	,is_auto_close_on
@@ -377,64 +373,82 @@ LEFT JOIN sys.extended_properties ep
 	AND ep.name =  `'$extentedPropertyName`'
 WHERE db.name = db_name()
 "@
-return $query
+    return $query
 }
 
 
-function Save-QueryResult ($ServerInstance , $Database  , $Query , $SQLConnectionString, $Procedure, $ProcedureParamName){
-	Write-Verbose "==================================================================================="
-	Write-Verbose "ServerInstance $ServerInstance"
-	Write-Verbose "Database $Database"
-	Write-Verbose "SQLConnectionString $SQLConnectionString"
-	Write-Verbose "Procedure $Procedure"
-	Write-Verbose "ProcedureParamName $ProcedureParamName"
-	Write-Verbose "==================================================================================="
+function Save-QueryResult ($ServerInstance , $Database  , $Query , $SQLConnectionString, $Procedure, $ProcedureParamName) {
+    Write-Verbose "==================================================================================="
+    Write-Verbose "ServerInstance $ServerInstance"
+    Write-Verbose "Database $Database"
+    Write-Verbose "SQLConnectionString $SQLConnectionString"
+    Write-Verbose "Procedure $Procedure"
+    Write-Verbose "ProcedureParamName $ProcedureParamName"
+    Write-Verbose "==================================================================================="
 	
-	$QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $Query -OutputAs DataTables
-	Save-DoctoDb $SQLConnectionString  -Procedure  $Procedure  -ProcedureParamName $ProcedureParamName  -ProcedureParamValue $QueryResult
+    if ($null -ne $Credential )
+    { $QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $query -OutputAs DataTables -Credential $Credential }
+    else
+    { $QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $query -OutputAs DataTables }
+	
+    #$QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $Query -OutputAs DataTables -Credential $Credential
+    Save-DoctoDb $SQLConnectionString  -Procedure  $Procedure  -ProcedureParamName $ProcedureParamName  -ProcedureParamValue $QueryResult
 }
 
-function Save-SQLObjectCode($ServerSource, $DatabaseSource )
-{
-	$Procedure="[dbo].[usp_ObjectCodeUpdate]"
-	$ProcedureParamName="@TVPObjectCode"
+function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Credential) {
+    $Procedure = "[dbo].[usp_ObjectCodeUpdate]"
+    $ProcedureParamName = "@TVPObjectCode"
 
-	[System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.SMO') | out-null
-	$serverInstance = New-Object ('Microsoft.SqlServer.Management.Smo.Server') $ServerSource
-	$IncludeTypes = @("StoredProcedures", "Views") #object you want do backup. 
-	$ExcludeSchemas = @("sys", "Information_Schema")
-	$so = new-object ('Microsoft.SqlServer.Management.Smo.ScriptingOptions')
+    [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.SMO') | out-null
+    $serverInstance = New-Object ('Microsoft.SqlServer.Management.Smo.Server') $ServerSource 
+    $IncludeTypes = @("StoredProcedures", "Views") #object you want do backup. 
+    $ExcludeSchemas = @("sys", "Information_Schema")
+    $so = new-object ('Microsoft.SqlServer.Management.Smo.ScriptingOptions')
 	
-	$db = $serverInstance.databases[$DatabaseSource]
-	#get the "proper names for the server and Database"
-	$ServerSource = Get-ServerInstance -ServerInstance $ServerSource -Database $DatabaseSource
+    if ($null -ne $Credential) {
+        $UserName = $Credential.UserName
+        $UserPassword = $Credential.GetNetworkCredential().Password
+        Write-Verbose "Connect via username $($UserName)"
+        #This sets the connection to mixed-mode authentication
+        $serverInstance.ConnectionContext.LoginSecure = $false;
+	
+        #This sets the login name
+        $serverInstance.ConnectionContext.set_Login($UserName);
+	
+        #This sets the password
+        $serverInstance.ConnectionContext.set_Password($UserPassword)  
+    }
+
+    $db = $serverInstance.databases[$DatabaseSource]
+    #get the "proper names for the server and Database"
+    $ServerSource = Get-ServerInstance -ServerInstance $ServerSource -Database $DatabaseSource
 
 
-	$dt = New-Object System.Data.Datatable 
-	$col1 = New-Object system.Data.DataColumn SERVERNAME,([string])
-	$col2 = New-Object system.Data.DataColumn DatabaseName,([string])
-	$col3 = New-Object system.Data.DataColumn SchemaName,([string])
-	$col4 = New-Object system.Data.DataColumn ObjectName,([string])
-	$col5 = New-Object system.Data.DataColumn sql,([string])
-	$dt.columns.add($col1)
-	$dt.columns.add($col2)
-	$dt.columns.add($col3)
-	$dt.columns.add($col4)
-	$dt.columns.add($col5)
+    $dt = New-Object System.Data.Datatable 
+    $col1 = New-Object system.Data.DataColumn SERVERNAME, ([string])
+    $col2 = New-Object system.Data.DataColumn DatabaseName, ([string])
+    $col3 = New-Object system.Data.DataColumn SchemaName, ([string])
+    $col4 = New-Object system.Data.DataColumn ObjectName, ([string])
+    $col5 = New-Object system.Data.DataColumn sql, ([string])
+    $dt.columns.add($col1)
+    $dt.columns.add($col2)
+    $dt.columns.add($col3)
+    $dt.columns.add($col4)
+    $dt.columns.add($col5)
 
-	#$result =
-	 foreach ($Type in $IncludeTypes) {
+    #$result =
+    foreach ($Type in $IncludeTypes) {
 
-		foreach ($objs in $db.$Type) { 
+        foreach ($objs in $db.$Type) { 
             If ($ExcludeSchemas -notcontains $objs.Schema ) {
                         
                 $ObjName = "$objs".replace("[$($objs.Schema)].", "").replace("[", "").replace("]", "")                  
 
-				$ofs = ""
-                $sql =( [string]$objs.Script($so) ).replace("SET ANSI_NULLS ONSET QUOTED_IDENTIFIER ON","")
+                $ofs = ""
+                $sql = ( [string]$objs.Script($so) ).replace("SET ANSI_NULLS ONSET QUOTED_IDENTIFIER ON", "")
 
-				[void]$dt.Rows.Add($ServerSource,$DatabaseSource,"$($objs.Schema)" ,  $ObjName , $sql )
-              <#  [pscustomobject]@{ #Output object  prefix with Field_# as the ConvertTo-DataTable orders the fields by name
+                [void]$dt.Rows.Add($ServerSource, $DatabaseSource, "$($objs.Schema)" , $ObjName , $sql )
+                <#  [pscustomobject]@{ #Output object  prefix with Field_# as the ConvertTo-DataTable orders the fields by name
                     Field_1_SERVERNAME   = $ServerSource
                     Field_2_DatabaseName = $DatabaseSource
                     Field_3_SchemaName   = "$($objs.Schema)"
@@ -442,17 +456,17 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource )
                     Field_5_sql          = $sql
 				}
 				#>
-}
+            }
         }
     }     
 	
 
 
-	Save-DoctoDb $SQLConnectionString  -Procedure  $Procedure  -ProcedureParamName $ProcedureParamName  -ProcedureParamValue $dt
+    Save-DoctoDb $SQLConnectionString  -Procedure  $Procedure  -ProcedureParamName $ProcedureParamName  -ProcedureParamValue $dt
 }
 
 Write-Verbose "Start  SQLDocColumnQuery"
-$query =SQLDocColumnQuery  -extentedPropertyName $extentedPropertyName 
+$query = SQLDocColumnQuery  -extentedPropertyName $extentedPropertyName 
 Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ColumnDocUpdate]" -ProcedureParamName  "@TVP"
 
 Write-Verbose "Start  SQLDOCReferencedObjects"
@@ -461,7 +475,7 @@ Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLCo
 
  
 Write-Verbose "Start  SQLDOCObjects"
-$query =SQLDOCObjects -extentedPropertyName $extentedPropertyName 
+$query = SQLDOCObjects -extentedPropertyName $extentedPropertyName 
 Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ObjectDocumentationUpdate]" -ProcedureParamName  "@TVPObjDoc"
 
 Write-Verbose "Start SQLViewColumnUsage"
@@ -475,4 +489,4 @@ Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLCo
 
 
 Write-Verbose "Start Get-SQLObjectCode" #this has to happen all within the function as cannot marshall the dataset out of the function 
-Save-SQLObjectCode -ServerSource $ServerSource -DatabaseSource $DatabaseSource 
+Save-SQLObjectCode -ServerSource $ServerSource -DatabaseSource $DatabaseSource -Credential $Credential
