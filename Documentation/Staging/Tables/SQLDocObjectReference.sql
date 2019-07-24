@@ -1,4 +1,4 @@
-﻿CREATE TABLE [Staging].[ObjectReference] (
+﻿CREATE TABLE [Staging].[SQLDocObjectReference] (
     [ServerName]                     VARCHAR (100)  NOT NULL,
     [DatabaseName]                   NVARCHAR (128) NOT NULL,
     [referencing_schema_name]        NVARCHAR (128) NOT NULL,
@@ -14,14 +14,7 @@
     CONSTRAINT [PK_ObjectReference] PRIMARY KEY CLUSTERED ([StagingId] ASC)
 );
 
-
-
-
-
-
-
-
 GO
 CREATE NONCLUSTERED INDEX [IX_ObjectReference_Server_Database_Schema_Object]
-    ON [Staging].[ObjectReference]([ServerName] ASC, [DatabaseName] ASC, [referencing_schema_name] ASC, [referencing_entity_name] ASC);
+    ON [Staging].[SQLDocObjectReference]([ServerName] ASC, [DatabaseName] ASC, [referencing_schema_name] ASC, [referencing_entity_name] ASC);
 

@@ -1,4 +1,4 @@
-﻿CREATE TYPE [dbo].[ObjectReferenceTableType] AS TABLE (
+﻿CREATE TYPE [dbo].[SQLDocObjectReferenceTableType] AS TABLE (
     [ServerName]                     VARCHAR (100)  NOT NULL,
     [DatabaseName]                   NVARCHAR (128) NOT NULL,
     [referencing_schema_name]        NVARCHAR (128) NOT NULL,

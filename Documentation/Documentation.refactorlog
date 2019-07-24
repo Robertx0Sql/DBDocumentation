@@ -105,4 +105,32 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[uspUpdateSQLDocViewDefinitionColumnMap]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="207a6b6f-2559-4651-a73f-84600c146cc2" ChangeDateTime="07/24/2019 21:43:54">
+    <Property Name="ElementName" Value="[Staging].[ObjectReference]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="ParentElementName" Value="[Staging]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[SQLDocObjectReference]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="88dcb16a-8110-409d-9fd9-469123d46e04" ChangeDateTime="07/24/2019 21:44:53">
+    <Property Name="ElementName" Value="[dbo].[ObjectReferenceTableType]" />
+    <Property Name="ElementType" Value="SqlTableType" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[SQLDocObjectReferenceTableType]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="61837044-b458-4955-a561-66682d5ded19" ChangeDateTime="07/24/2019 21:45:46">
+    <Property Name="ElementName" Value="[dbo].[vwObjectReference]" />
+    <Property Name="ElementType" Value="SqlView" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[vwSQLDocObjectReference]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="0bb8e008-0ed6-48dc-99bb-dd27f1a3438e" ChangeDateTime="07/24/2019 21:47:50">
+    <Property Name="ElementName" Value="[dbo].[usp_ObjectReferenceUpdate]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[uspUpdateSQLDocObjectReference]" />
+  </Operation>
 </Operations>

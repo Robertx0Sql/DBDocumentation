@@ -20,7 +20,7 @@ BEGIN
 	--	,[referencing_entity_name] AS DimensionCaption
 	--	,[referenced_entity_name] AS MeasureGroupCaption
 		,DocumentationLoadDate
-	FROM dbo.vwObjectReference
+	FROM dbo.[vwSQLDocObjectReference]
 	WHERE DatabaseName = @DatabaseName
 		AND SERVERNAME = @Server
 		AND [referenced_schema_name] = @Schema

@@ -98,12 +98,12 @@
     <Build Include="dbo\User Defined Types\ColumnDocTableType.sql" />
     <Build Include="Security\spm.sql" />
     <Build Include="Security\Staging.sql" />
-    <Build Include="Staging\Tables\ObjectReference.sql" />
-    <Build Include="dbo\Stored Procedures\usp_ObjectReferenceUpdate.sql" />
+    <Build Include="Staging\Tables\SQLDocObjectReference.sql" />
+    <Build Include="dbo\Stored Procedures\uspUpdateSQLDocObjectReference.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocObjectReferences.sql" />
-    <Build Include="dbo\User Defined Types\ObjectReferenceTableType.sql" />
+    <Build Include="dbo\User Defined Types\SQLDocObjectReferenceTableType.sql" />
     <Build Include="dbo\Views\vwObjectType.sql" />
-    <Build Include="dbo\Views\vwObjectReference.sql" />
+    <Build Include="dbo\Views\vwSQLDocObjectReference.sql" />
     <Build Include="Staging\Tables\ObjectDocumentation.sql" />
     <Build Include="dbo\Stored Procedures\usp_ObjectDocumentationUpdate.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocObjectChildObjects.sql" />

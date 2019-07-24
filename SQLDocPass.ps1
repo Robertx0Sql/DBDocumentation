@@ -51,7 +51,7 @@ function Save-DoctoDb($SQLConnectionString, $Procedure, $ProcedureParamName, $Pr
     Write-Verbose  "$($ProcedureParamValue.Rows.Count) rows added /updated for $Procedure"
 }  
 
-function SQLDOCReferencedObjects($extentedPropertyName) {
+function Get-SQLDOCReferencedObjectQuery($extentedPropertyName) {
     $query = @"
 	WITH CTE AS (
 		SELECT OBJECT_schema_NAME(referencing_id) AS referencing_schema_name
@@ -470,9 +470,9 @@ Write-Verbose "Start  SQLDocColumnQuery"
 $query = SQLDocColumnQuery  -extentedPropertyName $extentedPropertyName 
 Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ColumnDocUpdate]" -ProcedureParamName  "@TVP"
 
-Write-Verbose "Start  SQLDOCReferencedObjects"
-$query = SQLDOCReferencedObjects  -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ObjectReferenceUpdate]" -ProcedureParamName  "@TVPObjRef"
+Write-Verbose "Start Get-SQLDOCReferencedObjectQuery"
+$query = Get-SQLDOCReferencedObjectQuery  -extentedPropertyName $extentedPropertyName 
+Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocObjectReference]" -ProcedureParamName  "@TVPObjRef"
 
  
 Write-Verbose "Start  SQLDOCObjects"

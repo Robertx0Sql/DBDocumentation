@@ -1,17 +1,17 @@
-CREATE PROCEDURE [dbo].[usp_ObjectReferenceUpdate] 
+CREATE PROCEDURE [dbo].[uspUpdateSQLDocObjectReference] 
 (
-	@TVPObjRef ObjectReferenceTableType READONLY
+	@TVPObjRef [SQLDocObjectReferenceTableType] READONLY
 )
 AS
 BEGIN 
 
 	DELETE E
-	FROM [Staging].[ObjectReference] E
+	FROM [Staging].[SQLDocObjectReference] E
 	INNER JOIN @TVPObjRef X
 		ON x.[ServerName] = E.[ServerName]
 			AND X.[DatabaseName] = E.[DatabaseName];
 
-	INSERT INTO [Staging].[ObjectReference] (
+	INSERT INTO [Staging].[SQLDocObjectReference] (
 		[ServerName]
 		,[DatabaseName]
 		,[referencing_schema_name]
