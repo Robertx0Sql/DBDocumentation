@@ -46,22 +46,22 @@ SELECT cd.[ServerName]
 					,cd.[TableName]
 					) > 1, 'composite PK', 'yes'), NULL) AS VARCHAR(25)) AS [PK]
 	,ISNULL(cd.[FK_NAME], AFK.[FK_NAME]) AS [FK_NAME]
-	,iif(cd.TypeCode = 'V', vc.TABLE_SCHEMA, ISNULL(cd.[ReferencedTableSchemaName], afk.[ReferencedTableSchemaName])) AS [ReferencedTableSchemaName]
-	,iif(cd.TypeCode = 'V', vc.TABLE_NAME, ISNULL(cd.[ReferencedTableName], afk.[ReferencedTableName])) AS [ReferencedTableName]
-	,iif(cd.TypeCode = 'V', vc.COLUMN_NAME, ISNULL(cd.[referenced_column], afk.[referenced_column])) AS [referenced_column]
-	,iif(cd.TypeCode = 'V', vc.TABLE_NAME + '.' + vc.COLUMN_NAME, ISNULL(cd.ReferencedTableSchemaName + '.'+ cd.[ReferencedTableName] + '.' + cd.[referenced_column], AFK.ReferencedTableSchemaName + '.' + AFK.[ReferencedTableName] + '.' + AFK.[referenced_column])) AS FK
+	,iif(cd.TypeCode = 'V', vc.[SourceTableSchema], ISNULL(cd.[ReferencedTableSchemaName], afk.[ReferencedTableSchemaName])) AS [ReferencedTableSchemaName]
+	,iif(cd.TypeCode = 'V', vc.[SourceTableName], ISNULL(cd.[ReferencedTableName], afk.[ReferencedTableName])) AS [ReferencedTableName]
+	,iif(cd.TypeCode = 'V', vc.[ColumnName], ISNULL(cd.[referenced_column], afk.[referenced_column])) AS [referenced_column]
+	,iif(cd.TypeCode = 'V', vc.[SourceTableName] + '.' + vc.[ColumnName], ISNULL(cd.ReferencedTableSchemaName + '.'+ cd.[ReferencedTableName] + '.' + cd.[referenced_column], AFK.ReferencedTableSchemaName + '.' + AFK.[ReferencedTableName] + '.' + AFK.[referenced_column])) AS FK
 	,iif(cd.TypeCode = 'V', vc.TypeDescriptionUser, 'Table') AS ReferencedObjectType
 	,iif(cd.[FK_NAME] IS NOT NULL
 		OR AFK.fk_Name IS NOT NULL, 'yes', NULL) AS isFK
 	,iif(cd.TypeCode = 'V', 'Source', 'FK') AS fk_title
 	,cd.DocumentationLoadDate
 FROM [dbo].[vwColumnDoc] cd
-LEFT JOIN dbo.[vwViewColumnInformation] vc
+LEFT JOIN dbo.[vwSQLDocViewDefinitionColumnMap] vc
 	ON cd.SERVERNAME = vc.SERVERNAME
 		AND cd.DatabaseName = vc.DatabaseName
-		AND cd.[TableSchemaName] = vc.[VIEW_SCHEMA]
-		AND cd.[TableName] = vc.[VIEW_NAME]
-		AND cd.column_id = vc.ORDINAL_POSITION
+		AND cd.[TableSchemaName] = vc.[ViewSchema]
+		AND cd.[TableName] = vc.[ViewName]
+		AND cd.column_id = vc.[ColumnId]
 		AND cd.TypeCode = 'V'
 LEFT JOIN dbo.vwAutoMapFK AS AFK
 	ON cd.SERVERNAME = afk.SERVERNAME
