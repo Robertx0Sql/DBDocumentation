@@ -44,7 +44,7 @@
                 <Style>
                   <FontWeight>Bold</FontWeight>
                   <TextDecoration>Underline</TextDecoration>
-                  <Color>Blue</Color>
+                  <Color>="Blue"</Color>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -407,7 +407,7 @@
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <TextDecoration>Underline</TextDecoration>
-                                <Color>Blue</Color>
+                                <Color>="Blue"</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -490,7 +490,7 @@
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <TextDecoration>Underline</TextDecoration>
-                                <Color>Blue</Color>
+                                <Color>="Blue"</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -610,7 +610,7 @@
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <TextDecoration>Underline</TextDecoration>
-                                <Color>Blue</Color>
+                                <Color>="Blue"</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -693,7 +693,7 @@
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <TextDecoration>Underline</TextDecoration>
-                                <Color>Blue</Color>
+                                <Color>="Blue"</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -816,7 +816,7 @@
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <TextDecoration>Underline</TextDecoration>
-                                <Color>Blue</Color>
+                                <Color>="Blue"</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -899,7 +899,7 @@
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <TextDecoration>Underline</TextDecoration>
-                                <Color>Blue</Color>
+                                <Color>="Blue"</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>

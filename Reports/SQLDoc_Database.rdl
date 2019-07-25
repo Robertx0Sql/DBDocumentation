@@ -381,7 +381,7 @@
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <TextDecoration>Underline</TextDecoration>
-                                    <Color>Blue</Color>
+                                    <Color>="Blue"</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -476,7 +476,7 @@
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <TextDecoration>Underline</TextDecoration>
-                                    <Color>Blue</Color>
+                                    <Color>="Blue"</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -523,7 +523,7 @@
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <TextDecoration>Underline</TextDecoration>
-                                    <Color>Blue</Color>
+                                    <Color>="Blue"</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -619,7 +619,7 @@
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <TextDecoration>Underline</TextDecoration>
-                                    <Color>Blue</Color>
+                                    <Color>="Blue"</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -750,7 +750,7 @@
                       <FontSize>11pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>Underline</TextDecoration>
-                      <Color>Blue</Color>
+                      <Color>="Blue"</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
