@@ -20,6 +20,7 @@ BEGIN
 	--	,[referencing_entity_name] AS DimensionCaption
 	--	,[referenced_entity_name] AS MeasureGroupCaption
 		,DocumentationLoadDate
+		,ReferenceTypeCode
 	FROM dbo.[vwSQLDocObjectReference]
 	WHERE DatabaseName = @DatabaseName
 		AND SERVERNAME = @Server
@@ -30,4 +31,24 @@ BEGIN
 			AND [referencing_entity_name] = @Object
 			)
 		AND typecode != 'C'
+
+UNION ALL
+
+SELECT [ServerName]
+	,[DatabaseName]
+	,ParentSchemaName AS [referencing_schema_name]
+	,ParentObjectName AS [referencing_entity_name]
+	,'Table' AS [TypeDescriptionUser]
+	,[ServerName] AS [referenced_server_name]
+	,[DatabaseName] AS [referenced_database_name]
+	,ReferencedTableSchemaName AS [referenced_schema_name]
+	,ReferencedTableName AS [referenced_entity_name]
+	,DocumentationLoadDate
+	,ReferenceTypeCode = 'X'
+FROM [dbo].[vwChildObjects]
+WHERE DatabaseName = @DatabaseName
+		AND SERVERNAME = @Server
+		and				ReferencedTableSchemaName = @Schema
+				AND ReferencedTableName = @Object
+
 END

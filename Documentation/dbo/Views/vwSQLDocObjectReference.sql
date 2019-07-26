@@ -1,4 +1,5 @@
-﻿CREATE VIEW [dbo].[vwSQLDocObjectReference]
+﻿
+CREATE VIEW [dbo].[vwSQLDocObjectReference]
 AS
 WITH cte
 AS (
@@ -13,6 +14,7 @@ AS (
 		,[referenced_schema_name]
 		,[referenced_entity_name]
 		,StagingDateTime AS DocumentationLoadDate
+	,'I' as RefType
 	FROM [Staging].[SQLDocObjectReference]
 	
 	UNION ALL
@@ -28,6 +30,7 @@ AS (
 		,[referencing_schema_name]
 		,[referencing_entity_name]
 		,R.StagingDateTime AS DocumentationLoadDate
+	,'O' as RefType
 	FROM [Staging].[SQLDocObjectReference] R
 	LEFT JOIN [dbo].[vwObjectDoc] OD
 		ON R.SERVERNAME = od.SERVERNAME
@@ -50,6 +53,7 @@ SELECT [ServerName]
 	,T.TypeGroupOrder
 	,T.TypeOrder
 	,DocumentationLoadDate
+	,RefType as ReferenceTypeCode
 FROM cte
 LEFT JOIN dbo.vwObjectType T
 	ON t.TypeCode = cte.[referencing_TypeCode]

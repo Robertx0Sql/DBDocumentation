@@ -393,6 +393,9 @@
           <QueryParameter Name="@Object">
             <Value>=Parameters!Object.Value</Value>
           </QueryParameter>
+          <QueryParameter Name="@FKType">
+            <Value>=0</Value>
+          </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
         <CommandText>dbo.upSqlDocObjectChildFK</CommandText>
@@ -414,6 +417,10 @@
           <DataField>DatabaseName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="FKName">
+          <DataField>FKName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="referencing_schema_name">
           <DataField>referencing_schema_name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -424,14 +431,6 @@
         </Field>
         <Field Name="TypeDescriptionUser">
           <DataField>TypeDescriptionUser</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="referenced_server_name">
-          <DataField>referenced_server_name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="referenced_database_name">
-          <DataField>referenced_database_name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="TypeGroup">
@@ -450,6 +449,10 @@
           <DataField>TypeCode</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="isChildFK">
+          <DataField>isChildFK</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
         <Field Name="DocumentationLoadDate">
           <DataField>DocumentationLoadDate</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
@@ -466,20 +469,138 @@
           <DataField>referenced_column</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="ReferencedTableName">
-          <DataField>ReferencedTableName</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="ReferencedTableSchemaName">
-          <DataField>ReferencedTableSchemaName</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="ReferencedObjectType">
           <DataField>ReferencedObjectType</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Seq">
           <DataField>Seq</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="x">
+          <DataField>x</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="y">
+          <DataField>y</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="Posn">
+          <DataField>Posn</DataField>
+          <rd:TypeName>Microsoft.SqlServer.Types.SqlGeometry</rd:TypeName>
+        </Field>
+        <Field Name="Box">
+          <DataField>Box</DataField>
+          <rd:TypeName>Microsoft.SqlServer.Types.SqlGeometry</rd:TypeName>
+        </Field>
+        <Field Name="Line">
+          <DataField>Line</DataField>
+          <rd:TypeName>Microsoft.SqlServer.Types.SqlGeometry</rd:TypeName>
+        </Field>
+        <Field Name="CenterBox">
+          <DataField>CenterBox</DataField>
+          <rd:TypeName>Microsoft.SqlServer.Types.SqlGeometry</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="dsFKReferenceMapParent">
+      <Query>
+        <DataSourceName>DocumentationDB</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@Server">
+            <Value>=Parameters!Server.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@DatabaseName">
+            <Value>=Parameters!Database.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Schema">
+            <Value>=Parameters!Schema.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Object">
+            <Value>=Parameters!Object.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@FKType">
+            <Value>=1</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>dbo.upSqlDocObjectChildFK</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="RecID">
+          <DataField>RecID</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="RecCount">
+          <DataField>RecCount</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="ServerName">
+          <DataField>ServerName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DatabaseName">
+          <DataField>DatabaseName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FKName">
+          <DataField>FKName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="referencing_schema_name">
+          <DataField>referencing_schema_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="referencing_entity_name">
+          <DataField>referencing_entity_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="referenced_schema_name">
+          <DataField>referenced_schema_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="referenced_entity_name">
+          <DataField>referenced_entity_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="referenced_column">
+          <DataField>referenced_column</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TypeGroup">
+          <DataField>TypeGroup</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TypeCode">
+          <DataField>TypeCode</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DocumentationLoadDate">
+          <DataField>DocumentationLoadDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="isChildFK">
+          <DataField>isChildFK</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Seq">
+          <DataField>Seq</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DimensionCaption">
+          <DataField>DimensionCaption</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="MeasureGroupCaption">
+          <DataField>MeasureGroupCaption</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ReferencedObjectType">
+          <DataField>ReferencedObjectType</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TypeDescriptionUser">
+          <DataField>TypeDescriptionUser</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="x">
@@ -919,7 +1040,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>References</Value>
+                    <Value>Referenced By</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -931,7 +1052,7 @@
             <rd:DefaultName>Textbox55</rd:DefaultName>
             <Top>20.28395cm</Top>
             <Height>0.6cm</Height>
-            <Width>2.5cm</Width>
+            <Width>7.18312cm</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
@@ -2443,6 +2564,7 @@
                       </MapLimits>
                       <MaximumZoom>4000000</MaximumZoom>
                       <MapCustomView>
+                        <CenterX>50.0612525939941</CenterX>
                         <Zoom>100</Zoom>
                       </MapCustomView>
                       <MapMeridians>
@@ -2521,21 +2643,19 @@
                             <MapFieldName>RecCount</MapFieldName>
                             <MapFieldName>ServerName</MapFieldName>
                             <MapFieldName>DatabaseName</MapFieldName>
+                            <MapFieldName>FKName</MapFieldName>
                             <MapFieldName>referencing_schema_name</MapFieldName>
                             <MapFieldName>referencing_entity_name</MapFieldName>
                             <MapFieldName>TypeDescriptionUser</MapFieldName>
-                            <MapFieldName>referenced_server_name</MapFieldName>
-                            <MapFieldName>referenced_database_name</MapFieldName>
                             <MapFieldName>TypeGroup</MapFieldName>
                             <MapFieldName>referenced_schema_name</MapFieldName>
                             <MapFieldName>referenced_entity_name</MapFieldName>
                             <MapFieldName>TypeCode</MapFieldName>
+                            <MapFieldName>isChildFK</MapFieldName>
                             <MapFieldName>DocumentationLoadDate</MapFieldName>
                             <MapFieldName>DimensionCaption</MapFieldName>
                             <MapFieldName>MeasureGroupCaption</MapFieldName>
                             <MapFieldName>referenced_column</MapFieldName>
-                            <MapFieldName>ReferencedTableName</MapFieldName>
-                            <MapFieldName>ReferencedTableSchemaName</MapFieldName>
                             <MapFieldName>ReferencedObjectType</MapFieldName>
                             <MapFieldName>Seq</MapFieldName>
                             <MapFieldName>x</MapFieldName>
@@ -2650,21 +2770,19 @@
                             <MapFieldName>RecCount</MapFieldName>
                             <MapFieldName>ServerName</MapFieldName>
                             <MapFieldName>DatabaseName</MapFieldName>
+                            <MapFieldName>FKName</MapFieldName>
                             <MapFieldName>referencing_schema_name</MapFieldName>
                             <MapFieldName>referencing_entity_name</MapFieldName>
                             <MapFieldName>TypeDescriptionUser</MapFieldName>
-                            <MapFieldName>referenced_server_name</MapFieldName>
-                            <MapFieldName>referenced_database_name</MapFieldName>
                             <MapFieldName>TypeGroup</MapFieldName>
                             <MapFieldName>referenced_schema_name</MapFieldName>
                             <MapFieldName>referenced_entity_name</MapFieldName>
                             <MapFieldName>TypeCode</MapFieldName>
+                            <MapFieldName>isChildFK</MapFieldName>
                             <MapFieldName>DocumentationLoadDate</MapFieldName>
                             <MapFieldName>DimensionCaption</MapFieldName>
                             <MapFieldName>MeasureGroupCaption</MapFieldName>
                             <MapFieldName>referenced_column</MapFieldName>
-                            <MapFieldName>ReferencedTableName</MapFieldName>
-                            <MapFieldName>ReferencedTableSchemaName</MapFieldName>
                             <MapFieldName>ReferencedObjectType</MapFieldName>
                             <MapFieldName>Seq</MapFieldName>
                             <MapFieldName>x</MapFieldName>
@@ -2770,8 +2888,7 @@
                         <Color>White</Color>
                       </Style>
                     </MapBorderSkin>
-                    <Top>3.8652cm</Top>
-                    <Left>2.98595cm</Left>
+                    <Top>4.5002cm</Top>
                     <Height>9.62959cm</Height>
                     <Width>15.68463cm</Width>
                     <ZIndex>4</ZIndex>
@@ -2787,10 +2904,463 @@
                       <BackgroundGradientEndColor>White</BackgroundGradientEndColor>
                     </Style>
                   </Map>
+                  <Map Name="Map6">
+                    <MapViewport>
+                      <ProjectionCenterX>NaN</ProjectionCenterX>
+                      <ProjectionCenterY>NaN</ProjectionCenterY>
+                      <MapLimits>
+                        <MinimumX>NaN</MinimumX>
+                        <MinimumY>NaN</MinimumY>
+                        <MaximumX>NaN</MaximumX>
+                        <MaximumY>NaN</MaximumY>
+                      </MapLimits>
+                      <MaximumZoom>4000000</MaximumZoom>
+                      <MapCustomView>
+                        <CenterX>50.0612525939941</CenterX>
+                        <Zoom>100</Zoom>
+                      </MapCustomView>
+                      <MapMeridians>
+                        <Style>
+                          <Border>
+                            <Color>#c08080ff</Color>
+                            <Style>None</Style>
+                          </Border>
+                          <FontSize>8pt</FontSize>
+                          <Format>#;#;0</Format>
+                          <Color>#c08080ff</Color>
+                        </Style>
+                        <Hidden>true</Hidden>
+                        <Interval>NaN</Interval>
+                        <ShowLabels>true</ShowLabels>
+                      </MapMeridians>
+                      <MapParallels>
+                        <Style>
+                          <Border>
+                            <Color>#c08080ff</Color>
+                            <Style>None</Style>
+                          </Border>
+                          <FontSize>8pt</FontSize>
+                          <Format>#;#;0</Format>
+                          <Color>#c08080ff</Color>
+                        </Style>
+                        <Hidden>true</Hidden>
+                        <Interval>NaN</Interval>
+                        <ShowLabels>true</ShowLabels>
+                      </MapParallels>
+                      <GridUnderContent>false</GridUnderContent>
+                      <Style>
+                        <Border>
+                          <Color>#00ffffff</Color>
+                          <Style>None</Style>
+                        </Border>
+                        <BackgroundColor>White</BackgroundColor>
+                        <BackgroundGradientType>DiagonalLeft</BackgroundGradientType>
+                        <BackgroundGradientEndColor>White</BackgroundGradientEndColor>
+                        <ShadowOffset>1pt</ShadowOffset>
+                      </Style>
+                      <LeftMargin>2pt</LeftMargin>
+                      <RightMargin>2pt</RightMargin>
+                      <TopMargin>2pt</TopMargin>
+                      <BottomMargin>2pt</BottomMargin>
+                    </MapViewport>
+                    <MapDataRegions>
+                      <MapDataRegion Name="Map6_Dimensions_DataRegion">
+                        <DataSetName>dsFKReferenceMapParent</DataSetName>
+                        <Filters>
+                          <Filter>
+                            <FilterExpression>=Fields!isChildFK.Value</FilterExpression>
+                            <Operator>Equal</Operator>
+                            <FilterValues>
+                              <FilterValue DataType="Integer">1</FilterValue>
+                            </FilterValues>
+                          </Filter>
+                        </Filters>
+                        <MapMember>
+                          <Group Name="Map5_PolygonLayer1_Group2" />
+                        </MapMember>
+                      </MapDataRegion>
+                      <MapDataRegion Name="Map6_MeasureGroup_DataRegion">
+                        <DataSetName>dsFKReferences</DataSetName>
+                        <Filters>
+                          <Filter>
+                            <FilterExpression>=Fields!isChildFK.Value</FilterExpression>
+                            <Operator>Equal</Operator>
+                            <FilterValues>
+                              <FilterValue DataType="Integer">1</FilterValue>
+                            </FilterValues>
+                          </Filter>
+                        </Filters>
+                        <MapMember>
+                          <Group Name="Map6_MeasureGroup_Group">
+                            <GroupExpressions>
+                              <GroupExpression>Seq</GroupExpression>
+                            </GroupExpressions>
+                          </Group>
+                        </MapMember>
+                      </MapDataRegion>
+                    </MapDataRegions>
+                    <MapLayers>
+                      <MapLineLayer Name="LineLayer">
+                        <MapLineTemplate>
+                          <Width>2pt</Width>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>White</BackgroundColor>
+                            <BackgroundGradientType>None</BackgroundGradientType>
+                            <BackgroundGradientEndColor>LightGrey</BackgroundGradientEndColor>
+                            <FontSize>8pt</FontSize>
+                          </Style>
+                        </MapLineTemplate>
+                        <MapLineRules />
+                        <MapSpatialDataSet>
+                          <DataSetName>dsFKReferenceMapParent</DataSetName>
+                          <SpatialField>Line</SpatialField>
+                          <MapFieldNames>
+                            <MapFieldName>RecID</MapFieldName>
+                            <MapFieldName>RecCount</MapFieldName>
+                            <MapFieldName>ServerName</MapFieldName>
+                            <MapFieldName>DatabaseName</MapFieldName>
+                            <MapFieldName>FKName</MapFieldName>
+                            <MapFieldName>referencing_schema_name</MapFieldName>
+                            <MapFieldName>referencing_entity_name</MapFieldName>
+                            <MapFieldName>referenced_schema_name</MapFieldName>
+                            <MapFieldName>referenced_entity_name</MapFieldName>
+                            <MapFieldName>referenced_column</MapFieldName>
+                            <MapFieldName>TypeGroup</MapFieldName>
+                            <MapFieldName>TypeCode</MapFieldName>
+                            <MapFieldName>DocumentationLoadDate</MapFieldName>
+                            <MapFieldName>isChildFK</MapFieldName>
+                            <MapFieldName>Seq</MapFieldName>
+                            <MapFieldName>DimensionCaption</MapFieldName>
+                            <MapFieldName>MeasureGroupCaption</MapFieldName>
+                            <MapFieldName>ReferencedObjectType</MapFieldName>
+                            <MapFieldName>TypeDescriptionUser</MapFieldName>
+                            <MapFieldName>x</MapFieldName>
+                            <MapFieldName>y</MapFieldName>
+                          </MapFieldNames>
+                        </MapSpatialDataSet>
+                      </MapLineLayer>
+                      <MapPolygonLayer Name="Dimensions">
+                        <MapPolygonTemplate>
+                          <ShowLabel>True</ShowLabel>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>LightBlue</BackgroundColor>
+                            <BackgroundGradientType>None</BackgroundGradientType>
+                            <BackgroundGradientEndColor>LightGrey</BackgroundGradientEndColor>
+                            <FontSize>8pt</FontSize>
+                          </Style>
+                          <ActionInfo>
+                            <Actions>
+                              <Action>
+                                <Drillthrough>
+                                  <ReportName>SQLDoc_Table</ReportName>
+                                  <Parameters>
+                                    <Parameter Name="Server">
+                                      <Value>=Fields!ServerName.Value</Value>
+                                    </Parameter>
+                                    <Parameter Name="Database">
+                                      <Value>=Fields!DatabaseName.Value</Value>
+                                    </Parameter>
+                                    <Parameter Name="Schema">
+                                      <Value>=Fields!referencing_schema_name.Value</Value>
+                                    </Parameter>
+                                    <Parameter Name="Object">
+                                      <Value>=Fields!referencing_entity_name.Value</Value>
+                                    </Parameter>
+                                    <Parameter Name="ObjectType">
+                                      <Value>=Fields!TypeDescriptionUser.Value</Value>
+                                    </Parameter>
+                                  </Parameters>
+                                </Drillthrough>
+                              </Action>
+                            </Actions>
+                          </ActionInfo>
+                          <Label>=Fields!DimensionCaption.Value</Label>
+                        </MapPolygonTemplate>
+                        <MapPolygonRules />
+                        <MapMarkerTemplate>
+                          <MapMarker>
+                            <MapMarkerStyle>Circle</MapMarkerStyle>
+                          </MapMarker>
+                          <Size>10pt</Size>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>White</BackgroundColor>
+                            <BackgroundGradientType>None</BackgroundGradientType>
+                            <BackgroundGradientEndColor>LightGrey</BackgroundGradientEndColor>
+                            <FontSize>8pt</FontSize>
+                          </Style>
+                          <Hidden>true</Hidden>
+                        </MapMarkerTemplate>
+                        <MapCenterPointRules />
+                        <MapDataRegionName>Map6_Dimensions_DataRegion</MapDataRegionName>
+                        <MapSpatialDataRegion>
+                          <VectorData>=Fields!Box.Value</VectorData>
+                        </MapSpatialDataRegion>
+                      </MapPolygonLayer>
+                      <MapPolygonLayer Name="MeasureGroup">
+                        <MapPolygonTemplate>
+                          <ShowLabel>True</ShowLabel>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>Khaki</BackgroundColor>
+                            <BackgroundGradientType>None</BackgroundGradientType>
+                            <BackgroundGradientEndColor>LightGrey</BackgroundGradientEndColor>
+                            <FontSize>8pt</FontSize>
+                          </Style>
+                          <Label>#MeasureGroupCaption</Label>
+                        </MapPolygonTemplate>
+                        <MapPolygonRules />
+                        <MapMarkerTemplate>
+                          <MapMarker>
+                            <MapMarkerStyle>Circle</MapMarkerStyle>
+                          </MapMarker>
+                          <Size>10pt</Size>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#e0ffffff</BackgroundColor>
+                            <BackgroundGradientType>None</BackgroundGradientType>
+                            <BackgroundGradientEndColor>LightGrey</BackgroundGradientEndColor>
+                            <FontSize>8pt</FontSize>
+                          </Style>
+                          <Hidden>true</Hidden>
+                        </MapMarkerTemplate>
+                        <MapCenterPointRules />
+                        <MapDataRegionName>Map6_MeasureGroup_DataRegion</MapDataRegionName>
+                        <MapBindingFieldPairs>
+                          <MapBindingFieldPair>
+                            <FieldName>Seq</FieldName>
+                            <BindingExpression>Seq</BindingExpression>
+                          </MapBindingFieldPair>
+                        </MapBindingFieldPairs>
+                        <MapSpatialDataSet>
+                          <DataSetName>dsFKReferenceMapParent</DataSetName>
+                          <SpatialField>CenterBox</SpatialField>
+                          <MapFieldNames>
+                            <MapFieldName>RecID</MapFieldName>
+                            <MapFieldName>RecCount</MapFieldName>
+                            <MapFieldName>ServerName</MapFieldName>
+                            <MapFieldName>DatabaseName</MapFieldName>
+                            <MapFieldName>FKName</MapFieldName>
+                            <MapFieldName>referencing_schema_name</MapFieldName>
+                            <MapFieldName>referencing_entity_name</MapFieldName>
+                            <MapFieldName>referenced_schema_name</MapFieldName>
+                            <MapFieldName>referenced_entity_name</MapFieldName>
+                            <MapFieldName>referenced_column</MapFieldName>
+                            <MapFieldName>TypeGroup</MapFieldName>
+                            <MapFieldName>TypeCode</MapFieldName>
+                            <MapFieldName>DocumentationLoadDate</MapFieldName>
+                            <MapFieldName>isChildFK</MapFieldName>
+                            <MapFieldName>Seq</MapFieldName>
+                            <MapFieldName>DimensionCaption</MapFieldName>
+                            <MapFieldName>MeasureGroupCaption</MapFieldName>
+                            <MapFieldName>ReferencedObjectType</MapFieldName>
+                            <MapFieldName>TypeDescriptionUser</MapFieldName>
+                            <MapFieldName>x</MapFieldName>
+                            <MapFieldName>y</MapFieldName>
+                          </MapFieldNames>
+                        </MapSpatialDataSet>
+                        <rd:DesignerMaxRowCount>1</rd:DesignerMaxRowCount>
+                      </MapPolygonLayer>
+                    </MapLayers>
+                    <MapLegends>
+                      <MapLegend Name="Legend1">
+                        <MapLegendTitle>
+                          <Style>
+                            <BackgroundColor>#00ffffff</BackgroundColor>
+                            <FontSize>8pt</FontSize>
+                            <FontWeight>Bold</FontWeight>
+                          </Style>
+                          <Caption>Title</Caption>
+                        </MapLegendTitle>
+                        <AutoFitTextDisabled>false</AutoFitTextDisabled>
+                        <InterlacedRows>false</InterlacedRows>
+                        <EquallySpacedItems>false</EquallySpacedItems>
+                        <Position>RightTop</Position>
+                        <DockOutsideViewport>true</DockOutsideViewport>
+                        <Style>
+                          <Border>
+                            <Color>Gray</Color>
+                            <Style>Solid</Style>
+                          </Border>
+                          <BackgroundColor>White</BackgroundColor>
+                          <BackgroundGradientType>DiagonalLeft</BackgroundGradientType>
+                          <BackgroundGradientEndColor>Gainsboro</BackgroundGradientEndColor>
+                          <FontSize>8pt</FontSize>
+                          <ShadowOffset>1pt</ShadowOffset>
+                        </Style>
+                        <LeftMargin>2pt</LeftMargin>
+                        <RightMargin>2pt</RightMargin>
+                        <TopMargin>2pt</TopMargin>
+                        <BottomMargin>2pt</BottomMargin>
+                      </MapLegend>
+                    </MapLegends>
+                    <MapDistanceScale>
+                      <ScaleBorderColor>Gray</ScaleBorderColor>
+                      <Position>RightBottom</Position>
+                      <DockOutsideViewport>false</DockOutsideViewport>
+                      <Style>
+                        <Border>
+                          <Color>Gray</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>White</BackgroundColor>
+                        <BackgroundGradientType>DiagonalLeft</BackgroundGradientType>
+                        <BackgroundGradientEndColor>Gainsboro</BackgroundGradientEndColor>
+                        <FontSize>8pt</FontSize>
+                        <ShadowOffset>1pt</ShadowOffset>
+                      </Style>
+                      <MapSize>
+                        <Width>80</Width>
+                        <Height>40</Height>
+                        <Unit>Point</Unit>
+                      </MapSize>
+                      <LeftMargin>2pt</LeftMargin>
+                      <RightMargin>2pt</RightMargin>
+                      <TopMargin>2pt</TopMargin>
+                      <BottomMargin>2pt</BottomMargin>
+                    </MapDistanceScale>
+                    <MapColorScale>
+                      <MapColorScaleTitle>
+                        <Style>
+                          <FontSize>8pt</FontSize>
+                          <FontWeight>Bold</FontWeight>
+                        </Style>
+                        <Caption />
+                      </MapColorScaleTitle>
+                      <ColorBarBorderColor>Gray</ColorBarBorderColor>
+                      <LabelFormat>#,##0.##</LabelFormat>
+                      <HideEndLabels>false</HideEndLabels>
+                      <NoDataText>No data</NoDataText>
+                      <Position>LeftBottom</Position>
+                      <DockOutsideViewport>false</DockOutsideViewport>
+                      <Style>
+                        <Border>
+                          <Color>Gray</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>White</BackgroundColor>
+                        <BackgroundGradientType>DiagonalLeft</BackgroundGradientType>
+                        <BackgroundGradientEndColor>Gainsboro</BackgroundGradientEndColor>
+                        <FontSize>8pt</FontSize>
+                        <ShadowOffset>1pt</ShadowOffset>
+                      </Style>
+                      <LeftMargin>2pt</LeftMargin>
+                      <RightMargin>2pt</RightMargin>
+                      <TopMargin>2pt</TopMargin>
+                      <BottomMargin>2pt</BottomMargin>
+                    </MapColorScale>
+                    <MapBorderSkin>
+                      <Style>
+                        <Border />
+                        <BackgroundColor>Gray</BackgroundColor>
+                        <BackgroundGradientType>None</BackgroundGradientType>
+                        <BackgroundGradientEndColor>White</BackgroundGradientEndColor>
+                        <Color>White</Color>
+                      </Style>
+                    </MapBorderSkin>
+                    <Top>4.5002cm</Top>
+                    <Left>18.18294cm</Left>
+                    <Height>9.62959cm</Height>
+                    <Width>15.68463cm</Width>
+                    <ZIndex>5</ZIndex>
+                    <Visibility>
+                      <Hidden>=Sum(Fields!RecID.Value, "dsFKReferenceMapParent") = 0</Hidden>
+                    </Visibility>
+                    <Style>
+                      <Border>
+                        <Style>None</Style>
+                      </Border>
+                      <BackgroundColor>White</BackgroundColor>
+                      <BackgroundGradientType>None</BackgroundGradientType>
+                      <BackgroundGradientEndColor>White</BackgroundGradientEndColor>
+                    </Style>
+                  </Map>
+                  <Textbox Name="Textbox60">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>FK References</Value>
+                            <Style>
+                              <FontSize>9pt</FontSize>
+                              <FontWeight>Normal</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox55</rd:DefaultName>
+                    <Top>3.90739cm</Top>
+                    <Height>0.5cm</Height>
+                    <Width>5.54271cm</Width>
+                    <ZIndex>6</ZIndex>
+                    <Style>
+                      <Border>
+                        <Style>None</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                  <Textbox Name="Textbox61">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>FK Referenced by</Value>
+                            <Style>
+                              <FontSize>9pt</FontSize>
+                              <FontWeight>Normal</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox55</rd:DefaultName>
+                    <Top>3.90739cm</Top>
+                    <Left>18.1739cm</Left>
+                    <Height>0.5cm</Height>
+                    <Width>5.54271cm</Width>
+                    <ZIndex>7</ZIndex>
+                    <Style>
+                      <Border>
+                        <Style>None</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
                 </ReportItems>
                 <KeepTogether>true</KeepTogether>
-                <Top>1.905cm</Top>
-                <Height>13.49479cm</Height>
+                <Top>1.27cm</Top>
+                <Height>14.76479cm</Height>
                 <Width>36.17551cm</Width>
                 <ZIndex>2</ZIndex>
                 <Visibility>
@@ -2805,7 +3375,7 @@
             </ReportItems>
             <KeepTogether>true</KeepTogether>
             <Top>2.8023cm</Top>
-            <Height>15.39979cm</Height>
+            <Height>16.66979cm</Height>
             <Width>36.17551cm</Width>
             <ZIndex>4</ZIndex>
             <Visibility>
@@ -3225,7 +3795,7 @@
                 </Paragraphs>
                 <rd:DefaultName>Textbox33</rd:DefaultName>
                 <Height>0.5cm</Height>
-                <Width>2.52764cm</Width>
+                <Width>6.55432cm</Width>
                 <ZIndex>1</ZIndex>
                 <Style>
                   <Border>
@@ -3430,7 +4000,7 @@
       <Page>
         <PageHeight>29.7cm</PageHeight>
         <PageWidth>21cm</PageWidth>
-        <InteractiveHeight>297cm</InteractiveHeight>
+        <InteractiveHeight>0cm</InteractiveHeight>
         <InteractiveWidth>21cm</InteractiveWidth>
         <LeftMargin>2cm</LeftMargin>
         <RightMargin>2cm</RightMargin>

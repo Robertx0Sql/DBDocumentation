@@ -1,12 +1,9 @@
-﻿
-
-
-
-CREATE PROCEDURE [dbo].[upSqlDocObjectChildFK] (
+﻿CREATE PROCEDURE [dbo].[upSqlDocObjectChildFK] (
 	@Server VARCHAR(255)
 	,@DatabaseName VARCHAR(255)
 	,@Schema VARCHAR(255) = NULL
 	,@Object VARCHAR(255) = NULL
+	,@FKType bit =0
 	)
 AS
 BEGIN
@@ -16,55 +13,84 @@ BEGIN
 	SET @BoxSize = 250;
 	SET @Stretch = 1.4;
 
-WITH BaseData
-	AS (
+WITH CTE
+AS (
 	SELECT [ServerName]
-			,[DatabaseName]
-			,ReferencedTableSchemaName AS [referencing_schema_name]
-			,ReferencedTableName AS [referencing_entity_name]
-			,[ServerName] AS [referenced_server_name]
-			,ObjectName AS [referenced_database_name]
-			, ParentSchemaName  AS [referenced_schema_name]
-			, ParentObjectName  AS [referenced_entity_name]
-			,CONCAT (
-				ReferencedTableSchemaName
-				,ReferencedTableName
-				,ObjectName
-				,referenced_column
-				) AS Seq
-			, concat(ReferencedTableSchemaName, '.',ReferencedTableName) AS DimensionCaption
-			,ParentObjectName  AS MeasureGroupCaption
-			,referenced_column
-			,ReferencedTableName
-			,ReferencedTableSchemaName
-			,ReferencedObjectType = 'Table'
-			,'Table' as [TypeDescriptionUser]
-			,TypeGroup
-			,TypeCode
-			,DocumentationLoadDate
-		FROM dbo.vwChildObjects
-		WHERE TypeCode = 'F'
-			AND DatabaseName = @DatabaseName
-			AND SERVERNAME = @Server
-			AND (
+		,[DatabaseName]
+		,ObjectName AS FKName --AS [referenced_database_name]
+		,IIF(ReferencedTableSchemaName = @Schema AND ReferencedTableName = @Object, ParentSchemaName, ReferencedTableSchemaName) AS [referencing_schema_name]
+		,IIF(ReferencedTableSchemaName = @Schema AND ReferencedTableName = @Object, ParentObjectName, ReferencedTableName) AS [referencing_entity_name]
+		,IIF(ReferencedTableSchemaName = @Schema AND ReferencedTableName = @Object, ReferencedTableSchemaName, ParentSchemaName) AS [referenced_schema_name]
+		,IIF(ReferencedTableSchemaName = @Schema AND ReferencedTableName = @Object, ReferencedTableName, ParentObjectName) AS [referenced_entity_name]
+		,referenced_column
+		,TypeGroup
+		,TypeCode
+		,DocumentationLoadDate
+		,CASE WHEN ReferencedTableSchemaName = @Schema AND ReferencedTableName = @Object THEN 1 ELSE 0 END AS isChildFK
+	FROM dbo.vwChildObjects
+	WHERE TypeCode = 'F'
+		AND DatabaseName = @DatabaseName
+		AND SERVERNAME = @Server
+		AND (
+			(
 				ParentSchemaName = @Schema
 				AND ParentObjectName = @Object
 				)
+			OR (
+				ReferencedTableSchemaName = @Schema
+				AND ReferencedTableName = @Object
+				)
+			)
+		)
+,
+ BaseData
+	AS (
+	SELECT ServerName
+		,DatabaseName
+		,FKName
+		,referencing_schema_name
+		,referencing_entity_name
+		,referenced_schema_name
+		,referenced_entity_name
+		,referenced_column
+		,TypeGroup
+		,TypeCode
+		,DocumentationLoadDate
+		,isChildFK
+
+		,CONCAT (
+			[referencing_schema_name]
+			,[referencing_entity_name]
+			,FKName
+			,referenced_column
+			) AS Seq
+		,CONCAT (
+			[referencing_schema_name]
+			,'.'
+			,[referencing_entity_name]
+			) AS DimensionCaption
+		,@Object AS MeasureGroupCaption
+		
+		,'Table' as ReferencedObjectType
+		,'Table' AS [TypeDescriptionUser]
+	FROM CTE
+	where isChildFK=@FKType 
 )
 		,TotCount
 	AS (
-		SELECT COUNT(*) AS RecCount
+		SELECT COUNT(*) AS RecCount, isChildFK  
 		FROM BaseData
+		group by isChildFK
 		)
 		,RecCount
 	AS (
-		SELECT RANK() OVER (
+		SELECT RANK() OVER (partition by bd.isChildFK
 				ORDER BY CAST(Seq AS VARCHAR(255))
 				) AS RecID
-			,RecCount
-			,BaseData.*
-		FROM BaseData 
-		CROSS JOIN TotCount
+			,tc.RecCount
+			,bd.*
+		FROM BaseData BD
+		inner join TotCount TC on tc.isChildFK  =bd.isChildFK  
 		)	
 		,Angles
 	AS (
