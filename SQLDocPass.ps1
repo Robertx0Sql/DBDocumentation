@@ -200,8 +200,132 @@ SELECT
 ; 
 "@
     return  $queryColumns
+
 }
-function SQLDOCObjects($extentedPropertyName) {
+function Get-SQLDOCObjectQuery($extentedPropertyName) {
+	$query = @"
+SELECT 
+	@@SERVERNAME AS ServerName
+	,DB_NAME() AS DatabaseName
+	,[objectType] = c.TYPE
+	,object_schema_name(ISNULL(NULLIF(c.parent_object_id, 0), C.OBJECT_ID)) AS [ParentSchemaName]
+	,OBJECT_NAME(ISNULL(NULLIF(c.parent_object_id, 0), C.OBJECT_ID)) AS [ParentObjectName]
+	,object_schema_name(C.OBJECT_ID) AS [SchemaName]
+	,OBJECT_NAME(c.OBJECT_ID) AS OBJECTNAME
+	,COALESCE(ic.fields, fk.fields, dcon.fields, ccon.fields) AS fields
+	,COALESCE(dcon.DEFINITION, ccon.DEFINITION) AS DEFINITION
+	,CAST(p.value AS NVARCHAR(MAX)) AS DocumentationDescription
+FROM sys.objects AS c
+LEFT JOIN sys.extended_properties AS p ON p.major_id = c.OBJECT_ID
+	AND p.CLASS = 1
+	AND p.minor_id = 0
+	AND p.name =  `'$extentedPropertyName`'
+LEFT JOIN /*index_columns*/ (
+	SELECT O.OBJECT_ID
+		,fields = COALESCE(STUFF((
+					SELECT ', ' + COL_NAME(t.OBJECT_ID, t.column_id)
+					FROM sys.index_columns AS T
+					WHERE T.OBJECT_ID = O.OBJECT_ID
+					FOR XML PATH('')
+					), 1, 2, N''), N'')
+	FROM sys.index_columns O
+	LEFT JOIN sys.indexes AS i ON i.OBJECT_ID = O.OBJECT_ID
+		AND i.index_id = O.index_id
+	GROUP BY O.OBJECT_ID
+
+	) ic ON ic.OBJECT_ID = c.OBJECT_ID /*index_columns*/
+LEFT JOIN /*foreign_key_columns*/(
+
+
+	SELECT O.constraint_object_id
+		,fields = COALESCE(STUFF((
+					SELECT ', ' + COL_NAME(t.parent_object_id, t.parent_column_id)
+					FROM sys.foreign_key_columns AS T
+					WHERE T.constraint_object_id = O.constraint_object_id
+				
+					FOR XML PATH('')
+					), 1, 2, N''), N'')
+	FROM sys.foreign_key_columns O
+	GROUP BY O.constraint_object_id
+
+
+	) fk ON fk.constraint_object_id = c.OBJECT_ID /*foreign_key_columns*/
+LEFT JOIN /*default_constraints*/ (
+	SELECT O.OBJECT_ID
+		,O.DEFINITION
+		,fields = COALESCE(STUFF((
+					SELECT ', ' + COL_NAME(t.parent_object_id, t.parent_column_id)
+					FROM sys.default_constraints AS T
+					WHERE T.OBJECT_ID = O.OBJECT_ID
+						AND t.DEFINITION = O.DEFINITION
+					FOR XML PATH('')
+					), 1, 2, N''), N'')
+	FROM sys.default_constraints O
+	GROUP BY O.OBJECT_ID
+		,O.DEFINITION
+	) dcon ON dcon.OBJECT_ID = c.OBJECT_ID /*default_constraints*/
+LEFT JOIN /*check_constraints*/ (
+	
+	SELECT O.OBJECT_ID
+		,O.DEFINITION
+		,fields = COALESCE(STUFF((
+					SELECT ', ' + COL_NAME(t.parent_object_id, t.parent_column_id)
+					FROM sys.check_constraints AS T
+					WHERE T.OBJECT_ID = O.OBJECT_ID
+						AND t.DEFINITION = O.DEFINITION
+					FOR XML PATH('')
+					), 1, 2, N''), N'')
+	FROM sys.check_constraints O
+	GROUP BY O.OBJECT_ID
+		,O.DEFINITION
+	) ccon ON ccon.OBJECT_ID = c.OBJECT_ID /*check_constraints*/
+WHERE c.TYPE NOT IN ('S', 'IT', 'SQ')
+
+
+UNION ALL
+
+SELECT 
+	@@SERVERNAME AS ServerName
+	,DB_NAME() AS DatabaseName
+	,[objectType] = 'INDEX'
+	,object_schema_name(ISNULL(NULLIF(so.parent_object_id, 0), so.OBJECT_ID)) AS [ParentSchemaName]
+	,OBJECT_NAME(ISNULL(NULLIF(so.parent_object_id, 0), so.OBJECT_ID)) AS [ParentObjectName]
+	,NULL--object_schema_name(so.OBJECT_ID) AS [SchemaName]
+	,ix.name AS OBJECTNAME
+	,fields
+	,concat (lower(ix.type_desc) collate SQL_Latin1_General_CP1_CI_AS
+		,iif(ix.is_unique =1, ', unique','')
+		,iif(ix.is_unique_constraint =1, ', unique constraint','')
+		,iif(ix.is_primary_key =1, ', primary key','')
+		,' located on ', ds.name collate SQL_Latin1_General_CP1_CI_AS)  as Definition
+	,CAST(ep.value AS NVARCHAR(MAX)) AS DocumentationDescription
+FROM sys.tables so
+INNER JOIN sys.indexes ix ON so.object_id = ix.object_id
+LEFT JOIN sys.data_spaces ds 
+	ON ds.data_space_id = ix.data_space_id
+LEFT JOIN sys.extended_properties ep ON ep.major_id = ix.OBJECT_ID
+	AND CLASS = 7
+	AND ep.minor_id = ix.index_id
+	AND Ep.name =  `'$extentedPropertyName`'
+LEFT JOIN (
+	SELECT O.OBJECT_ID, O.index_id
+		,fields = COALESCE(STUFF((
+					SELECT ', ' + COL_NAME(t.OBJECT_ID, t.column_id)
+					FROM sys.index_columns AS T
+					WHERE T.OBJECT_ID = O.OBJECT_ID
+					FOR XML PATH('')
+					), 1, 2, N''), N'')
+	FROM sys.index_columns O
+	GROUP BY O.OBJECT_ID, O.index_id
+
+	) ic
+	ON ic.object_id = ix.object_id
+		AND ic.index_id = ix.index_id
+		;
+"@
+	return $query
+}
+function Get-SQLDOCObjectQuery2017($extentedPropertyName) {
     $query = @"
 	SELECT 
 		@@SERVERNAME AS ServerName
@@ -476,7 +600,7 @@ Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLCo
 
  
 Write-Verbose "Start  SQLDOCObjects"
-$query = SQLDOCObjects -extentedPropertyName $extentedPropertyName 
+$query = Get-SQLDOCObjectQuery -extentedPropertyName $extentedPropertyName 
 Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ObjectDocumentationUpdate]" -ProcedureParamName  "@TVPObjDoc"
 
 Write-Verbose "Start ViewColumnMap Query"
