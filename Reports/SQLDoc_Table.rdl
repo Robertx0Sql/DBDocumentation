@@ -821,10 +821,10 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>8.08334cm</Width>
+                  <Width>9.78125cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>5.7676cm</Width>
+                  <Width>7.01114cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1025,7 +1025,7 @@
             </SortExpressions>
             <Top>22.19164cm</Top>
             <Height>1.2cm</Height>
-            <Width>13.85094cm</Width>
+            <Width>16.79239cm</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
@@ -1040,7 +1040,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Referenced By</Value>
+                    <Value>Used/Referenced By</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -1070,31 +1070,31 @@
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>3.82637cm</Width>
+                      <Width>7.06729cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>2.12242cm</Width>
+                      <Width>2.19207cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.5cm</Width>
+                      <Width>2.05376cm</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>2.72795cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.04969cm</Width>
+                      <Width>1.3955cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.74782cm</Width>
+                      <Width>1.97898cm</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>1.6564cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>4.03993cm</Width>
+                      <Width>9.55023cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>16.57889cm</Width>
+                      <Width>18.3529cm</Width>
                     </TablixColumn>
                   </TablixColumns>
                   <TablixRows>
@@ -1768,9 +1768,14 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>dsColumns</DataSetName>
+                <SortExpressions>
+                  <SortExpression>
+                    <Value>=Fields!column_id.Value</Value>
+                  </SortExpression>
+                </SortExpressions>
                 <Top>0.5cm</Top>
                 <Height>1.1cm</Height>
-                <Width>35.24947cm</Width>
+                <Width>46.97507cm</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -1873,21 +1878,21 @@
                     <TablixBody>
                       <TablixColumns>
                         <TablixColumn>
-                          <Width>8.99095cm</Width>
+                          <Width>11.41103cm</Width>
                         </TablixColumn>
                         <TablixColumn>
-                          <Width>4.22795cm</Width>
+                          <Width>7.66092cm</Width>
                         </TablixColumn>
                         <TablixColumn>
-                          <Width>8.49384cm</Width>
+                          <Width>9.55023cm</Width>
                         </TablixColumn>
                         <TablixColumn>
-                          <Width>14.45355cm</Width>
+                          <Width>18.3529cm</Width>
                         </TablixColumn>
                       </TablixColumns>
                       <TablixRows>
                         <TablixRow>
-                          <Height>0.6cm</Height>
+                          <Height>0.54708cm</Height>
                           <TablixCells>
                             <TablixCell>
                               <CellContents>
@@ -2214,9 +2219,9 @@
                         </FilterValues>
                       </Filter>
                     </Filters>
-                    <Top>2.39553cm</Top>
-                    <Height>1.1cm</Height>
-                    <Width>36.16629cm</Width>
+                    <Top>2.71303cm</Top>
+                    <Height>1.04708cm</Height>
+                    <Width>46.97507cm</Width>
                     <ZIndex>2</ZIndex>
                     <Style>
                       <Border>
@@ -2228,16 +2233,16 @@
                     <TablixBody>
                       <TablixColumns>
                         <TablixColumn>
-                          <Width>8.99095cm</Width>
+                          <Width>11.41103cm</Width>
                         </TablixColumn>
                         <TablixColumn>
-                          <Width>6.56574cm</Width>
+                          <Width>7.66092cm</Width>
                         </TablixColumn>
                         <TablixColumn>
-                          <Width>7.46555cm</Width>
+                          <Width>9.55023cm</Width>
                         </TablixColumn>
                         <TablixColumn>
-                          <Width>13.15327cm</Width>
+                          <Width>18.3529cm</Width>
                         </TablixColumn>
                       </TablixColumns>
                       <TablixRows>
@@ -2543,7 +2548,7 @@
                     </Filters>
                     <Top>0.69454cm</Top>
                     <Height>1.1cm</Height>
-                    <Width>36.17551cm</Width>
+                    <Width>46.97507cm</Width>
                     <ZIndex>3</ZIndex>
                     <Style>
                       <Border>
@@ -2603,7 +2608,7 @@
                         <BackgroundColor>White</BackgroundColor>
                         <BackgroundGradientType>DiagonalLeft</BackgroundGradientType>
                         <BackgroundGradientEndColor>White</BackgroundGradientEndColor>
-                        <ShadowOffset>1pt</ShadowOffset>
+                        <ShadowOffset>0pt</ShadowOffset>
                       </Style>
                       <LeftMargin>2pt</LeftMargin>
                       <RightMargin>2pt</RightMargin>
@@ -2955,7 +2960,7 @@
                         <BackgroundColor>White</BackgroundColor>
                         <BackgroundGradientType>DiagonalLeft</BackgroundGradientType>
                         <BackgroundGradientEndColor>White</BackgroundGradientEndColor>
-                        <ShadowOffset>1pt</ShadowOffset>
+                        <ShadowOffset>0pt</ShadowOffset>
                       </Style>
                       <LeftMargin>2pt</LeftMargin>
                       <RightMargin>2pt</RightMargin>
@@ -3301,7 +3306,7 @@
                             <Value>FK References</Value>
                             <Style>
                               <FontSize>9pt</FontSize>
-                              <FontWeight>Normal</FontWeight>
+                              <FontWeight>Bold</FontWeight>
                             </Style>
                           </TextRun>
                         </TextRuns>
@@ -3333,7 +3338,7 @@
                             <Value>FK Referenced by</Value>
                             <Style>
                               <FontSize>9pt</FontSize>
-                              <FontWeight>Normal</FontWeight>
+                              <FontWeight>Bold</FontWeight>
                             </Style>
                           </TextRun>
                         </TextRuns>
@@ -3360,7 +3365,7 @@
                 <KeepTogether>true</KeepTogether>
                 <Top>1.92394cm</Top>
                 <Height>14.40189cm</Height>
-                <Width>36.17551cm</Width>
+                <Width>47.24591cm</Width>
                 <ZIndex>2</ZIndex>
                 <Visibility>
                   <Hidden>=iif(First(Fields!TypeCode.Value, "dsObject") ="U", false, true)</Hidden>
@@ -3375,7 +3380,7 @@
             <KeepTogether>true</KeepTogether>
             <Top>2.8023cm</Top>
             <Height>16.64333cm</Height>
-            <Width>36.17551cm</Width>
+            <Width>47.24591cm</Width>
             <ZIndex>4</ZIndex>
             <Visibility>
               <Hidden>=iif(First(Fields!hasColumns.Value, "dsObject")=0 , true, false)</Hidden>
@@ -3392,7 +3397,7 @@
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>3.82637cm</Width>
+                      <Width>5.54271cm</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>2.72795cm</Width>
@@ -3401,7 +3406,7 @@
                       <Width>1.51059cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.30104cm</Width>
+                      <Width>3.70875cm</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>16.57889cm</Width>
@@ -3769,7 +3774,7 @@
                 <DataSetName>dsColumns</DataSetName>
                 <Top>0.5cm</Top>
                 <Height>1.1cm</Height>
-                <Width>25.94484cm</Width>
+                <Width>30.06889cm</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -3934,7 +3939,7 @@
                 <rd:DefaultName>code</rd:DefaultName>
                 <Top>0.71188cm</Top>
                 <Height>1.07625cm</Height>
-                <Width>34.37087cm</Width>
+                <Width>38.70329cm</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -3980,7 +3985,7 @@
             <KeepTogether>true</KeepTogether>
             <Top>23.5712cm</Top>
             <Height>1.78813cm</Height>
-            <Width>34.37087cm</Width>
+            <Width>38.70329cm</Width>
             <ZIndex>7</ZIndex>
             <Visibility>
               <Hidden>=iif(First(Fields!TypeCode.Value, "dsObject") = "V" or First(Fields!TypeCode.Value, "dsObject") ="P" , false, true)</Hidden>
@@ -3995,7 +4000,7 @@
         <Height>10.10899in</Height>
         <Style />
       </Body>
-      <Width>14.24233in</Width>
+      <Width>18.60075in</Width>
       <Page>
         <PageHeight>29.7cm</PageHeight>
         <PageWidth>21cm</PageWidth>
