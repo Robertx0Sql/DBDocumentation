@@ -96,7 +96,6 @@
     <Build Include="dbo\Stored Procedures\upCubeDocMeasuresInMeasureGroup.sql" />
     <Build Include="dbo\Stored Procedures\upCubeDocSearch.sql" />
     <Build Include="dbo\User Defined Types\ColumnDocTableType.sql" />
-    <Build Include="Security\spm.sql" />
     <Build Include="Security\Staging.sql" />
     <Build Include="Staging\Tables\SQLDocObjectReference.sql" />
     <Build Include="dbo\Stored Procedures\uspUpdateSQLDocObjectReference.sql" />
@@ -123,6 +122,11 @@
     <Build Include="dbo\Views\vwChildObjects.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabaseInformation.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocObjectChildFK.sql" />
+    <Build Include="dbo\Tables\SQLDOCObjectType.sql" />
+    <Build Include="dbo\Tables\SQLDOCAutoMapFK.sql" />
+    <Build Include="dbo\Views\vwObjectTypeList.sql" />
+    <Build Include="dbo\Views\vwAutoMapFKList.sql" />
+    <Build Include="dbo\Stored Procedures\upSqlDocDatabaseObject.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">
