@@ -123,11 +123,15 @@
     <Build Include="dbo\Stored Procedures\upSqlDocDatabaseInformation.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocObjectChildFK.sql" />
     <Build Include="dbo\Tables\SQLDOCObjectType.sql" />
+    <Build Include="dbo\Tables\AutoMapFKBuildFilter.sql" />
+    <Build Include="dbo\Stored Procedures\upSqlDocAutoMapFK.sql" />
+    <Build Include="dbo\Stored Procedures\uspUpdateSQLDOCObjectType.sql" />
+    <Build Include="dbo\Stored Procedures\uspUpdateSQLDOCAutoMapFK.sql" />
     <Build Include="dbo\Tables\SQLDOCAutoMapFK.sql" />
     <Build Include="dbo\Views\vwObjectTypeList.sql" />
     <Build Include="dbo\Views\vwAutoMapFKList.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabaseObject.sql" />
-  </ItemGroup>
+      </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">
       <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac</HintPath>
@@ -137,5 +141,8 @@
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Documentation.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Script.PostDeployment1.sql" />
   </ItemGroup>
 </Project>

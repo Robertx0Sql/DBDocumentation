@@ -36,7 +36,15 @@
 
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IX_ColumnDoc_Server_Database_Schema_Object]
     ON [Staging].[ColumnDoc]([ServerName] ASC, [DatabaseName] ASC, [TableSchemaName] ASC, [TableName] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_Staging_ColumnDoc_ServerName_DatabaseName_name_FKName_PK]
+    ON [Staging].[ColumnDoc]([ServerName] ASC, [DatabaseName] ASC, [name] ASC, [FK_NAME] ASC, [PK] ASC)
+    INCLUDE([objectType], [TableSchemaName], [TableName], [column_id], [StagingDateTime]);
 
