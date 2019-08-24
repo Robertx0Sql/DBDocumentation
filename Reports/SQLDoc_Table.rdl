@@ -1354,9 +1354,6 @@
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>fk_title</rd:DefaultName>
-                              <Visibility>
-                                <Hidden>=iif(Fields!TypeCode.Value="V",true, false)</Hidden>
-                              </Visibility>
                               <Style>
                                 <Border>
                                   <Color>LightGrey</Color>
@@ -1368,6 +1365,7 @@
                                 <PaddingBottom>2pt</PaddingBottom>
                               </Style>
                             </Textbox>
+                            <rd:Selected>true</rd:Selected>
                           </CellContents>
                         </TablixCell>
                         <TablixCell>
@@ -1775,7 +1773,7 @@
                 </SortExpressions>
                 <Top>0.5cm</Top>
                 <Height>1.1cm</Height>
-                <Width>46.97507cm</Width>
+                <Width>46.97508cm</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -2221,7 +2219,7 @@
                     </Filters>
                     <Top>2.71303cm</Top>
                     <Height>1.04708cm</Height>
-                    <Width>46.97507cm</Width>
+                    <Width>46.97508cm</Width>
                     <ZIndex>2</ZIndex>
                     <Style>
                       <Border>
@@ -2548,7 +2546,7 @@
                     </Filters>
                     <Top>0.69454cm</Top>
                     <Height>1.1cm</Height>
-                    <Width>46.97507cm</Width>
+                    <Width>46.97508cm</Width>
                     <ZIndex>3</ZIndex>
                     <Style>
                       <Border>
