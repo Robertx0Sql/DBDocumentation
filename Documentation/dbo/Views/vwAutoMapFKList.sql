@@ -1,4 +1,5 @@
-﻿CREATE VIEW [dbo].[vwAutoMapFKList]
+﻿
+CREATE VIEW [dbo].[vwAutoMapFKList]
 AS
 SELECT fk.ServerName
 	,fk.DatabaseName
@@ -10,9 +11,12 @@ SELECT fk.ServerName
 	,pk.TableName AS ReferencedTableName
 	,pk.name AS referenced_column
 	,CONCAT (
-		'** AUTO MAP ** '
-		,'FK_'
+		'AFK_'
+		,fk.TableSchemaName
+		,'_'
 		,fk.TableName
+		,'_'
+		,pk.TableSchemaName
 		,'_'
 		,pk.TableName
 		,'_'
@@ -41,6 +45,13 @@ SELECT fk.ServerName
 	,t.[TypeDescriptionUser]
 	,t.TypeGroup
 	,t.TypeCode
+	,CONCAT (
+		'Foreign key constraint referencing '
+		,pk.TableSchemaName
+		,'.'
+		,pk.TableName
+		,' (Auto Generated)'
+		) AS description
 FROM (
 	SELECT *
 	FROM vwColumnDoc
@@ -64,18 +75,10 @@ LEFT JOIN dbo.vwObjectType t
 	ON t.TypeCode = 'F'
 LEFT JOIN [dbo].[AutoMapFKBuildFilter] AFKBF
 	ON coalesce(AFKBF.DatabaseName, fk.DatabaseName) = fk.DatabaseName
-		AND pk.TableName NOT LIKE AFKBF.ReferencedTableName
---AND coalesce(AFKBF.TableSchemaName, fk.TableSchemaName) = fk.TableSchemaName
---AND coalesce(AFKBF.TableName, fk.TableName) = fk.TableName
---AND coalesce(AFKBF.columnName, fk.name) = fk.name
---AND coalesce(AFKBF.ReferencedTableSchemaName, pk.tableSchemaName) = pk.tableSchemaName
---AND coalesce(AFKBF.ReferencedTableName, pk.TableName) = pk.TableName
-WHERE pk.TypeCode = 'u'
-	AND (
-		(
-			fk.TableSchemaName NOT IN ('staging', 'tools')
-			AND pk.tableSchemaName NOT IN ('staging', 'tools')
-			AND fk.DatabaseName IN ('EDW', 'ODS')
+		AND (
+			pk.TableSchemaName LIKE AFKBF.ReferencedTableSchemaName
+			OR pk.ReferencedTableSchemaName LIKE AFKBF.ReferencedTableSchemaName
 			)
-		OR fk.DatabaseName NOT IN ('EDW', 'ODS')
-		)
+		AND pk.TableName LIKE AFKBF.ReferencedTableName
+WHERE pk.TypeCode = 'u'
+	AND AFKBF.[AutoMapFKBuildFilterId] IS NULL

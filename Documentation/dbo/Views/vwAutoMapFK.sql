@@ -1,4 +1,4 @@
-﻿CREATE VIEW dbo.vwAutoMapFK
+﻿CREATE VIEW dbo.[vwAutoMapFK]
 AS
 SELECT [ServerName]
 	,[DatabaseName]

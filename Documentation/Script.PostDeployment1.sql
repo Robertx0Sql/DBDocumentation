@@ -10,6 +10,37 @@ Post-Deployment Script Template
 --------------------------------------------------------------------------------------
 */
 
-INSERT INTO [dbo].[AutoMapFKBuildFilter]([DatabaseName], [TableSchemaName], [TableName], [ColumnName], [ReferencedTableSchemaName], [ReferencedTableName])
-VALUES (N'EDW', NULL, NULL, NULL, NULL, N'SsP_%')
 
+GO
+SELECT * INTO #tmp_GridResults_1
+FROM (
+SELECT N'1' AS [AutoMapFKBuildFilterId], N'EDW' AS [DatabaseName], NULL AS [TableSchemaName], NULL AS [TableName], NULL AS [ColumnName], N'%' AS [ReferencedTableSchemaName], N'SsP_%' AS [ReferencedTableName] UNION ALL
+SELECT N'3' AS [AutoMapFKBuildFilterId], N'ods' AS [DatabaseName], N'%' AS [TableSchemaName], N'%' AS [TableName], N'%' AS [ColumnName], N'%' AS [ReferencedTableSchemaName], N'%' AS [ReferencedTableName] UNION ALL
+SELECT N'5' AS [AutoMapFKBuildFilterId], N'EDW' AS [DatabaseName], NULL AS [TableSchemaName], NULL AS [TableName], NULL AS [ColumnName], N'Staging' AS [ReferencedTableSchemaName], N'%' AS [ReferencedTableName] ) t;
+
+INSERT INTO [dbo].[AutoMapFKBuildFilter] (
+	[DatabaseName]
+	,[TableSchemaName]
+	,[TableName]
+	,[ColumnName]
+	,[ReferencedTableSchemaName]
+	,[ReferencedTableName]
+	)
+SELECT T.[DatabaseName]
+	,T.[TableSchemaName]
+	,T.[TableName]
+	,T.[ColumnName]
+	,T.[ReferencedTableSchemaName]
+	,T.[ReferencedTableName]
+FROM #tmp_GridResults_1 T
+LEFT JOIN [dbo].[AutoMapFKBuildFilter] E
+	ON E.[DatabaseName] = T.[DatabaseName]
+		AND ISNULL(E.[TableSchemaName], '') = ISNULL(T.[TableSchemaName], '')
+		AND ISNULL(E.[TableName], '') = ISNULL(T.[TableName], '')
+		AND ISNULL(E.[ColumnName], '') = ISNULL(T.[ColumnName], '')
+		AND ISNULL(E.[ReferencedTableSchemaName], '') = ISNULL(T.[ReferencedTableSchemaName], '')
+		AND ISNULL(E.[ReferencedTableName], '') = ISNULL(T.[ReferencedTableName], '')
+WHERE e.[AutoMapFKBuildFilterId] IS NULL;
+
+drop table #tmp_GridResults_1
+go

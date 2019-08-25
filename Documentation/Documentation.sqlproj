@@ -118,7 +118,6 @@
     <Build Include="Staging\Tables\DatabaseInformation.sql" />
     <Build Include="dbo\Stored Procedures\usp_DatabaseInformationUpdate.sql" />
     <Build Include="dbo\User Defined Types\DatabaseInformationTableType.sql" />
-    <Build Include="dbo\Views\vwAutoMapFK.sql" />
     <Build Include="dbo\Views\vwChildObjects.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabaseInformation.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocObjectChildFK.sql" />
@@ -132,6 +131,7 @@
     <Build Include="dbo\Views\vwAutoMapFKList.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabaseObject.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocSearch.sql" />
+    <Build Include="dbo\Views\vwAutoMapFK.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">
