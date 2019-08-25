@@ -45,14 +45,13 @@ SELECT cd.[ServerName]
 					,cd.[TableSchemaName]
 					,cd.[TableName]
 					) > 1, 'composite PK', 'yes'), NULL) AS VARCHAR(25)) AS [PK]
-	,ISNULL(cd.[FK_NAME], AFK.[FK_NAME]) AS [FK_NAME]
-	,iif(cd.TypeCode = 'V', vc.[SourceTableSchema], ISNULL(cd.[ReferencedTableSchemaName], afk.[ReferencedTableSchemaName])) AS [ReferencedTableSchemaName]
-	,iif(cd.TypeCode = 'V', vc.[SourceTableName], ISNULL(cd.[ReferencedTableName], afk.[ReferencedTableName])) AS [ReferencedTableName]
-	,iif(cd.TypeCode = 'V', vc.[ColumnName], ISNULL(cd.[referenced_column], afk.[referenced_column])) AS [referenced_column]
-	,iif(cd.TypeCode = 'V', vc.[SourceTableName] + '.' + vc.[ColumnName], ISNULL(cd.ReferencedTableSchemaName + '.'+ cd.[ReferencedTableName] + '.' + cd.[referenced_column], AFK.ReferencedTableSchemaName + '.' + AFK.[ReferencedTableName] + '.' + AFK.[referenced_column])) AS FK
+	,cd.[FK_NAME] AS [FK_NAME]
+	,iif(cd.TypeCode = 'V', vc.[SourceTableSchema], cd.[ReferencedTableSchemaName]) AS [ReferencedTableSchemaName]
+	,iif(cd.TypeCode = 'V', vc.[SourceTableName], cd.[ReferencedTableName]) AS [ReferencedTableName]
+	,iif(cd.TypeCode = 'V', vc.[ColumnName], cd.[referenced_column]) AS [referenced_column]
+	,iif(cd.TypeCode = 'V', vc.[SourceTableName] + '.' + vc.[ColumnName], cd.ReferencedTableSchemaName + '.'+ cd.[ReferencedTableName] + '.' + cd.[referenced_column]) AS FK
 	,iif(cd.TypeCode = 'V', vc.TypeDescriptionUser, 'Table') AS ReferencedObjectType
-	,iif(cd.[FK_NAME] IS NOT NULL
-		OR AFK.fk_Name IS NOT NULL, 'yes', NULL) AS isFK
+	,iif(cd.[FK_NAME] IS NOT NULL, 'yes', NULL) AS isFK
 	,iif(cd.TypeCode = 'V', 'Source', 'FK') AS fk_title
 	,cd.DocumentationLoadDate
 FROM [dbo].[vwColumnDoc] cd
@@ -63,13 +62,6 @@ LEFT JOIN dbo.[vwSQLDocViewDefinitionColumnMap] vc
 		AND cd.[TableName] = vc.[ViewName]
 		AND cd.column_id = vc.[ColumnId]
 		AND cd.TypeCode = 'V'
-LEFT JOIN dbo.vwAutoMapFK AS AFK
-	ON cd.SERVERNAME = afk.SERVERNAME
-		AND cd.DatabaseName = afk.DatabaseName
-		AND cd.[TableSchemaName] = afk.TableSchemaName
-		AND cd.TableName = afk.TableName
-		AND cd.column_id = afk.column_id
-		AND afk.matchid = 1
 WHERE cd.[name] IS NOT NULL
 	AND cd.SERVERNAME = @Server
 	AND cd.DatabaseName = @DatabaseName

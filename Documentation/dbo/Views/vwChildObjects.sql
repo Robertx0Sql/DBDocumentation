@@ -30,25 +30,3 @@ WHERE d.typecode NOT IN (
 		'PK'
 		,'U'
 		)
-
-UNION ALL
-
-SELECT d.[ServerName]
-	,d.[DatabaseName]
-	,SchemaName = d.TableSchemaName
-	,ObjectName = FK_NAME
-	,d.[TypeDescriptionUser]
-	,NULL AS [DocumentationDescription]
-	,NULL AS [QualifiedTableName]
-	,d.TypeGroup
-	,d.TypeCode
-	,d.DocumentationLoadDate
-	,d.name AS fields
-	,d.ReferencedTableSchemaName + '.' +  d.ReferencedTableName + '.' + d.referenced_column AS [Definition]
-	,ParentSchemaName = [TableSchemaName]
-	,ParentObjectName = [TableName]
-	,d.referenced_column
-	,d.ReferencedTableName
-	,d.ReferencedTableSchemaName
-FROM dbo.vwAutoMapFK d
-WHERE [matchid] = 1

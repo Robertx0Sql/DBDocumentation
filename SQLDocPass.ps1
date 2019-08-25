@@ -31,6 +31,25 @@ function Get-ServerInstance($ServerInstance , $Database ) {
 }
 
 
+
+function Save-QueryResult ($ServerInstance , $Database  , $Query , $SQLConnectionString, $Procedure, $ProcedureParamName) {
+    Write-Verbose "==================================================================================="
+    Write-Verbose "ServerInstance $ServerInstance"
+    Write-Verbose "Database $Database"
+    Write-Verbose "SQLConnectionString $SQLConnectionString"
+    Write-Verbose "Procedure $Procedure"
+    Write-Verbose "ProcedureParamName $ProcedureParamName"
+    Write-Verbose "==================================================================================="
+	
+    if ($null -ne $Credential )
+    { $QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $query -OutputAs DataTables -Credential $Credential }
+    else
+    { $QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $query -OutputAs DataTables }
+	
+    #$QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $Query -OutputAs DataTables -Credential $Credential
+    Save-DoctoDb $SQLConnectionString  -Procedure  $Procedure  -ProcedureParamName $ProcedureParamName  -ProcedureParamValue $QueryResult
+}
+
 function Save-DoctoDb($SQLConnectionString, $Procedure, $ProcedureParamName, $ProcedureParamValue) {
     #nvoke-SqlCmd does not support passing complex objects. need to use a System.Data.SQLClient.SQLCommand object
     # https://social.technet.microsoft.com/Forums/en-US/9ed5b002-962e-4e07-a57c-0be2b87abe3c/invokesqlcmd-custom-table-as-parameter?forum=winserverpowershell
@@ -50,7 +69,24 @@ function Save-DoctoDb($SQLConnectionString, $Procedure, $ProcedureParamName, $Pr
     $SQLconn.Close()
     Write-Verbose  "$($ProcedureParamValue.Rows.Count) rows added /updated for $Procedure"
 }  
+function Save-AutoMapForeignKeys($ServerInstance , $Database, $SQLConnectionString)
+{ 
 
+    $SQLConn = new-object System.Data.SQLClient.SQLConnection
+    $SQLConn.ConnectionString = $SQLConnectionString
+    $SQLConn.Open()
+
+    $SQLCmd = New-object System.Data.SQLClient.SQLCommand
+	$SQLCmd.CommandText = "[dbo].[uspUpdateSQLDOCAutoMapFK]"
+	$SQLCmd.CommandType = [System.Data.CommandType]::StoredProcedure
+    $SQLCmd.Connection = $SQLConn
+    $SQLCmd.Parameters.AddWithValue("@Server", $ServerInstance ) | Out-Null
+    $SQLCmd.Parameters.AddWithValue("@Database", $Database ) | Out-Null
+    $SQLCmd.ExecuteNonQuery() | Out-Null
+	
+    $SQLconn.Close()
+	
+}
 function Get-SQLDOCReferencedObjectQuery($extentedPropertyName) {
     $query = @"
 	WITH CTE AS (
@@ -502,24 +538,6 @@ WHERE db.name = db_name()
 }
 
 
-function Save-QueryResult ($ServerInstance , $Database  , $Query , $SQLConnectionString, $Procedure, $ProcedureParamName) {
-    Write-Verbose "==================================================================================="
-    Write-Verbose "ServerInstance $ServerInstance"
-    Write-Verbose "Database $Database"
-    Write-Verbose "SQLConnectionString $SQLConnectionString"
-    Write-Verbose "Procedure $Procedure"
-    Write-Verbose "ProcedureParamName $ProcedureParamName"
-    Write-Verbose "==================================================================================="
-	
-    if ($null -ne $Credential )
-    { $QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $query -OutputAs DataTables -Credential $Credential }
-    else
-    { $QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $query -OutputAs DataTables }
-	
-    #$QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $Query -OutputAs DataTables -Credential $Credential
-    Save-DoctoDb $SQLConnectionString  -Procedure  $Procedure  -ProcedureParamName $ProcedureParamName  -ProcedureParamValue $QueryResult
-}
-
 function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Credential) {
     $Procedure = "[dbo].[usp_ObjectCodeUpdate]"
     $ProcedureParamName = "@TVPObjectCode"
@@ -590,6 +608,8 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
     Save-DoctoDb $SQLConnectionString  -Procedure  $Procedure  -ProcedureParamName $ProcedureParamName  -ProcedureParamValue $dt
 }
 
+$ServerSource = Get-ServerInstance -ServerInstance $ServerSource -Database $DatabaseSource
+
 Write-Verbose "Start  SQLDocColumnQuery"
 $query = SQLDocColumnQuery  -extentedPropertyName $extentedPropertyName 
 Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ColumnDocUpdate]" -ProcedureParamName  "@TVP"
@@ -615,3 +635,6 @@ Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLCo
 
 Write-Verbose "Start Get-SQLObjectCode" #this has to happen all within the function as cannot marshall the dataset out of the function 
 Save-SQLObjectCode -ServerSource $ServerSource -DatabaseSource $DatabaseSource -Credential $Credential
+
+Write-Verbose "Save-AutoMapForeignKeys"
+Save-AutoMapForeignKeys -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString 

@@ -57,6 +57,7 @@
     <Report Include="CubeDoc_Dimension.rdl" />
     <Report Include="CubeDoc_MeasureGroup.rdl" />
     <Report Include="CubeDoc_Search.rdl" />
+    <Report Include="SQLDoc_AutoMapFK.rdl" />
     <Report Include="SQLDoc_Database.rdl" />
     <Report Include="SQLDoc_DatabaseObjects.rdl" />
     <Report Include="SQLDoc_Search.rdl" />

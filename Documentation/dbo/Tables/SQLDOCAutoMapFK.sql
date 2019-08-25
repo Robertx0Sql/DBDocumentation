@@ -13,6 +13,10 @@
     [DocumentationLoadDate]     DATETIME2 (7)  NOT NULL,
     [TypeDescriptionUser]       NVARCHAR (22)  NULL,
     [TypeGroup]                 NVARCHAR (11)  NULL,
-    [TypeCode]                  VARCHAR (10)   NULL
+    [TypeCode]                  VARCHAR (10)   NULL,
+    [AutoMapFKId]               INT            IDENTITY (1, 1) NOT NULL,
+    [CreatedDateTime]           DATETIME       CONSTRAINT [DF_SQLDOCAutoMapFK_CreatedDateTime] DEFAULT (getdate()) NOT NULL,
+    [UpdatedDateTime]           DATETIME       NULL,
+    CONSTRAINT [PK_SQLDOCAutoMapFK] PRIMARY KEY CLUSTERED ([AutoMapFKId] ASC)
 );
 
