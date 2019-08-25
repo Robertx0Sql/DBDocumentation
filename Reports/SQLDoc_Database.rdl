@@ -762,7 +762,7 @@
               <Actions>
                 <Action>
                   <Drillthrough>
-                    <ReportName>SQLDoc_Servers</ReportName>
+                    <ReportName>SQLDb Documentation</ReportName>
                   </Drillthrough>
                 </Action>
               </Actions>
@@ -1018,20 +1018,10 @@
   <ReportParameters>
     <ReportParameter Name="Server">
       <DataType>String</DataType>
-      <DefaultValue>
-        <Values>
-          <Value>(local)</Value>
-        </Values>
-      </DefaultValue>
-      <Prompt>Server</Prompt>
+	  <Prompt>Server</Prompt>
     </ReportParameter>
     <ReportParameter Name="Database">
       <DataType>String</DataType>
-      <DefaultValue>
-        <Values>
-          <Value>AdventureWorks2017</Value>
-        </Values>
-      </DefaultValue>
       <Prompt>Database</Prompt>
     </ReportParameter>
   </ReportParameters>
