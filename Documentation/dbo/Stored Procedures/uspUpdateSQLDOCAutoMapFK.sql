@@ -5,7 +5,7 @@ CREATE PROCEDURE [dbo].[uspUpdateSQLDOCAutoMapFK] (
 	)
 AS
 BEGIN
-	SET NOCOUNT ON;
+	--SET NOCOUNT ON;
 
 	INSERT INTO [Staging].[ObjectDocumentation] (
 		[ServerName]

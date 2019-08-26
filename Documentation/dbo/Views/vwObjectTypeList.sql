@@ -2,6 +2,7 @@
 
 
 
+
 CREATE VIEW [dbo].[vwObjectTypeList] 
 AS
 SELECT TG.TypeGroup
@@ -11,17 +12,18 @@ SELECT TG.TypeGroup
 	,T.[TypeDescriptionUser]
 	,TypeOrder =ROW_NUMBER() OVER (PARTITION BY TG.TypeGroup ORDER BY T.typeCode DESC)
 	,TypeCount = Count(1) OVER (PARTITION BY TG.TypeGroup )
+	,UserModeFlag
 	 FROM 
 (VALUES 
-	( N'Tables' ,1)
-	,( N'Views' ,2)  
-	,( N'Procedures',3 )
-	,( N'Triggers' ,4)
-	,( N'Functions' ,5)
-	,( N'Constraints', 6)
-	,( N'Indexes', 10)
-	,( N'Other' ,99)
-) AS TG (TypeGroup,TypeGroupOrder) 
+	( N'Tables' ,1,1)
+	,( N'Views' ,2,1)  
+	,( N'Procedures',3 ,0)
+	,( N'Triggers' ,4,0)
+	,( N'Functions' ,5,0)
+	,( N'Constraints', 6,0)
+	,( N'Indexes', 10,0)
+	,( N'Other' ,99,0)
+) AS TG (TypeGroup,TypeGroupOrder, UserModeFlag) 
 LEFT JOIN 
 	(VALUES 
 		( N'U' , N'USER_TABLE' , N'Table'  ,N'Tables'  )

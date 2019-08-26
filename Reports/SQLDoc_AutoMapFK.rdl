@@ -786,22 +786,14 @@
   <ReportParameters>
     <ReportParameter Name="Server">
       <DataType>String</DataType>
-      <DefaultValue>
-        <Values>
-          <Value>DESKTOP-LIPD7H3</Value>
-        </Values>
-      </DefaultValue>
       <Prompt>Server</Prompt>
     </ReportParameter>
     <ReportParameter Name="Database">
       <DataType>String</DataType>
-      <DefaultValue>
-        <Values>
-          <Value>EDW</Value>
-        </Values>
-      </DefaultValue>
-      <Prompt>Database</Prompt>
+    
+	  <Prompt>Database</Prompt>
     </ReportParameter>
+
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>

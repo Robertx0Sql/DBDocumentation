@@ -1,4 +1,5 @@
 ﻿
+
 CREATE VIEW [dbo].[vwChildObjects]
 AS
 SELECT d.[ServerName]
@@ -18,6 +19,7 @@ SELECT d.[ServerName]
 	,cd.referenced_column
 	,cd.ReferencedTableName
 	,cd.ReferencedTableSchemaName
+	,d.UserModeFlag
 FROM dbo.vwObjectDoc d
 LEFT JOIN vwColumnDoc cd
 	ON cd.FK_NAME = d.ObjectName
