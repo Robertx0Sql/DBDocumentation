@@ -1,15 +1,17 @@
-﻿create PROCEDURE upSqlDocDatabaseInformation
- (
+﻿CREATE PROCEDURE upSqlDocDatabaseInformation (
 	@Server VARCHAR(255) = NULL
 	,@DatabaseName VARCHAR(255) = NULL
-	) as
-	begin
-select
-ServerName,DatabaseName , T.name, t.value 
-
-from staging.DatabaseInformation db
-CROSS APPLY (VALUES 
---[noformat]
+	)
+AS
+BEGIN
+	SELECT ServerName
+		,DatabaseName
+		,T.name
+		,t.value
+	FROM staging.DatabaseInformation db
+	CROSS APPLY (
+		VALUES
+			--[noformat]
 (stagingId,recovery_model_desc, 'recovery model')
 ,(stagingId,snapshot_isolation_state_desc ,'snapshot isolation state')
 ,(stagingId,convert(varchar(100),collation_name), 'collation name')
@@ -35,10 +37,10 @@ CROSS APPLY (VALUES
 --,IIF(is_published=1,'yes', 'no')  ,'published')
 --,IIF(is_subscribed=1,'yes', 'no')  ,'subscribed
 --,IIF(is_sync_with_backup=1,'yes', 'no')  ,'sync_with_backup
---[/noformat]
-) as t (stagingId, value, [name]) 
 
-WHERE db.stagingId= T.stagingId
-and DatabaseName = @DatabaseName
-	AND ServerName = @Server
-	end
+			--[/noformat]
+		) AS t(stagingId, value, [name])
+	WHERE db.stagingId = T.stagingId
+		AND DatabaseName = @DatabaseName
+		AND ServerName = @Server
+END

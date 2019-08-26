@@ -148,6 +148,9 @@
           <QueryParameter Name="@Object">
             <Value>=Parameters!Object.Value</Value>
           </QueryParameter>
+          <QueryParameter Name="@UserMode">
+            <Value>=Parameters!UserMode.Value</Value>
+          </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
         <CommandText>dbo.upSqlDocObjectReferences</CommandText>
@@ -192,6 +195,10 @@
         <Field Name="DocumentationLoadDate">
           <DataField>DocumentationLoadDate</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="ReferenceTypeCode">
+          <DataField>ReferenceTypeCode</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -643,7 +650,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>Database Guide</Value>
+                        <Value>Database Documentation</Value>
                         <Style>
                           <FontSize>14pt</FontSize>
                           <FontWeight>Bold</FontWeight>
@@ -944,6 +951,10 @@
                                     <Parameter Name="ObjectType">
                                       <Value>=Fields!TypeDescriptionUser.Value</Value>
                                     </Parameter>
+                                    <Parameter Name="UserMode">
+                                      <Value>=Parameters!UserMode.Value</Value>
+                                    </Parameter>
+
                                   </Parameters>
                                 </Drillthrough>
                               </Action>
@@ -1015,6 +1026,15 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>dsReferences</DataSetName>
+            <Filters>
+              <Filter>
+                <FilterExpression>=Fields!ReferenceTypeCode.Value</FilterExpression>
+                <Operator>Equal</Operator>
+                <FilterValues>
+                  <FilterValue>="I"</FilterValue>
+                </FilterValues>
+              </Filter>
+            </Filters>
             <SortExpressions>
               <SortExpression>
                 <Value>=Fields!TypeDescriptionUser.Value</Value>
@@ -1040,7 +1060,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Used/Referenced By</Value>
+                    <Value>="Objects that depend on " &amp; "[" &amp; Parameters!Schema.Value &amp; "].[" &amp; Parameters!Object.Value &amp; "]"</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -1052,7 +1072,7 @@
             <rd:DefaultName>Textbox55</rd:DefaultName>
             <Top>21.55395cm</Top>
             <Height>0.6cm</Height>
-            <Width>7.18312cm</Width>
+            <Width>16.79239cm</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
@@ -1365,7 +1385,6 @@
                                 <PaddingBottom>2pt</PaddingBottom>
                               </Style>
                             </Textbox>
-                            <rd:Selected>true</rd:Selected>
                           </CellContents>
                         </TablixCell>
                         <TablixCell>
@@ -1678,6 +1697,10 @@
                                         <Parameter Name="ObjectType">
                                           <Value>=Fields!ReferencedObjectType.Value</Value>
                                         </Parameter>
+                                        <Parameter Name="UserMode">
+                                          <Value>=Parameters!UserMode.Value</Value>
+                                        </Parameter>
+
                                       </Parameters>
                                     </Drillthrough>
                                   </Action>
@@ -2135,6 +2158,10 @@
                                             <Parameter Name="ObjectType">
                                               <Value>=Fields!ReferencedObjectType.Value</Value>
                                             </Parameter>
+                                            <Parameter Name="UserMode">
+                                              <Value>=Parameters!UserMode.Value</Value>
+                                            </Parameter>
+
                                           </Parameters>
                                         </Drillthrough>
                                       </Action>
@@ -2699,6 +2726,10 @@
                                     <Parameter Name="ObjectType">
                                       <Value>=Fields!TypeDescriptionUser.Value</Value>
                                     </Parameter>
+                                    <Parameter Name="UserMode">
+                                      <Value>=Parameters!UserMode.Value</Value>
+                                    </Parameter>
+
                                   </Parameters>
                                 </Drillthrough>
                               </Action>
@@ -3079,6 +3110,10 @@
                                     <Parameter Name="ObjectType">
                                       <Value>=Fields!TypeDescriptionUser.Value</Value>
                                     </Parameter>
+                                    <Parameter Name="UserMode">
+                                      <Value>=Parameters!UserMode.Value</Value>
+                                    </Parameter>
+
                                   </Parameters>
                                 </Drillthrough>
                               </Action>
@@ -3838,6 +3873,18 @@
                         <Action>
                           <Drillthrough>
                             <ReportName>SQLDoc_Database</ReportName>
+                            <Parameters>
+                              <Parameter Name="Server">
+                                <Value>=Parameters!Server.Value</Value>
+                              </Parameter>
+                              <Parameter Name="Database">
+                                <Value>=Parameters!Database.Value</Value>
+                              </Parameter>
+                              <Parameter Name="UserMode">
+                                <Value>=Parameters!UserMode.Value</Value>
+                              </Parameter>
+
+                            </Parameters>
                           </Drillthrough>
                         </Action>
                       </Actions>
@@ -3870,6 +3917,10 @@
                               <Parameter Name="Database">
                                 <Value>=Parameters!Database.Value</Value>
                               </Parameter>
+                              <Parameter Name="UserMode">
+                                <Value>=Parameters!UserMode.Value</Value>
+                              </Parameter>
+
                             </Parameters>
                           </Drillthrough>
                         </Action>
@@ -3981,12 +4032,12 @@
               </Textbox>
             </ReportItems>
             <KeepTogether>true</KeepTogether>
-            <Top>23.5712cm</Top>
+            <Top>26.4287cm</Top>
             <Height>1.78813cm</Height>
             <Width>38.70329cm</Width>
             <ZIndex>7</ZIndex>
             <Visibility>
-              <Hidden>=iif(First(Fields!TypeCode.Value, "dsObject") = "V" or First(Fields!TypeCode.Value, "dsObject") ="P" , false, true)</Hidden>
+              <Hidden>=iif( cbool(Parameters!UserMode.Value=false) and (First(Fields!TypeCode.Value, "dsObject") = "V" or First(Fields!TypeCode.Value, "dsObject") ="P" ), false, true)</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -3994,8 +4045,268 @@
               </Border>
             </Style>
           </Rectangle>
+          <Tablix Name="Tablix9">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>9.78125cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>7.01114cm</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox65">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>name</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox64</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox10">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>type</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox2</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="FK5">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!referencing_schema_name.Value &amp; "." &amp; Fields!referencing_entity_name.Value</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <TextDecoration>Underline</TextDecoration>
+                                    <Color>="Blue"</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>FK</rd:DefaultName>
+                          <ActionInfo>
+                            <Actions>
+                              <Action>
+                                <Drillthrough>
+                                  <ReportName>SQLDoc_Table</ReportName>
+                                  <Parameters>
+                                    <Parameter Name="Server">
+                                      <Value>=Fields!ServerName.Value</Value>
+                                    </Parameter>
+                                    <Parameter Name="Database">
+                                      <Value>=Fields!DatabaseName.Value</Value>
+                                    </Parameter>
+                                    <Parameter Name="Schema">
+                                      <Value>=Fields!referencing_schema_name.Value</Value>
+                                    </Parameter>
+                                    <Parameter Name="Object">
+                                      <Value>=Fields!referencing_entity_name.Value</Value>
+                                    </Parameter>
+                                    <Parameter Name="ObjectType">
+                                      <Value>=Fields!TypeDescriptionUser.Value</Value>
+                                    </Parameter>
+                                    <Parameter Name="UserMode">
+                                      <Value>=Parameters!UserMode.Value</Value>
+                                    </Parameter>
+
+                                  </Parameters>
+                                </Drillthrough>
+                              </Action>
+                            </Actions>
+                          </ActionInfo>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="TypeDescriptionUser2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!TypeDescriptionUser.Value</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>TypeDescriptionUser</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <KeepWithGroup>After</KeepWithGroup>
+                </TablixMember>
+                <TablixMember>
+                  <Group Name="Details6" />
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>dsReferences</DataSetName>
+            <Filters>
+              <Filter>
+                <FilterExpression>=Fields!ReferenceTypeCode.Value</FilterExpression>
+                <Operator>Equal</Operator>
+                <FilterValues>
+                  <FilterValue>="O"</FilterValue>
+                </FilterValues>
+              </Filter>
+            </Filters>
+            <SortExpressions>
+              <SortExpression>
+                <Value>=Fields!TypeDescriptionUser.Value</Value>
+              </SortExpression>
+              <SortExpression>
+                <Value>=Fields!referencing_entity_name.Value</Value>
+              </SortExpression>
+            </SortExpressions>
+            <Top>24.30476cm</Top>
+            <Height>1.2cm</Height>
+            <Width>16.79239cm</Width>
+            <ZIndex>8</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
+          <Textbox Name="Textbox62">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>="Objects that " &amp; "[" &amp; Parameters!Schema.Value &amp; "].[" &amp; Parameters!Object.Value &amp; "]" &amp; " depends on"</Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox55</rd:DefaultName>
+            <Top>23.66707cm</Top>
+            <Height>0.6cm</Height>
+            <Width>16.79239cm</Width>
+            <ZIndex>9</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
-        <Height>10.10899in</Height>
+        <Height>11.10899in</Height>
         <Style />
       </Body>
       <Width>18.60075in</Width>
@@ -4035,6 +4346,10 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ObjectType</Prompt>
     </ReportParameter>
+    <ReportParameter Name="UserMode">
+      <DataType>Boolean</DataType>
+      <Prompt>User Mode</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -4065,6 +4380,11 @@
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>2</RowIndex>
           <ParameterName>ObjectType</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>UserMode</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

@@ -28,8 +28,6 @@ WHERE DatabaseName = @DatabaseName
 		ParentSchemaName = @Schema
 		AND ParentObjectName = @Object
 		)
---AND ([TypeDescriptionUser] = @ObjectType
---or @ObjectType is null)
 ORDER BY [ServerName]
 	,[DatabaseName]
 	,SchemaName

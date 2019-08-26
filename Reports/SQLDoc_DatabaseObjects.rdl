@@ -89,7 +89,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>Database Guide</Value>
+                        <Value>Database Documentation</Value>
                         <Style>
                           <FontSize>14pt</FontSize>
                           <FontWeight>Bold</FontWeight>
@@ -252,6 +252,9 @@
                       <Parameter Name="Database">
                         <Value>=Parameters!Database.Value</Value>
                       </Parameter>
+                      <Parameter Name="UserMode">
+                        <Value>=Parameters!UserMode.Value</Value>
+                      </Parameter>
                     </Parameters>
                   </Drillthrough>
                 </Action>
@@ -297,7 +300,12 @@
               <Actions>
                 <Action>
                   <Drillthrough>
-                    <ReportName>SQLDoc_Servers</ReportName>
+                    <ReportName>SQLDb Documentation</ReportName>
+                    <Parameters>
+                      <Parameter Name="UserMode">
+                        <Value>=Parameters!UserMode.Value</Value>
+                      </Parameter>
+                    </Parameters>
                   </Drillthrough>
                 </Action>
               </Actions>
@@ -490,6 +498,11 @@
                                     <Parameter Name="Object">
                                       <Value>=Fields!TableName.Value</Value>
                                     </Parameter>
+
+                                    <Parameter Name="UserMode">
+                                      <Value>=Parameters!UserMode.Value</Value>
+                                    </Parameter>
+
                                   </Parameters>
                                 </Drillthrough>
                               </Action>
@@ -634,25 +647,25 @@
   <ReportParameters>
     <ReportParameter Name="Server">
       <DataType>String</DataType>
-      <DefaultValue>
-        <Values>
-          <Value>(local)</Value>
-        </Values>
-      </DefaultValue>
       <Prompt>Server</Prompt>
     </ReportParameter>
     <ReportParameter Name="Database">
       <DataType>String</DataType>
-      <DefaultValue>
-        <Values>
-          <Value>AdventureWorks2017</Value>
-        </Values>
-      </DefaultValue>
       <Prompt>Database</Prompt>
     </ReportParameter>
     <ReportParameter Name="ObjectType">
       <DataType>String</DataType>
       <Prompt>Object Type</Prompt>
+    </ReportParameter>
+
+    <ReportParameter Name="UserMode">
+      <DataType>Boolean</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>=true</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>User Mode</Prompt>
     </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
@@ -674,6 +687,11 @@
           <ColumnIndex>2</ColumnIndex>
           <RowIndex>0</RowIndex>
           <ParameterName>ObjectType</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>UserMode</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

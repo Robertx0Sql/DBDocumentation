@@ -4,6 +4,7 @@ CREATE PROCEDURE [dbo].[upSqlDocDatabaseObjects] (
 	,@DatabaseName VARCHAR(255) = NULL
 	,@ObjectType VARCHAR(255) = NULL
 	,@Schema VARCHAR(255) = NULL
+	,@UserMode bit = 1
 	)
 AS
 SELECT [ServerName]
@@ -17,10 +18,9 @@ SELECT [ServerName]
 	,TypeOrder
 	,TypeCount
 	,DocumentationLoadDate
-
 FROM dbo.vwObjectDoc
 WHERE DatabaseName = @DatabaseName
-	AND ServerName = @Server
+	AND SERVERNAME = @Server
 	AND Typecode != 'C' -- Check Constraint
 	AND (
 		[TypeDescriptionUser] = @ObjectType
@@ -30,6 +30,7 @@ WHERE DatabaseName = @DatabaseName
 		schemaName = @schema
 		OR @schema IS NULL
 		)
+	and (@UserMode = usermodeFlag or @UserMode=0)
 ORDER BY [ServerName]
 	,[DatabaseName]
 	,TypeGroupOrder
@@ -37,5 +38,5 @@ ORDER BY [ServerName]
 	,TypeGroup
 	,[TypeDescriptionUser]
 	,[TableSchemaName]
-	,[TableName]
+	,[TableName];
 

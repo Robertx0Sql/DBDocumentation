@@ -6,6 +6,9 @@
     [TypeDescriptionUser] NVARCHAR (22) NULL,
     [TypeOrder]           BIGINT        NULL,
     [TypeCount]           INT           NULL,
+    [UserModeFlag]        BIT           NULL,
     CONSTRAINT [PK_ObjectDocumentation] PRIMARY KEY CLUSTERED ([TypeCode] ASC)
 );
+
+
 
