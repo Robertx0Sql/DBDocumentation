@@ -24,6 +24,10 @@
             <Value>=Parameters!ObjectType.Value</Value>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
+          <QueryParameter Name="@UserMode">
+            <Value>=Parameters!UserMode.Value</Value>
+            <rd:UserDefined>true</rd:UserDefined>
+          </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
         <CommandText>dbo.upSqlDocDatabaseObjects</CommandText>
@@ -498,11 +502,9 @@
                                     <Parameter Name="Object">
                                       <Value>=Fields!TableName.Value</Value>
                                     </Parameter>
-
                                     <Parameter Name="UserMode">
                                       <Value>=Parameters!UserMode.Value</Value>
                                     </Parameter>
-
                                   </Parameters>
                                 </Drillthrough>
                               </Action>
@@ -657,7 +659,6 @@
       <DataType>String</DataType>
       <Prompt>Object Type</Prompt>
     </ReportParameter>
-
     <ReportParameter Name="UserMode">
       <DataType>Boolean</DataType>
       <DefaultValue>
