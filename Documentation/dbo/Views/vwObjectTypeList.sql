@@ -6,7 +6,7 @@ SELECT TG.TypeGroup
 	,T.[TypeDescriptionSQL]
 	,T.[TypeDescriptionUser]
 	,TypeOrder =ROW_NUMBER() OVER (PARTITION BY TG.TypeGroup ORDER BY T.typeCode DESC)
-	,TypeCount = Count(1) OVER (PARTITION BY TG.TypeGroup )
+	,TypeCount = COUNT(1) OVER (PARTITION BY TG.TypeGroup )
 	,UserModeFlag
 	 FROM 
 (VALUES 
@@ -26,7 +26,7 @@ LEFT JOIN
 		,( N'P' , N'SQL_STORED_PROCEDURE' , N'Stored Procedure' ,'Procedures' )
 		,( N'TR' , N'SQL_TRIGGER' , N'Trigger'  ,'Triggers' )
 		,( N'FN' , N'SQL_SCALAR_FUNCTION' , N'SQL Scalar Function' ,'Functions' )
-		,( N'TF' , N'SQL_TABLE_VALUED_FUNCTION' , N'Table Valued Function'  ,'Functions' )
+		,( N'TF' , N'SQL_TABLE_VALUED_FUNCTION' , N'SQL table-valued-function'  ,'Functions' )
 		,( N'PK' , N'PRIMARY_KEY_CONSTRAINT' , N'Primary Key Constraint'  , 'Constraints')
 		,( N'C' , N'CHECK_CONSTRAINT' , N'Check Constraint'  , 'Constraints')
 		,( N'D' , N'DEFAULT_CONSTRAINT' , N'Default Constraint'  , 'Constraints')
@@ -35,17 +35,25 @@ LEFT JOIN
 		,( N'INDEX' , N'INDEX' , N'Index'  , 'Indexes')
 		,( N'SQ' , N'SERVICE_QUEUE' , N'Service Queue'  , 'Other')
 
-		,( N'FS','CLR_SCALAR_FUNCTION','Scalar function' , 'Functions')
-		,( N'FT','CLR_TABLE_VALUED_FUNCTION','Table Valued Function' , 'Functions')
-		,( N'IF','SQL_INLINE_TABLE_VALUED_FUNCTION','Inline Table Valued Function' , 'Functions')
-		,( N'IT','INTERNAL_TABLE','INTERNAL_TABLE' , 'Other')
+		,( N'FS','CLR_SCALAR_FUNCTION','Assembly (CLR) scalar-function' , 'Functions')
+		,( N'FT','CLR_TABLE_VALUED_FUNCTION','Assembly (CLR) table-valued function' , 'Functions')
+		,( N'IF','SQL_INLINE_TABLE_VALUED_FUNCTION','SQL Inline table-valued function' , 'Functions')
+		,( N'IT','INTERNAL_TABLE','Internal table' , 'Other')
 	
 		,( N'SN','SYNONYM','Synonym' , 'Other')
-		,( N'TT','TYPE_TABLE','Type Table' , 'Other')
-		,( N'PC','CLR_STORED_PROCEDURE','CLR Stored Procedure' , 'Procedures')
+		,(	'TT'	,'TABLE_TYPE'	,'Table type',  'Other')
+		,( N'PC','CLR_STORED_PROCEDURE','Assembly (CLR) stored-procedure' , 'Procedures')
+		,(	'X'	,'EXTENDED_STORED_PROCEDURE'	,'Extended stored procedure'	, 'Procedures')
+
+		,(	'S'	,'SYSTEM_TABLE'	,'System base table'	, 'Other')
+		,(	'SO'	,'SEQUENCE_OBJECT'	,'Sequence object'	, 'Other')
+		,(	'TA'	,'CLR_TRIGGER'	,'Assembly (CLR) DML trigger'	, 'Other')
+		,(	'AF'	,'AGGREGATE_FUNCTION'	,'Aggregate function (CLR)'	, 'Other')
+
+		,(	'R'	,'RULE'	,'Rule (old-style, stand-alone)'	, 'Other')
+		,(	'RF'	,'REPLICATION_FILTER_PROCEDURE'	,'Replication-filter-procedure'	, 'Other')
+		,(	'PG'	,'PLAN_GUIDE'	,'Plan guide'	, 'Other')
+
 	)	AS T ([TypeCode], [TypeDescriptionSQL], [TypeDescriptionUser], TypeGroup)
 ON tg.TypeGroup= T.TypeGroup;
-GO
-
-
 
