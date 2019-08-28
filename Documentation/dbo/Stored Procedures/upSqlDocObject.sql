@@ -17,6 +17,7 @@ SELECT [ServerName]
 	,TypeGroup
 	,TypeCode
 	,DocumentationLoadDate
+	,CodeFlag
 FROM dbo.vwObjectDoc
 WHERE DatabaseName = @DatabaseName
 	AND SERVERNAME = @Server

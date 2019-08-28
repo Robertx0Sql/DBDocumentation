@@ -269,6 +269,10 @@
           <DataField>DocumentationLoadDate</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
+        <Field Name="CodeFlag">
+          <DataField>CodeFlag</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
         <Field Name="hasParameters">
           <Value>=iif(Fields!TypeGroup.Value = "Functions" or Fields!TypeCode.Value = "P" ,true, false)</Value>
         </Field>
@@ -954,7 +958,6 @@
                                     <Parameter Name="UserMode">
                                       <Value>=Parameters!UserMode.Value</Value>
                                     </Parameter>
-
                                   </Parameters>
                                 </Drillthrough>
                               </Action>
@@ -1700,7 +1703,6 @@
                                         <Parameter Name="UserMode">
                                           <Value>=Parameters!UserMode.Value</Value>
                                         </Parameter>
-
                                       </Parameters>
                                     </Drillthrough>
                                   </Action>
@@ -2161,7 +2163,6 @@
                                             <Parameter Name="UserMode">
                                               <Value>=Parameters!UserMode.Value</Value>
                                             </Parameter>
-
                                           </Parameters>
                                         </Drillthrough>
                                       </Action>
@@ -2729,7 +2730,6 @@
                                     <Parameter Name="UserMode">
                                       <Value>=Parameters!UserMode.Value</Value>
                                     </Parameter>
-
                                   </Parameters>
                                 </Drillthrough>
                               </Action>
@@ -3113,7 +3113,6 @@
                                     <Parameter Name="UserMode">
                                       <Value>=Parameters!UserMode.Value</Value>
                                     </Parameter>
-
                                   </Parameters>
                                 </Drillthrough>
                               </Action>
@@ -3883,7 +3882,6 @@
                               <Parameter Name="UserMode">
                                 <Value>=Parameters!UserMode.Value</Value>
                               </Parameter>
-
                             </Parameters>
                           </Drillthrough>
                         </Action>
@@ -3904,12 +3902,12 @@
                   </TextRun>
                   <TextRun>
                     <Label>type</Label>
-                    <Value>=First(Fields!TypeGroup.Value, "dsObject")</Value>
+                    <Value>=iif(First(Fields!TypeGroup.Value, "dsObject") = First(Fields!TypeDescriptionUser.Value, "dsObject")+"s" , First(Fields!TypeGroup.Value, "dsObject"), First(Fields!TypeGroup.Value, "dsObject") + " (" + First(Fields!TypeDescriptionUser.Value, "dsObject")+")" )</Value>
                     <ActionInfo>
                       <Actions>
                         <Action>
                           <Drillthrough>
-                            <ReportName>SQLDoc_Database</ReportName>
+                            <ReportName>SQLDoc_DatabaseObjects</ReportName>
                             <Parameters>
                               <Parameter Name="Server">
                                 <Value>=Parameters!Server.Value</Value>
@@ -3917,10 +3915,12 @@
                               <Parameter Name="Database">
                                 <Value>=Parameters!Database.Value</Value>
                               </Parameter>
+                              <Parameter Name="ObjectType">
+                                <Value>=First(Fields!TypeDescriptionUser.Value, "dsObject")</Value>
+                              </Parameter>
                               <Parameter Name="UserMode">
                                 <Value>=Parameters!UserMode.Value</Value>
                               </Parameter>
-
                             </Parameters>
                           </Drillthrough>
                         </Action>
@@ -4037,7 +4037,7 @@
             <Width>38.70329cm</Width>
             <ZIndex>7</ZIndex>
             <Visibility>
-              <Hidden>=iif( cbool(Parameters!UserMode.Value=false) and (First(Fields!TypeCode.Value, "dsObject") = "V" or First(Fields!TypeCode.Value, "dsObject") ="P" ), false, true)</Hidden>
+              <Hidden>=iif( cbool(Parameters!UserMode.Value=false) and (First(Fields!CodeFlag.Value, "dsObject") = "1" ), false, true)</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -4175,7 +4175,6 @@
                                     <Parameter Name="UserMode">
                                       <Value>=Parameters!UserMode.Value</Value>
                                     </Parameter>
-
                                   </Parameters>
                                 </Drillthrough>
                               </Action>

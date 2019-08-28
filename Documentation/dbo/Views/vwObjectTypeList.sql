@@ -1,9 +1,4 @@
-﻿
-
-
-
-
-CREATE VIEW [dbo].[vwObjectTypeList] 
+﻿CREATE VIEW [dbo].[vwObjectTypeList] 
 AS
 SELECT TG.TypeGroup
 	,TG.TypeGroupOrder
@@ -39,5 +34,18 @@ LEFT JOIN
 		,( N'UQ' , N'UNIQUE_CONSTRAINT' , N'Unique Constraint'  , 'Constraints')
 		,( N'INDEX' , N'INDEX' , N'Index'  , 'Indexes')
 		,( N'SQ' , N'SERVICE_QUEUE' , N'Service Queue'  , 'Other')
+
+		,( N'FS','CLR_SCALAR_FUNCTION','Scalar function' , 'Functions')
+		,( N'FT','CLR_TABLE_VALUED_FUNCTION','Table Valued Function' , 'Functions')
+		,( N'IF','SQL_INLINE_TABLE_VALUED_FUNCTION','Inline Table Valued Function' , 'Functions')
+		,( N'IT','INTERNAL_TABLE','INTERNAL_TABLE' , 'Other')
+	
+		,( N'SN','SYNONYM','Synonym' , 'Other')
+		,( N'TT','TYPE_TABLE','Type Table' , 'Other')
+		,( N'PC','CLR_STORED_PROCEDURE','CLR Stored Procedure' , 'Procedures')
 	)	AS T ([TypeCode], [TypeDescriptionSQL], [TypeDescriptionUser], TypeGroup)
 ON tg.TypeGroup= T.TypeGroup;
+GO
+
+
+

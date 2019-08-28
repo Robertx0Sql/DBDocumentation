@@ -1,9 +1,9 @@
 ﻿CREATE TABLE [dbo].[SQLDOCObjectType] (
-    [TypeGroup]           NVARCHAR (11) NOT NULL,
-    [TypeGroupOrder]      INT           NOT NULL,
     [TypeCode]            VARCHAR (10)  NOT NULL,
-    [TypeDescriptionSQL]  NVARCHAR (25) NULL,
-    [TypeDescriptionUser] NVARCHAR (22) NULL,
+    [TypeGroup]           NVARCHAR (25) NOT NULL,
+    [TypeGroupOrder]      INT           NOT NULL,
+    [TypeDescriptionSQL]  NVARCHAR (50) NULL,
+    [TypeDescriptionUser] NVARCHAR (50) NULL,
     [TypeOrder]           BIGINT        NULL,
     [TypeCount]           INT           NULL,
     [UserModeFlag]        BIT           NULL,

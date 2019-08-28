@@ -173,7 +173,7 @@ SELECT
 	LEFT JOIN sys.extended_properties AS p ON p.major_id = c.OBJECT_ID
 		AND p.minor_id = c.column_id
 		AND p.CLASS = 1
-		AND p.name = `'$extentedPropertyName`'
+		AND p.name = 'MS_Description'
 	LEFT JOIN sys.identity_columns ident_col ON c.OBJECT_ID = ident_col.OBJECT_ID
 		AND c.column_id = ident_col.column_id
 	LEFT JOIN (
@@ -230,7 +230,7 @@ SELECT
 	LEFT JOIN sys.types t ON t.user_type_id = par.user_type_id
 	left JOIN sys.extended_properties AS p ON p.major_id=sp.object_id AND p.class=2
 			AND p.minor_id = par.parameter_id
-			AND p.name =  `'$extentedPropertyName`'
+			AND p.name =  'MS_Description'
 	Where par.name!='' --return value for functions
 
 ; 
@@ -255,7 +255,7 @@ FROM sys.objects AS c
 LEFT JOIN sys.extended_properties AS p ON p.major_id = c.OBJECT_ID
 	AND p.CLASS = 1
 	AND p.minor_id = 0
-	AND p.name =  `'$extentedPropertyName`'
+	AND p.name =  'MS_Description'
 LEFT JOIN /*index_columns*/ (
 	SELECT O.OBJECT_ID
 		,fields = COALESCE(STUFF((
@@ -342,7 +342,7 @@ LEFT JOIN sys.data_spaces ds
 LEFT JOIN sys.extended_properties ep ON ep.major_id = ix.OBJECT_ID
 	AND CLASS = 7
 	AND ep.minor_id = ix.index_id
-	AND Ep.name =  `'$extentedPropertyName`'
+	AND Ep.name =  'MS_Description'
 LEFT JOIN (
 	SELECT O.OBJECT_ID, O.index_id
 		,fields = COALESCE(STUFF((
@@ -378,7 +378,7 @@ function Get-SQLDOCObjectQuery2017($extentedPropertyName) {
 	LEFT JOIN sys.extended_properties AS p ON p.major_id = c.OBJECT_ID
 		AND p.CLASS = 1
 		AND p.minor_id = 0
-		AND p.name =  `'$extentedPropertyName`'
+		AND p.name =  'MS_Description'
 	LEFT JOIN (
 		SELECT ic.OBJECT_ID
 			,STRING_AGG(COL_NAME(ic.OBJECT_ID, ic.column_id), ', ') AS fields
@@ -435,7 +435,7 @@ function Get-SQLDOCObjectQuery2017($extentedPropertyName) {
 	LEFT JOIN sys.extended_properties ep ON ep.major_id = ix.OBJECT_ID
 		AND CLASS = 7
 		AND ep.minor_id = ix.index_id
-		AND Ep.name =  `'$extentedPropertyName`'
+		AND Ep.name =  'MS_Description'
 	LEFT JOIN (
 		SELECT ic.OBJECT_ID
 			,index_id
@@ -531,7 +531,7 @@ SELECT @@SERVERNAME AS ServerName
 FROM sys.databases db
 LEFT JOIN sys.extended_properties ep
 	ON ep.class = 0
-	AND ep.name =  `'$extentedPropertyName`'
+	AND ep.name =  'MS_Description'
 WHERE db.name = db_name()
 "@
     return $query
@@ -544,7 +544,18 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
 
     [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.SMO') | out-null
     $serverInstance = New-Object ('Microsoft.SqlServer.Management.Smo.Server') $ServerSource 
-    $IncludeTypes = @("StoredProcedures", "Views") #object you want do backup. 
+    $IncludeTypes = @(
+		"Defaults",
+		"ExtendedStoredProcedures"
+		,"PartitionFunctions","PartitionSchemes",
+		"Roles","Rules"
+		,"Schemas"
+		,"StoredProcedures"
+		,"Synonyms"
+		,"UserDefinedAggregates","UserDefinedDataTypes","UserDefinedFunctions","UserDefinedTableTypes","UserDefinedTypes"
+		,"Views"
+		,"Triggers"
+	 ) #object you want do backup. 
     $ExcludeSchemas = @("sys", "Information_Schema")
     $so = new-object ('Microsoft.SqlServer.Management.Smo.ScriptingOptions')
 	
@@ -608,7 +619,7 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
     Save-DoctoDb $SQLConnectionString  -Procedure  $Procedure  -ProcedureParamName $ProcedureParamName  -ProcedureParamValue $dt
 }
 
-$ServerSource = Get-ServerInstance -ServerInstance $ServerSource -Database $DatabaseSource
+
 
 Write-Verbose "Start  SQLDocColumnQuery"
 $query = SQLDocColumnQuery  -extentedPropertyName $extentedPropertyName 
@@ -636,5 +647,7 @@ Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLCo
 Write-Verbose "Start Get-SQLObjectCode" #this has to happen all within the function as cannot marshall the dataset out of the function 
 Save-SQLObjectCode -ServerSource $ServerSource -DatabaseSource $DatabaseSource -Credential $Credential
 
+
 Write-Verbose "Save-AutoMapForeignKeys"
-Save-AutoMapForeignKeys -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString 
+$ServerSourceNoPort = Get-ServerInstance -ServerInstance $ServerSource -Database $DatabaseSource #Note this returns the Server & instance but not the port number.
+Save-AutoMapForeignKeys -ServerInstance $ServerSourceNoPort -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString 

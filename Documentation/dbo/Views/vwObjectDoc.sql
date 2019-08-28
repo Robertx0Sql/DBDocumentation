@@ -1,9 +1,4 @@
-﻿
-
-
-
-
-CREATE VIEW [dbo].[vwObjectDoc]
+﻿CREATE VIEW [dbo].[vwObjectDoc]
 AS
 SELECT [ServerName]
 	,[DatabaseName]
@@ -23,6 +18,7 @@ SELECT [ServerName]
 	,ParentSchemaName
 	,fields
 	,d.Definition
-,t.UserModeFlag
+	,t.UserModeFlag
+	,t.CodeFlag 
 FROM [Staging].[ObjectDocumentation] d
 LEFT JOIN dbo.vwObjectType t ON t.TypeCode = rtrim(d.[objectType]);
