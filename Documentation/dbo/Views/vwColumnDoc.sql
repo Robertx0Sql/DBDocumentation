@@ -6,12 +6,12 @@ AS (
 	SELECT cd.ServerName
 		,cd.DatabaseName
 		,cd.objectType
-		,cd.object_id
-		,cd.TableSchemaName
-		,cd.TableName
-		,cd.name
+		
+		,cd.[ObjectSchemaName]
+		,cd.[ObjectName]
+		,cd.[ColumnName]
 		,cd.DocumentationDescription
-		,cd.column_id
+		,cd.[ColumnId]
 		,cd.datatype
 		,cd.max_length
 		,cd.precision
@@ -19,20 +19,12 @@ AS (
 		,cd.collation_name
 		,cd.is_nullable
 		,cd.is_identity
-		,cd.ident_col_seed_value
-		,cd.ident_col_increment_value
 		,cd.is_computed
 		,cd.Column_Default
-		,cd.PK
-		,cd.FK_NAME
-		,cd.ReferencedTableObject_id
-		,cd.ReferencedTableSchemaName
-		,cd.ReferencedTableName
-		,cd.referenced_column
+		,cd.[is_primary_key]
 		,cd.StagingId
 		,cd.StagingDateTime
-		,cd.objectTypeDescription
-		,IIF(column_id IS NOT NULL, CASE 
+		,IIF([ColumnId] IS NOT NULL, CASE 
 				WHEN [objectType] IN (
 						'U'
 						,'V'
@@ -52,11 +44,11 @@ SELECT [ServerName]
 	,[DatabaseName]
 	,rtrim([objectType]) AS TypeCode
 	,[TypeDescriptionUser]
-	,[TableSchemaName]
-	,[TableName]
-	,[name]
+	,[ObjectSchemaName]
+	,[ObjectName]
+	,[ColumnName]
 	,[DocumentationDescription]
-	,[column_id]
+	,[ColumnId]
 	,[datatype]
 	,[max_length]
 	,[precision]
@@ -64,24 +56,17 @@ SELECT [ServerName]
 	,[collation_name]
 	,[is_nullable]
 	,[is_identity]
-	,[ident_col_seed_value]
-	,[ident_col_increment_value]
 	,[is_computed]
+	,[is_primary_key]
 	,[Column_Default]
-	,[PK]
-	,CAST(iif(PK = 1, SUM(CAST(PK AS INT)) OVER (
+	,CAST(iif([is_primary_key] = 1, SUM(CAST([is_primary_key] AS INT)) OVER (
 				PARTITION BY cd.[TypeDescriptionUser]
 				,cd.[ServerName]
 				,cd.[DatabaseName]
-				,cd.[TableSchemaName]
-				,cd.[TableName]
+				,cd.[ObjectSchemaName]
+				,cd.[ObjectName]
 				), NULL) AS VARCHAR(25)) AS [PKFieldCount]
-	,[FK_NAME]
-	,[ReferencedTableObject_id]
-	,[ReferencedTableSchemaName]
-	,[ReferencedTableName]
-	,[referenced_column]
-	,QUOTENAME([TableSchemaName]) + '.' + QUOTENAME([TableName]) AS QualifiedTableName
+	,QUOTENAME([ObjectSchemaName]) + '.' + QUOTENAME([ObjectName]) AS QualifiedTableName
 	,cd.TypeDescriptionSQL
 	,cd.TypeGroup
 	,cd.TypeGroupOrder

@@ -16,12 +16,12 @@ AS
 WITH dbo
 AS (
 	SELECT CAST('column ' AS VARCHAR(50)) AS [Type]
-		,CAST(name AS VARCHAR(255)) AS [Name]
+		,CAST([ColumnName] AS VARCHAR(255)) AS [Name]
 		,CAST([DocumentationDescription] AS VARCHAR(4000)) AS [Description]
 		,CAST(SERVERNAME AS VARCHAR(255)) AS ServerName
 		,CAST(DatabaseName AS VARCHAR(255)) AS DatabaseName
-		,CAST(TableSchemaName AS VARCHAR(255)) AS SchemaName
-		,CAST(TableName AS VARCHAR(255)) AS ObjectName
+		,CAST([ObjectSchemaName] AS VARCHAR(255)) AS SchemaName
+		,CAST([ObjectName] AS VARCHAR(255)) AS ObjectName
 		,CAST(ot.TypeDescriptionUser AS VARCHAR(255)) AS TypeDescriptionUser
 	FROM [dbo].[vwColumnDoc] t
 	LEFT JOIN dbo.vwObjectType ot
@@ -32,7 +32,7 @@ AS (
 			)
 		AND @database = DatabaseName
 		AND (
-			[Name] LIKE '%' + @Search + '%'
+			[ColumnName] LIKE '%' + @Search + '%'
 			OR [DocumentationDescription] LIKE '%' + @Search + '%'
 			)
 		AND ot.TypeDescriptionUser != 'Stored Procedure'

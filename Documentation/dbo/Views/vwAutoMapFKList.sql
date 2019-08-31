@@ -3,43 +3,44 @@ CREATE VIEW [dbo].[vwAutoMapFKList]
 AS
 SELECT fk.ServerName
 	,fk.DatabaseName
-	,fk.column_id
-	,fk.TableSchemaName
-	,fk.TableName
-	,fk.name
-	,pk.tableSchemaName AS ReferencedTableSchemaName
-	,pk.TableName AS ReferencedTableName
-	,pk.name AS referenced_column
+	,fk.[ColumnId]
+	,fk.[ObjectSchemaName]
+	,fk.[ObjectName]
+	,fk.[ColumnName]
+	,pk.[ObjectSchemaName] AS ReferencedTableSchemaName
+	,pk.[ObjectName] AS ReferencedTableName
+	,pk.[ColumnName] AS referenced_column
 	,CONCAT (
 		'AFK_'
-		,fk.TableSchemaName
+		,fk.[ObjectSchemaName]
 		,'_'
-		,fk.TableName
+		,fk.[ObjectName]
 		,'_'
-		,pk.TableSchemaName
+		,pk.[ObjectSchemaName]
 		,'_'
-		,pk.TableName
+		,pk.[ObjectName]
 		,'_'
-		,fk.name
+		,fk.[ColumnName]
 		) AS FK_NAME
 	,row_number() OVER (
 		PARTITION BY fk.ServerName
 		,fk.DatabaseName
-		,fk.column_id
-		,fk.TableSchemaName
-		,fk.TableName
-		,fk.name ORDER BY pk.tableSchemaName ASC
-			,pk.TableName DESC
-			,pk.name DESC
+		,fk.[ColumnId]
+		,fk.[ObjectSchemaName]
+		,fk.[ObjectName]
+		,fk.[ColumnName] 
+		ORDER BY pk.[ObjectSchemaName] ASC
+			,pk.[ObjectName] DESC
+			,pk.[ColumnName] DESC
 			,pk.StagingID ASC
 		) AS matchid
 	,count(1) OVER (
 		PARTITION BY fk.ServerName
 		,fk.DatabaseName
-		,fk.column_id
-		,fk.TableSchemaName
-		,fk.TableName
-		,fk.name
+		,fk.[ColumnId]
+		,fk.[ObjectSchemaName]
+		,fk.[ObjectName]
+		,fk.[ColumnName]
 		) AS FKCount
 	,fk.DocumentationLoadDate
 	,t.[TypeDescriptionUser]
@@ -47,27 +48,43 @@ SELECT fk.ServerName
 	,t.TypeCode
 	,CONCAT (
 		'Foreign key constraint referencing '
-		,pk.TableSchemaName
+		,pk.[ObjectSchemaName]
 		,'.'
-		,pk.TableName
+		,pk.[ObjectName]
 		,' (Auto Generated)'
 		) AS description
 FROM (
-	SELECT *
-	FROM vwColumnDoc
-	WHERE pkfieldcount = 1
-		AND FK_NAME IS NULL
+		SELECT cd.*
+			,od.ReferencedSchemaName
+			,od.[ReferencedObjectName]
+			,od.[ReferencedColumnName]
+		FROM vwColumnDoc cd
+		LEFT JOIN dbo.SQLColumnReference od ON cd.SERVERNAME = od.ServerName
+			AND cd.DatabaseName = od.DatabaseName
+			AND cd.[ObjectSchemaName] = od.[SchemaName]
+			AND cd.[ObjectName] = od.[ObjectName]
+			AND cd.[ColumnName] = od.ColumnName
+		WHERE cd.pkfieldcount = 1
+			AND od.FK_NAME IS NULL
 	) pk
 INNER JOIN (
-	SELECT *
-	FROM vwColumnDoc
-	WHERE (
-			pk IS NULL
-			OR pk = 0
-			)
-		AND FK_NAME IS NULL
+		SELECT cd.*
+			,od.ReferencedSchemaName
+			,od.[ReferencedObjectName]
+			,od.[ReferencedColumnName]
+		FROM vwColumnDoc cd
+		LEFT JOIN dbo.SQLColumnReference od ON cd.SERVERNAME = od.ServerName
+			AND cd.DatabaseName = od.DatabaseName
+			AND cd.[ObjectSchemaName] = od.[SchemaName]
+			AND cd.[ObjectName] = od.[ObjectName]
+			AND cd.[ColumnName] = od.ColumnName
+		WHERE (
+				cd.[is_primary_key] IS NULL
+				OR cd.[is_primary_key] = 0
+				)
+			AND od.FK_NAME IS NULL
 	) FK
-	ON Fk.name = pk.name
+	ON Fk.[ColumnName] = pk.[ColumnName]
 		AND fk.ServerName = pk.ServerName
 		AND fk.DatabaseName = pk.DatabaseName
 		AND fk.TypeCode = pk.TypeCode
@@ -76,9 +93,9 @@ LEFT JOIN dbo.vwObjectType t
 LEFT JOIN [dbo].[AutoMapFKBuildFilter] AFKBF
 	ON coalesce(AFKBF.DatabaseName, fk.DatabaseName) = fk.DatabaseName
 		AND (
-			pk.TableSchemaName LIKE AFKBF.ReferencedTableSchemaName
-			OR pk.ReferencedTableSchemaName LIKE AFKBF.ReferencedTableSchemaName
+			pk.[ObjectSchemaName] LIKE AFKBF.ReferencedTableSchemaName
+			OR pk.ReferencedSchemaName LIKE AFKBF.ReferencedTableSchemaName
 			)
-		AND pk.TableName LIKE AFKBF.ReferencedTableName
+		AND pk.[ObjectName] LIKE AFKBF.ReferencedTableName
 WHERE pk.TypeCode = 'u'
 	AND AFKBF.[AutoMapFKBuildFilterId] IS NULL

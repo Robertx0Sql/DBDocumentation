@@ -17,9 +17,9 @@ SELECT [ServerName]
 	,DocumentationLoadDate
 	,fields
 	,DEFINITION
-	,referenced_column
-	,ReferencedTableName
-	,ReferencedTableSchemaName
+	,ReferencedColumnName  as referenced_column
+	,ReferencedObjectName  as ReferencedTableName
+	,ReferencedSchemaName  as ReferencedTableSchemaName
 	,ReferencedObjectType = 'Table'
 FROM dbo.vwChildObjects
 WHERE DatabaseName = @DatabaseName
