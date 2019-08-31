@@ -10,12 +10,12 @@ SELECT cd.[ServerName]
 	,cd.[DatabaseName]
 	,cd.[TypeCode]
 	,cd.[TypeDescriptionUser]
-	,cd.[TableSchemaName]
-	,cd.[TableName]
-	,cd.[name]
+	,cd.[ObjectSchemaName] as [TableSchemaName]
+	,cd.[ObjectName] as [TableName]
+	,cd.[ColumnName] as [name]
 	,COALESCE(cd.[DocumentationDescription], vc.[DocumentationDescription]) AS [DocumentationDescription]
-	,cd.[column_id]
-	,cd.[datatype] + iif(cd.[is_identity] = 1, ' identity(' + CAST(ISNULL(cd.[ident_col_seed_value], 1) AS VARCHAR(10)) + ',' + CAST(ISNULL(cd.[ident_col_increment_value], 1) AS VARCHAR(10)) + ')', '') + iif(cd.[datatype] LIKE '%char%', '(' + CASE 
+	,cd.[ColumnId] as [column_id]
+	,cd.[datatype] + iif(cd.[is_identity] = 1,  ' ' + cd.[Column_Default] , '') + iif(cd.[datatype] LIKE '%char%', '(' + CASE 
 			WHEN cd.[max_length] = - 1
 				THEN 'max'
 			WHEN LEFT(cd.[datatype], 1) = 'n'
@@ -37,38 +37,45 @@ SELECT cd.[ServerName]
 	,cd.[collation_name]
 	,CAST(iif(cd.[is_nullable] = 1, 'yes', 'no') AS VARCHAR(3)) AS nulls
 	,CAST(iif(cd.[is_computed] = 1, 'yes', 'no') AS VARCHAR(3)) AS computed
-	,cd.[Column_Default]
-	,CAST(iif(PK = 1, iif(SUM(CAST(PK AS INT)) OVER (
+	,iif(cd.[is_identity] = 1,NULL, cd.[Column_Default]) as [Column_Default]
+	,CAST(iif([is_primary_key] = 1, iif(SUM(CAST([is_primary_key] AS INT)) OVER (
 					PARTITION BY cd.[TypeDescriptionUser]
 					,cd.[ServerName]
 					,cd.[DatabaseName]
-					,cd.[TableSchemaName]
-					,cd.[TableName]
+					,cd.[ObjectSchemaName]
+					,cd.[ObjectName]
 					) > 1, 'composite PK', 'yes'), NULL) AS VARCHAR(25)) AS [PK]
-	,cd.[FK_NAME] AS [FK_NAME]
-	,iif(cd.TypeCode = 'V', vc.[SourceTableSchema], cd.[ReferencedTableSchemaName]) AS [ReferencedTableSchemaName]
-	,iif(cd.TypeCode = 'V', vc.[SourceTableName], cd.[ReferencedTableName]) AS [ReferencedTableName]
-	,iif(cd.TypeCode = 'V', vc.[ColumnName], cd.[referenced_column]) AS [referenced_column]
-	,iif(cd.TypeCode = 'V', vc.[SourceTableName] + '.' + vc.[ColumnName], cd.ReferencedTableSchemaName + '.'+ cd.[ReferencedTableName] + '.' + cd.[referenced_column]) AS FK
+	,od.[ObjectName] AS [FK_NAME]
+	,iif(cd.TypeCode = 'V', vc.[SourceTableSchema], od.[ReferencedSchemaName]) AS [ReferencedTableSchemaName]
+	,iif(cd.TypeCode = 'V', vc.[SourceTableName], od.[ReferencedObjectName]) AS [ReferencedTableName]
+	,iif(cd.TypeCode = 'V', vc.[ColumnName], od.[ReferencedColumnName]) AS [referenced_column]
+	,iif(cd.TypeCode = 'V', vc.[SourceTableName] + '.' + vc.[ColumnName], od.ReferencedSchemaName + '.'+ od.[ReferencedObjectName] + '.' + od.[ReferencedColumnName]) AS FK
 	,iif(cd.TypeCode = 'V', vc.TypeDescriptionUser, 'Table') AS ReferencedObjectType
-	,iif(cd.[FK_NAME] IS NOT NULL, 'yes', NULL) AS isFK
+	,iif(od.[FK_NAME] IS NOT NULL, 'yes', NULL) AS isFK
 	,iif(cd.TypeCode = 'V', 'Source', 'FK') AS fk_title
 	,cd.DocumentationLoadDate
 FROM [dbo].[vwColumnDoc] cd
+left join dbo.SQLColumnReference od
+	ON cd.SERVERNAME = od.ServerName
+		AND cd.DatabaseName = od.DatabaseName
+		AND cd.[ObjectSchemaName] = od.[SchemaName]
+		AND cd.[ObjectName] = od.[ObjectName]
+and cd.[ColumnName] = od.ColumnName 
 LEFT JOIN dbo.[vwSQLDocViewDefinitionColumnMap] vc
 	ON cd.SERVERNAME = vc.SERVERNAME
 		AND cd.DatabaseName = vc.DatabaseName
-		AND cd.[TableSchemaName] = vc.[ViewSchema]
-		AND cd.[TableName] = vc.[ViewName]
-		AND cd.column_id = vc.[ColumnId]
+		AND cd.[ObjectSchemaName] = vc.[ViewSchema]
+		AND cd.[ObjectName] = vc.[ViewName]
+		AND cd.[ColumnId] = vc.[ColumnId]
 		AND cd.TypeCode = 'V'
-WHERE cd.[name] IS NOT NULL
+
+WHERE cd.[ColumnName] IS NOT NULL
 	AND cd.SERVERNAME = @Server
 	AND cd.DatabaseName = @DatabaseName
 	AND (
 		(
-			cd.[TableSchemaName] = @Schema
-			AND cd.[TableName] = @Object
+			cd.[ObjectSchemaName] = @Schema
+			AND cd.[ObjectName] = @Object
 			)
 		OR (
 			@Schema IS NULL

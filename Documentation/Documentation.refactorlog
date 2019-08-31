@@ -133,4 +133,39 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[uspUpdateSQLDocObjectReference]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="0d156b90-d40c-4b45-ae2c-eb9512cc9c73" ChangeDateTime="08/31/2019 03:56:27">
+    <Property Name="ElementName" Value="[Staging].[ColumnDoc].[TableSchemaName]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Staging].[ColumnDoc]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[ObjectSchemaName]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="32c9725e-220a-4b87-a01e-52d8fbb844b7" ChangeDateTime="08/31/2019 03:56:49">
+    <Property Name="ElementName" Value="[Staging].[ColumnDoc].[TableName]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Staging].[ColumnDoc]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[ObjectName]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f25d5419-d8c8-4036-a359-2cab9eeef9d4" ChangeDateTime="08/31/2019 03:58:20">
+    <Property Name="ElementName" Value="[Staging].[ColumnDoc].[PK]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Staging].[ColumnDoc]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[is_primary_key]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c5cb088f-394d-47ac-a10f-3adc89bce460" ChangeDateTime="08/31/2019 04:52:14">
+    <Property Name="ElementName" Value="[Staging].[ColumnDoc].[name]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Staging].[ColumnDoc]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[ColumnName]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="14f5344b-ac55-4373-89dd-11de4f97875f" ChangeDateTime="08/31/2019 04:52:44">
+    <Property Name="ElementName" Value="[Staging].[ColumnDoc].[column_id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[Staging].[ColumnDoc]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[ColumnId]" />
+  </Operation>
 </Operations>

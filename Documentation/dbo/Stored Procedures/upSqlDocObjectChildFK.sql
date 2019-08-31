@@ -18,15 +18,15 @@ AS (
 	SELECT [ServerName]
 		,[DatabaseName]
 		,ObjectName AS FKName --AS [referenced_database_name]
-		,IIF(ReferencedTableSchemaName = @Schema AND ReferencedTableName = @Object, ParentSchemaName, ReferencedTableSchemaName) AS [referencing_schema_name]
-		,IIF(ReferencedTableSchemaName = @Schema AND ReferencedTableName = @Object, ParentObjectName, ReferencedTableName) AS [referencing_entity_name]
-		,IIF(ReferencedTableSchemaName = @Schema AND ReferencedTableName = @Object, ReferencedTableSchemaName, ParentSchemaName) AS [referenced_schema_name]
-		,IIF(ReferencedTableSchemaName = @Schema AND ReferencedTableName = @Object, ReferencedTableName, ParentObjectName) AS [referenced_entity_name]
-		,referenced_column
+		,IIF(ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object, ParentSchemaName, ReferencedSchemaName) AS [referencing_schema_name]
+		,IIF(ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object, ParentObjectName, ReferencedObjectName) AS [referencing_entity_name]
+		,IIF(ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object, ReferencedSchemaName, ParentSchemaName) AS [referenced_schema_name]
+		,IIF(ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object, ReferencedObjectName, ParentObjectName) AS [referenced_entity_name]
+		,referencedColumnName as referenced_column
 		,TypeGroup
 		,TypeCode
 		,DocumentationLoadDate
-		,CASE WHEN ReferencedTableSchemaName = @Schema AND ReferencedTableName = @Object THEN 1 ELSE 0 END AS isChildFK
+		,CASE WHEN ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object THEN 1 ELSE 0 END AS isChildFK
 	FROM dbo.vwChildObjects
 	WHERE TypeCode = 'F'
 		AND DatabaseName = @DatabaseName
@@ -37,8 +37,8 @@ AS (
 				AND ParentObjectName = @Object
 				)
 			OR (
-				ReferencedTableSchemaName = @Schema
-				AND ReferencedTableName = @Object
+				ReferencedSchemaName = @Schema
+				AND ReferencedObjectName = @Object
 				)
 			)
 		)

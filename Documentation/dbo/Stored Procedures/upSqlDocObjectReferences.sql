@@ -40,15 +40,15 @@ BEGIN
 		,'Table' AS [TypeDescriptionUser]
 		,[ServerName] AS [referenced_server_name]
 		,[DatabaseName] AS [referenced_database_name]
-		,ReferencedTableSchemaName AS [referenced_schema_name]
-		,ReferencedTableName AS [referenced_entity_name]
+		,ReferencedSchemaName AS [referenced_schema_name]
+		,ReferencedObjectName AS [referenced_entity_name]
 		,DocumentationLoadDate
 		,ReferenceTypeCode = 'X'
 	FROM [dbo].[vwChildObjects]
 	WHERE DatabaseName = @DatabaseName
 		AND SERVERNAME = @Server
-		AND ReferencedTableSchemaName = @Schema
-		AND ReferencedTableName = @Object
+		AND ReferencedSchemaName = @Schema
+		AND ReferencedObjectName = @Object
 		AND (@UserMode = UserModeFlag
 	or @UserMode = 0 )
 END

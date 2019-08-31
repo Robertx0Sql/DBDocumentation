@@ -132,6 +132,9 @@
     <Build Include="dbo\Stored Procedures\upSqlDocDatabaseObject.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocSearch.sql" />
     <Build Include="dbo\Views\vwAutoMapFK.sql" />
+    <Build Include="dbo\Tables\SQLColumnReference.sql" />
+    <Build Include="dbo\User Defined Types\SQLColumnReferenceTableType.sql" />
+    <Build Include="dbo\Stored Procedures\uspUpdateSQLColumnReference.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">

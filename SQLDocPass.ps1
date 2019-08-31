@@ -136,104 +136,87 @@ function Get-SQLDOCReferencedObjectQuery($extentedPropertyName) {
 }
 function  SQLDocColumnQuery ($extentedPropertyName) {
     $queryColumns = @"
-SELECT 
-	@@SERVERNAME AS ServerName
-	,DB_NAME() AS DatabaseName
-	,[objectType] =obj.TYPE
-	,[objectTypeDescription] =NULL-- c.type_desc
-	,c.OBJECT_ID
-
-	,object_schema_name(C.OBJECT_ID) AS [TableSchemaName]
-	,OBJECT_NAME(c.OBJECT_ID) AS [TableName]
-	,c.name
-	,CAST(p.value AS NVARCHAR(MAX) ) AS DocumentationDescription
-	,c.column_id
-	,t.name AS datatype
-	,c.max_length
-	,c.PRECISION
-	,c.scale
-	,c.collation_name
-	,c.is_nullable
-	,c.is_identity
-	,CAST(ident_col.seed_value AS INT) AS ident_col_seed_value 
-	,CAST(ident_col.increment_value AS INT) AS ident_col_increment_value 
-	,c.is_computed
-	,object_definition(c.default_object_id) AS Column_Default
-	,ic.is_primary_key AS PK
-
-	,fk_obj.name AS FK_NAME
-	,fkc.referenced_object_id AS ReferencedTableObject_id
-	,object_schema_name(fkc.referenced_object_id) AS [ReferencedTableSchemaName]
-	,OBJECT_NAME(fkc.referenced_object_id) AS [ReferencedTableName]
-	,col2.name AS [referenced_column]
-	FROM 
-	sys.columns AS c
-	INNER JOIN sys.objects obj ON obj.OBJECT_ID=c.OBJECT_ID
-	LEFT JOIN sys.types t ON t.user_type_id = c.user_type_id
-	LEFT JOIN sys.extended_properties AS p ON p.major_id = c.OBJECT_ID
-		AND p.minor_id = c.column_id
-		AND p.CLASS = 1
-		AND p.name = 'MS_Description'
-	LEFT JOIN sys.identity_columns ident_col ON c.OBJECT_ID = ident_col.OBJECT_ID
-		AND c.column_id = ident_col.column_id
-	LEFT JOIN (
-		SELECT ic.OBJECT_ID , ic.column_id  
-		, is_primary_key
-		FROM sys.index_columns  ic
-		LEFT JOIN sys.indexes AS i ON i.OBJECT_ID = ic.OBJECT_ID
-			AND i.index_id = ic.index_id
-		WHERE is_primary_key=1
-	)ic ON ic.OBJECT_ID = c.OBJECT_ID
-		AND ic.column_id = c.column_id
-	LEFT JOIN sys.foreign_key_columns fkc ON c.column_id = fkc.parent_column_id
-		AND c.OBJECT_ID = fkc.parent_object_id
-	LEFT JOIN sys.objects fk_obj ON fk_obj.OBJECT_ID = fkc.constraint_object_id
-	LEFT JOIN sys.columns col2 ON col2.column_id = referenced_column_id 
-		AND col2.OBJECT_ID = fkc.referenced_object_id
-	WHERE OBJECTPROPERTY(c.OBJECT_ID, 'IsMsShipped') = 0 
-		AND obj.TYPE IN ('U', 'V')
-
-	union all -- parameters
-
 	SELECT 
-		@@SERVERNAME AS ServerName
+		@@SERVERNAME AS SERVERNAME
+		,DB_NAME() AS DatabaseName
+		,[ObjectType] = obj.TYPE
+		,object_schema_name(C.OBJECT_ID) AS [SchemaName]
+		,OBJECT_NAME(c.OBJECT_ID) AS [ObjectName]
+		,c.name
+		,c.column_id
+		,t.name AS datatype
+		,c.max_length
+		,c.PRECISION
+		,c.scale
+		,c.collation_name
+		,c.is_nullable
+		,c.is_identity
+		,c.is_computed
+		,ic.is_primary_key
+		,CAST(ident_col.seed_value AS INT) AS ident_col_seed_value
+		,CAST(ident_col.increment_value AS INT) AS ident_col_increment_value
+		,object_definition(c.default_object_id) AS Column_Default
+		,CAST(p.value AS NVARCHAR(MAX)) AS DocumentationDescription
+	FROM sys.columns AS c
+	INNER JOIN sys.objects obj
+		ON obj.OBJECT_ID = c.OBJECT_ID
+	LEFT JOIN sys.types t
+		ON t.user_type_id = c.user_type_id
+	LEFT JOIN sys.identity_columns ident_col
+		ON c.OBJECT_ID = ident_col.OBJECT_ID
+			AND c.column_id = ident_col.column_id
+	LEFT JOIN (
+		SELECT ic.OBJECT_ID
+			,ic.column_id
+			,is_primary_key
+		FROM sys.index_columns ic
+		LEFT JOIN sys.indexes AS i
+			ON i.OBJECT_ID = ic.OBJECT_ID
+				AND i.index_id = ic.index_id
+		WHERE is_primary_key = 1
+		) ic
+		ON ic.OBJECT_ID = c.OBJECT_ID
+			AND ic.column_id = c.column_id
+	LEFT JOIN sys.extended_properties AS p
+		ON p.major_id = c.OBJECT_ID
+			AND p.minor_id = c.column_id
+			AND p.CLASS = 1
+			AND p.name = 'MS_Description'
+	WHERE obj.TYPE IN ('U','V')
+
+
+	UNION ALL -- parameters
+
+	SELECT  
+		@@SERVERNAME AS SERVERNAME
 		,DB_NAME() AS DatabaseName
 		,[objectType] =sp.TYPE
-		,[objectTypeDescription] =NULL-- c.type_desc
-		,sp.OBJECT_ID
 
 		,object_schema_name(sp.OBJECT_ID) AS [TableSchemaName]
 		,OBJECT_NAME(sp.OBJECT_ID) AS [TableName]
 		,par.name
-		,CAST(p.value AS NVARCHAR(MAX) ) AS DocumentationDescription
 		,par.parameter_id
 		,t.name AS datatype
 		,par.max_length
 		,par.PRECISION
 		,par.scale
 		,NULL AS collation_name
-		,NULL AS is_nullable
-		,NULL AS is_identity
-		,NULL AS ident_col_seed_value 
-		,NULL AS ident_col_increment_value 
-		,NULL AS is_computed
+		,0 AS is_nullable
+		,0 AS is_identity
+		,0 AS is_computed
+		,0 AS is_primary_key
+		,0 AS ident_col_seed_value 
+		,0 AS ident_col_increment_value 
 		,NULL AS Column_Default 
-		,NULL AS PK 
-		,NULL AS FK_NAME
-		,NULL AS ReferencedTableObject_id
-		,NULL AS [ReferencedTableSchemaName]
-		,NULL AS [ReferencedTableName]
-		,NULL AS [referenced_column]
+		,CAST(p.value AS NVARCHAR(MAX) ) AS DocumentationDescription
 	FROM
 	sys.all_objects AS sp
-	INNER JOIN sys.parameters par ON sp.Object_id = par.Object_id
+	INNER JOIN sys.PARAMETERS par ON sp.OBJECT_ID = par.OBJECT_ID
 	LEFT JOIN sys.types t ON t.user_type_id = par.user_type_id
-	left JOIN sys.extended_properties AS p ON p.major_id=sp.object_id AND p.class=2
+	LEFT JOIN sys.extended_properties AS p ON p.major_id=sp.OBJECT_ID AND p.CLASS=2
 			AND p.minor_id = par.parameter_id
 			AND p.name =  'MS_Description'
-	Where par.name!='' --return value for functions
-
-; 
+	WHERE par.name!=''; 
 "@
     return  $queryColumns
 
@@ -537,6 +520,34 @@ WHERE db.name = db_name()
     return $query
 }
 
+function SQLColumnReference {
+$query=@"
+SELECT 
+	@@SERVERNAME AS ServerName
+	,DB_NAME() AS DatabaseName
+	,object_schema_name(C.OBJECT_ID) AS [SchemaName]
+	,OBJECT_NAME(c.OBJECT_ID) AS [ObjectName]
+	,c.name
+	,c.column_id
+	,fk_obj.name AS FK_NAME
+	,object_schema_name(fkc.referenced_object_id) AS [ReferencedTableSchemaName]
+	,OBJECT_NAME(fkc.referenced_object_id) AS [ReferencedTableName]
+	,col2.name AS [referenced_column]
+FROM sys.columns AS c
+INNER JOIN sys.objects obj
+	ON obj.OBJECT_ID = c.OBJECT_ID
+LEFT JOIN sys.foreign_key_columns fkc
+	ON c.column_id = fkc.parent_column_id
+		AND c.OBJECT_ID = fkc.parent_object_id
+LEFT JOIN sys.objects fk_obj
+	ON fk_obj.OBJECT_ID = fkc.constraint_object_id
+LEFT JOIN sys.columns col2
+	ON col2.column_id = referenced_column_id
+		AND col2.OBJECT_ID = fkc.referenced_object_id
+WHERE fk_obj.name IS NOT NULL
+"@
+	return $query
+}
 
 function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Credential) {
     $Procedure = "[dbo].[usp_ObjectCodeUpdate]"
@@ -624,6 +635,11 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
 Write-Verbose "Start  SQLDocColumnQuery"
 $query = SQLDocColumnQuery  -extentedPropertyName $extentedPropertyName 
 Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ColumnDocUpdate]" -ProcedureParamName  "@TVP"
+
+Write-Verbose "Start  SQLColumnReference"
+$query = SQLColumnReference
+Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLColumnReference]" -ProcedureParamName  "@TVP"
+
 
 Write-Verbose "Start Get-SQLDOCReferencedObjectQuery"
 $query = Get-SQLDOCReferencedObjectQuery  -extentedPropertyName $extentedPropertyName 

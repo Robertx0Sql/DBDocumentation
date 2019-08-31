@@ -14,12 +14,10 @@ BEGIN
 		[ServerName]
 		,[DatabaseName]
 		,[objectType]
-		,[object_id]
-		,[TableSchemaName]
-		,[TableName]
-		,[name]
-		,[DocumentationDescription]
-		,[column_id]
+		,[ObjectSchemaName]
+		,[ObjectName]
+		,[ColumnName]
+		,[ColumnId]
 		,[datatype]
 		,[max_length]
 		,[precision]
@@ -27,45 +25,38 @@ BEGIN
 		,[collation_name]
 		,[is_nullable]
 		,[is_identity]
-		,[ident_col_seed_value]
-		,[ident_col_increment_value]
 		,[is_computed]
+		,[is_primary_key]
 		,[Column_Default]
-		,[PK]
-		,[FK_NAME]
-		,[ReferencedTableObject_id]
-		,[ReferencedTableSchemaName]
-		,[ReferencedTableName]
-		,[referenced_column]
-		,[objectTypeDescription]
+		,[DocumentationDescription]
 		)
 	SELECT [ServerName]
 		,[DatabaseName]
 		,[objectType]
-		,[object_id]
-		,[TableSchemaName]
-		,[TableName]
-		,[name]
-		,[DocumentationDescription]
+		,[SchemaName]
+		,[ObjectName]
+		,[ColumnName]
 		,[column_id]
 		,[datatype]
 		,[max_length]
 		,[precision]
 		,[scale]
 		,[collation_name]
-		,[is_nullable]
-		,[is_identity]
-		,[ident_col_seed_value]
-		,[ident_col_increment_value]
-		,[is_computed]
-		,[Column_Default]
-		,[PK]
-		,[FK_NAME]
-		,[ReferencedTableObject_id]
-		,[ReferencedTableSchemaName]
-		,[ReferencedTableName]
-		,[referenced_column]
-		,[objectTypeDescription]
+		,ISNULL([is_nullable], 0)
+		,ISNULL([is_identity], 0)
+		,ISNULL([is_computed], 0)
+		,ISNULL([is_primary_key], 0) AS [is_primary_key]
+		,CASE 
+			WHEN ISNULL([is_identity], 0) = 1 /**/
+				THEN CONCAT (
+						'identity('
+						,[ident_col_seed_value]
+						,','
+						,[ident_col_increment_value]
+						,')'
+						)
+			ELSE [Column_Default]
+			END
+		,[DocumentationDescription]
 	FROM @TVP;
 END;
-

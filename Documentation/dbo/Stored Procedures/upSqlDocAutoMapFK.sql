@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[upSqlDocAutoMapFK] (
+﻿CREATE PROCEDURE [dbo].[upSqlDocAutoMapFK] (
 	@Server VARCHAR(255)
 	,@DatabaseName VARCHAR(255)
 	)
@@ -16,17 +15,17 @@ BEGIN
 		,referenced_column
 		,FK_NAME
 		,matchid
-		, count(1) over (partition by  
-						TableSchemaName
-		,TableName
-		,name
-					) as FKCount
+		,count(1) OVER (
+			PARTITION BY TableSchemaName
+			,TableName
+			,name
+			) AS FKCount
 	FROM dbo.vwAutoMapFK
 	WHERE SERVERNAME = @Server
 		AND DatabaseName = @DatabaseName
-	order by TableSchemaName
+	ORDER BY TableSchemaName
 		,TableName
 		,name
 		,ReferencedTableSchemaName
 		,ReferencedTableName
-	END
+END
