@@ -1,10 +1,13 @@
-﻿CREATE VIEW [dbo].[vwObjectTypeList] 
+﻿
+
+CREATE VIEW [dbo].[vwObjectTypeList] 
 AS
 SELECT TG.TypeGroup
 	,TG.TypeGroupOrder
 	,T.[TypeCode]
 	,T.[TypeDescriptionSQL]
 	,T.[TypeDescriptionUser]
+	,T.SMOObjectType
 	,TypeOrder =ROW_NUMBER() OVER (PARTITION BY TG.TypeGroup ORDER BY T.typeCode DESC)
 	,TypeCount = COUNT(1) OVER (PARTITION BY TG.TypeGroup )
 	,UserModeFlag
@@ -21,39 +24,39 @@ SELECT TG.TypeGroup
 ) AS TG (TypeGroup,TypeGroupOrder, UserModeFlag) 
 LEFT JOIN 
 	(VALUES 
-		( N'U' , N'USER_TABLE' , N'Table'  ,N'Tables'  )
-		,( N'V' , N'VIEW' , N'View'  , N'Views'  ) 
-		,( N'P' , N'SQL_STORED_PROCEDURE' , N'Stored Procedure' ,'Procedures' )
-		,( N'TR' , N'SQL_TRIGGER' , N'Trigger'  ,'Triggers' )
-		,( N'FN' , N'SQL_SCALAR_FUNCTION' , N'SQL Scalar Function' ,'Functions' )
-		,( N'TF' , N'SQL_TABLE_VALUED_FUNCTION' , N'SQL table-valued-function'  ,'Functions' )
-		,( N'PK' , N'PRIMARY_KEY_CONSTRAINT' , N'Primary Key Constraint'  , 'Constraints')
-		,( N'C' , N'CHECK_CONSTRAINT' , N'Check Constraint'  , 'Constraints')
-		,( N'D' , N'DEFAULT_CONSTRAINT' , N'Default Constraint'  , 'Constraints')
-		,( N'F' , N'FOREIGN_KEY_CONSTRAINT' , N'Foreign Key Constraint'  , 'Constraints')
-		,( N'UQ' , N'UNIQUE_CONSTRAINT' , N'Unique Constraint'  , 'Constraints')
-		,( N'INDEX' , N'INDEX' , N'Index'  , 'Indexes')
-		,( N'SQ' , N'SERVICE_QUEUE' , N'Service Queue'  , 'Other')
+		 ('AF', 'AGGREGATE_FUNCTION', 'Aggregatefunction(CLR)', 'Aggregatefunction(CLR)', 'Other')
+		,('C', 'CHECK_CONSTRAINT', 'CheckConstraint', 'Check', 'Constraints')
+		,('D', 'DEFAULT_CONSTRAINT', 'DefaultConstraint', 'Default', 'Constraints')
+		,('F', 'FOREIGN_KEY_CONSTRAINT', 'ForeignKeyConstraint', 'ForeignKey', 'Constraints')
+		,('FN', 'SQL_SCALAR_FUNCTION', 'SQLScalarFunction', 'UserDefinedFunction', 'Functions')
+		,('FS', 'CLR_SCALAR_FUNCTION', 'Assembly(CLR)scalar-function', 'Assembly(CLR)scalar-function', 'Functions')
+		,('FT', 'CLR_TABLE_VALUED_FUNCTION', 'Assembly(CLR)table-valuedfunction', 'Assembly(CLR)table-valuedfunction', 'Functions')
+		,('IF', 'SQL_INLINE_TABLE_VALUED_FUNCTION', 'SQLInlinetable-valuedfunction', 'UserDefinedFunction', 'Functions')
+		,('IT', 'INTERNAL_TABLE', 'Internaltable', 'Table', 'Other')
+		,('P', 'SQL_STORED_PROCEDURE', 'StoredProcedure', 'StoredProcedure', 'Procedures')
+		,('PC', 'CLR_STORED_PROCEDURE', 'Assembly(CLR)stored-procedure', 'Assembly(CLR)stored-procedure', 'Procedures')
+		,('PG', 'PLAN_GUIDE', 'Planguide', 'PlanGuide', 'Other')
+		,('PK', 'PRIMARY_KEY_CONSTRAINT', 'PrimaryKeyConstraint', 'PrimaryKey', 'Indexes')
+		,('R', 'RULE', 'Rule(old-style,stand-alone)', 'Rule', 'Other')
+		,('RF', 'REPLICATION_FILTER_PROCEDURE', 'Replication-filter-procedure',NULL, 'Other')
+		,('S', 'SYSTEM_TABLE', 'Systembasetable', 'SystemTable', 'Other')
+		,('SN', 'SYNONYM', 'Synonym', 'Synonym', 'Other')
+		,('SO', 'SEQUENCE_OBJECT', 'Sequenceobject', 'Sequenceobject', 'Other')
+		,('SQ', 'SERVICE_QUEUE', 'ServiceQueue', 'ServiceQueue', 'Other')
+		,('TA', 'CLR_TRIGGER', 'Assembly(CLR)DMLtrigger', 'Assembly(CLR)DMLtrigger', 'Other')
+		,('TF', 'SQL_TABLE_VALUED_FUNCTION', 'SQLtable-valued-function', 'UserDefinedFunction', 'Functions')
+		,('TR', 'SQL_TRIGGER', 'Trigger', 'Trigger', 'Triggers')
+		,('TT', 'TABLE_TYPE', 'Table Type', 'UserDefinedTableType', 'Other')
+		,('U', 'USER_TABLE', 'Table', 'Table', 'Tables')
+		,('UQ', 'UNIQUE_CONSTRAINT', 'UniqueConstraint', 'UniqueConstraint', 'Constraints')
+		,('V', 'VIEW', 'View', 'View', 'Views')
+		,('X', 'EXTENDED_STORED_PROCEDURE', 'Extendedstoredprocedure', 'Extendedstoredprocedure', 'Procedures')
+--non SQL Object types  
+		,('UDDT','User_Defined_DataType','User Defined Data Type' ,'UserDefinedDataType' ,'Other')
+		,('INDEX' , N'INDEX' , N'Index'  , N'Index'  , 'Indexes')
+		,('SCHEMA' , N'Schema' , N'Schema'  , N'Schema'  , 'Other')
+		,('ROLE' , N'ROLE' , N'Role'  , N'DatabaseRole'  , 'Other')
 
-		,( N'FS','CLR_SCALAR_FUNCTION','Assembly (CLR) scalar-function' , 'Functions')
-		,( N'FT','CLR_TABLE_VALUED_FUNCTION','Assembly (CLR) table-valued function' , 'Functions')
-		,( N'IF','SQL_INLINE_TABLE_VALUED_FUNCTION','SQL Inline table-valued function' , 'Functions')
-		,( N'IT','INTERNAL_TABLE','Internal table' , 'Other')
-	
-		,( N'SN','SYNONYM','Synonym' , 'Other')
-		,(	'TT'	,'TABLE_TYPE'	,'Table type',  'Other')
-		,( N'PC','CLR_STORED_PROCEDURE','Assembly (CLR) stored-procedure' , 'Procedures')
-		,(	'X'	,'EXTENDED_STORED_PROCEDURE'	,'Extended stored procedure'	, 'Procedures')
-
-		,(	'S'	,'SYSTEM_TABLE'	,'System base table'	, 'Other')
-		,(	'SO'	,'SEQUENCE_OBJECT'	,'Sequence object'	, 'Other')
-		,(	'TA'	,'CLR_TRIGGER'	,'Assembly (CLR) DML trigger'	, 'Other')
-		,(	'AF'	,'AGGREGATE_FUNCTION'	,'Aggregate function (CLR)'	, 'Other')
-
-		,(	'R'	,'RULE'	,'Rule (old-style, stand-alone)'	, 'Other')
-		,(	'RF'	,'REPLICATION_FILTER_PROCEDURE'	,'Replication-filter-procedure'	, 'Other')
-		,(	'PG'	,'PLAN_GUIDE'	,'Plan guide'	, 'Other')
-
-	)	AS T ([TypeCode], [TypeDescriptionSQL], [TypeDescriptionUser], TypeGroup)
+	)	AS T ([TypeCode], [TypeDescriptionSQL], [TypeDescriptionUser],SMOObjectType, TypeGroup)
 ON tg.TypeGroup= T.TypeGroup;
 

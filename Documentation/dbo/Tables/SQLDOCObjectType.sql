@@ -4,6 +4,7 @@
     [TypeGroupOrder]      INT           NOT NULL,
     [TypeDescriptionSQL]  NVARCHAR (50) NULL,
     [TypeDescriptionUser] NVARCHAR (50) NULL,
+    [SMOObjectType]       NVARCHAR (50) NULL,
     [TypeOrder]           BIGINT        NULL,
     [TypeCount]           INT           NULL,
     [UserModeFlag]        BIT           NULL,

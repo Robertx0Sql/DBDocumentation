@@ -558,9 +558,11 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
     $IncludeTypes = @(
 		"Defaults",
 		"ExtendedStoredProcedures"
+        #,"FileGroups"
 		,"PartitionFunctions","PartitionSchemes",
 		"Roles","Rules"
-		,"Schemas"
+        , "Schemas"
+        , "Tables"
 		,"StoredProcedures"
 		,"Synonyms"
 		,"UserDefinedAggregates","UserDefinedDataTypes","UserDefinedFunctions","UserDefinedTableTypes","UserDefinedTypes"
@@ -570,6 +572,24 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
     $ExcludeSchemas = @("sys", "Information_Schema")
     $so = new-object ('Microsoft.SqlServer.Management.Smo.ScriptingOptions')
 	
+	$so.ClusteredIndexes = $True;
+	$so.ConvertUserDefinedDataTypesToBaseType = $false;
+	$so.NonClusteredIndexes = $false
+	$so.WithDependencies = $False
+	$so.Indexes = $True   
+	$so.DriAllConstraints = $True
+	$so.Triggers = $True
+	$so.FullTextIndexes = $True
+	$so.NoCollation = $True
+	$so.Bindings = $False
+	$so.IncludeIfNotExists = $false;
+	$so.ScriptBatchTerminator = $True;
+	$so.ExtendedProperties = $false
+	$so.DriNonClustered = $True
+	$so.DriUniqueKeys = $True
+	$so.DriDefaults = $True
+	$so.DriAllConstraints = $True
+
     if ($null -ne $Credential) {
         $UserName = $Credential.UserName
         $UserPassword = $Credential.GetNetworkCredential().Password
@@ -592,40 +612,42 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
     $dt = New-Object System.Data.Datatable 
     $col1 = New-Object system.Data.DataColumn SERVERNAME, ([string])
     $col2 = New-Object system.Data.DataColumn DatabaseName, ([string])
-    $col3 = New-Object system.Data.DataColumn SchemaName, ([string])
-    $col4 = New-Object system.Data.DataColumn ObjectName, ([string])
-    $col5 = New-Object system.Data.DataColumn sql, ([string])
+    $col3 = New-Object system.Data.DataColumn SmoType, ([string])
+	
+    $col4 = New-Object system.Data.DataColumn SchemaName, ([string])
+    $col5 = New-Object system.Data.DataColumn ObjectName, ([string])
+    $col6 = New-Object system.Data.DataColumn sql, ([string])
+	
     $dt.columns.add($col1)
     $dt.columns.add($col2)
     $dt.columns.add($col3)
     $dt.columns.add($col4)
     $dt.columns.add($col5)
+    $dt.columns.add($col6)
 
     #$result =
     foreach ($Type in $IncludeTypes) {
 
-        foreach ($objs in $db.$Type) { 
+        foreach ($objs in $db.$Type | Where-Object { !($_.IsSystemObject) }) { 
             If ($ExcludeSchemas -notcontains $objs.Schema ) {
                         
-                $ObjName = "$objs".replace("[$($objs.Schema)].", "").replace("[", "").replace("]", "")                  
+                $schema = $objs.Schema
+                $ObjName = $objs.Name 
+                $ObjectType = $objs.GetType().Name 
+
+				#Write-Verbose  "$ObjectType, $schema , $ObjName"
 
                 $ofs = ""
                 $sql = ( [string]$objs.Script($so) ).replace("SET ANSI_NULLS ONSET QUOTED_IDENTIFIER ON", "")
 
-                [void]$dt.Rows.Add($ServerSource, $DatabaseSource, "$($objs.Schema)" , $ObjName , $sql )
-                <#  [pscustomobject]@{ #Output object  prefix with Field_# as the ConvertTo-DataTable orders the fields by name
-                    Field_1_SERVERNAME   = $ServerSource
-                    Field_2_DatabaseName = $DatabaseSource
-                    Field_3_SchemaName   = "$($objs.Schema)"
-                    Field_4_ObjectName   = $ObjName
-                    Field_5_sql          = $sql
-				}
-				#>
+			    [void]$dt.Rows.Add($ServerSource, $DatabaseSource , $ObjectType , $schema , $ObjName , $sql )
+				#Write-Verbose " complete"
+
+				
             }
         }
     }     
 	
-
 
     Save-DoctoDb $SQLConnectionString  -Procedure  $Procedure  -ProcedureParamName $ProcedureParamName  -ProcedureParamValue $dt
 }
