@@ -1046,7 +1046,7 @@
                 <Value>=Fields!referencing_entity_name.Value</Value>
               </SortExpression>
             </SortExpressions>
-            <Top>22.19164cm</Top>
+            <Top>23.14414cm</Top>
             <Height>1.2cm</Height>
             <Width>16.79239cm</Width>
             <ZIndex>2</ZIndex>
@@ -1073,7 +1073,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox55</rd:DefaultName>
-            <Top>21.55395cm</Top>
+            <Top>22.50645cm</Top>
             <Height>0.6cm</Height>
             <Width>16.79239cm</Width>
             <ZIndex>3</ZIndex>
@@ -2930,7 +2930,7 @@
                     </Visibility>
                     <Style>
                       <Border>
-                        <Style>None</Style>
+                        <Style>Dotted</Style>
                       </Border>
                       <BackgroundColor>White</BackgroundColor>
                       <BackgroundGradientType>None</BackgroundGradientType>
@@ -3348,7 +3348,7 @@
                     <rd:DefaultName>Textbox55</rd:DefaultName>
                     <Top>3.88845cm</Top>
                     <Height>0.5cm</Height>
-                    <Width>5.54271cm</Width>
+                    <Width>12.10438cm</Width>
                     <ZIndex>6</ZIndex>
                     <Style>
                       <Border>
@@ -3381,7 +3381,7 @@
                     <Top>3.88845cm</Top>
                     <Left>18.1739cm</Left>
                     <Height>0.5cm</Height>
-                    <Width>5.54271cm</Width>
+                    <Width>10.14646cm</Width>
                     <ZIndex>7</ZIndex>
                     <Style>
                       <Border>
@@ -3393,10 +3393,152 @@
                       <PaddingBottom>2pt</PaddingBottom>
                     </Style>
                   </Textbox>
+                  <Tablix Name="Tablix1">
+                    <TablixBody>
+                      <TablixColumns>
+                        <TablixColumn>
+                          <Width>15.28356cm</Width>
+                        </TablixColumn>
+                      </TablixColumns>
+                      <TablixRows>
+                        <TablixRow>
+                          <Height>0.6cm</Height>
+                          <TablixCells>
+                            <TablixCell>
+                              <CellContents>
+                                <Textbox Name="Textbox25">
+                                  <CanGrow>true</CanGrow>
+                                  <KeepTogether>true</KeepTogether>
+                                  <Paragraphs>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value>Referenced By</Value>
+                                          <Style>
+                                            <FontSize>9pt</FontSize>
+                                            <FontWeight>Bold</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style />
+                                    </Paragraph>
+                                  </Paragraphs>
+                                  <rd:DefaultName>Textbox25</rd:DefaultName>
+                                  <Style>
+                                    <Border>
+                                      <Color>LightGrey</Color>
+                                      <Style>Solid</Style>
+                                    </Border>
+                                    <PaddingLeft>2pt</PaddingLeft>
+                                    <PaddingRight>2pt</PaddingRight>
+                                    <PaddingTop>2pt</PaddingTop>
+                                    <PaddingBottom>2pt</PaddingBottom>
+                                  </Style>
+                                </Textbox>
+                              </CellContents>
+                            </TablixCell>
+                          </TablixCells>
+                        </TablixRow>
+                        <TablixRow>
+                          <Height>0.6cm</Height>
+                          <TablixCells>
+                            <TablixCell>
+                              <CellContents>
+                                <Textbox Name="Textbox27">
+                                  <CanGrow>true</CanGrow>
+                                  <KeepTogether>true</KeepTogether>
+                                  <Paragraphs>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value>=Fields!referencing_schema_name.Value &amp; "." &amp; Fields!referencing_entity_name.Value</Value>
+                                          <Style>
+                                            <FontSize>8pt</FontSize>
+                                            <TextDecoration>Underline</TextDecoration>
+                                            <Color>="Blue"</Color>
+                                          </Style>
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style />
+                                    </Paragraph>
+                                  </Paragraphs>
+                                  <rd:DefaultName>Textbox27</rd:DefaultName>
+                                  <ActionInfo>
+                                    <Actions>
+                                      <Action>
+                                        <Drillthrough>
+                                          <ReportName>SQLDoc_Table</ReportName>
+                                          <Parameters>
+                                            <Parameter Name="Server">
+                                              <Value>=Fields!ServerName.Value</Value>
+                                            </Parameter>
+                                            <Parameter Name="Database">
+                                              <Value>=Fields!DatabaseName.Value</Value>
+                                            </Parameter>
+                                            <Parameter Name="Schema">
+                                              <Value>=Fields!referencing_schema_name.Value</Value>
+                                            </Parameter>
+                                            <Parameter Name="Object">
+                                              <Value>=Fields!referencing_entity_name.Value</Value>
+                                            </Parameter>
+                                            <Parameter Name="ObjectType">
+                                              <Value>=Fields!TypeDescriptionUser.Value</Value>
+                                            </Parameter>
+                                            <Parameter Name="UserMode">
+                                              <Value>=Parameters!UserMode.Value</Value>
+                                            </Parameter>
+                                          </Parameters>
+                                        </Drillthrough>
+                                      </Action>
+                                    </Actions>
+                                  </ActionInfo>
+                                  <Style>
+                                    <Border>
+                                      <Color>LightGrey</Color>
+                                      <Style>Solid</Style>
+                                    </Border>
+                                    <PaddingLeft>2pt</PaddingLeft>
+                                    <PaddingRight>2pt</PaddingRight>
+                                    <PaddingTop>2pt</PaddingTop>
+                                    <PaddingBottom>2pt</PaddingBottom>
+                                  </Style>
+                                </Textbox>
+                              </CellContents>
+                            </TablixCell>
+                          </TablixCells>
+                        </TablixRow>
+                      </TablixRows>
+                    </TablixBody>
+                    <TablixColumnHierarchy>
+                      <TablixMembers>
+                        <TablixMember />
+                      </TablixMembers>
+                    </TablixColumnHierarchy>
+                    <TablixRowHierarchy>
+                      <TablixMembers>
+                        <TablixMember>
+                          <KeepWithGroup>After</KeepWithGroup>
+                        </TablixMember>
+                        <TablixMember>
+                          <Group Name="Details7" />
+                        </TablixMember>
+                      </TablixMembers>
+                    </TablixRowHierarchy>
+                    <DataSetName>dsFKReferenceMapParent</DataSetName>
+                    <Top>14.25cm</Top>
+                    <Height>1.2cm</Height>
+                    <Width>15.28356cm</Width>
+                    <ZIndex>8</ZIndex>
+                    <Style>
+                      <Border>
+                        <Style>None</Style>
+                      </Border>
+                    </Style>
+                  </Tablix>
                 </ReportItems>
                 <KeepTogether>true</KeepTogether>
                 <Top>1.92394cm</Top>
-                <Height>14.40189cm</Height>
+                <Height>15.48668cm</Height>
                 <Width>47.24591cm</Width>
                 <ZIndex>2</ZIndex>
                 <Visibility>
@@ -3411,7 +3553,7 @@
             </ReportItems>
             <KeepTogether>true</KeepTogether>
             <Top>2.8023cm</Top>
-            <Height>16.64333cm</Height>
+            <Height>18.23083cm</Height>
             <Width>47.24591cm</Width>
             <ZIndex>4</ZIndex>
             <Visibility>
@@ -3845,7 +3987,7 @@
               </Textbox>
             </ReportItems>
             <KeepTogether>true</KeepTogether>
-            <Top>19.7318cm</Top>
+            <Top>20.6843cm</Top>
             <Height>1.6cm</Height>
             <Width>35.66488cm</Width>
             <ZIndex>5</ZIndex>
@@ -3890,7 +4032,7 @@
                     <Style>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>Underline</TextDecoration>
-                      <Color>="Blue"</Color>
+                      <Color>Blue</Color>
                     </Style>
                   </TextRun>
                   <TextRun>
@@ -3901,8 +4043,8 @@
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Label>type</Label>
-                    <Value>=iif(First(Fields!TypeGroup.Value, "dsObject") = First(Fields!TypeDescriptionUser.Value, "dsObject")+"s" , First(Fields!TypeGroup.Value, "dsObject"), First(Fields!TypeGroup.Value, "dsObject") + " (" + First(Fields!TypeDescriptionUser.Value, "dsObject")+")" )</Value>
+                    <Label>ObjectType</Label>
+                    <Value>=First(Fields!TypeDescriptionUser.Value, "dsObject")</Value>
                     <ActionInfo>
                       <Actions>
                         <Action>
@@ -3929,7 +4071,7 @@
                     <Style>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>Underline</TextDecoration>
-                      <Color>="Blue"</Color>
+                      <Color>Blue</Color>
                     </Style>
                   </TextRun>
                   <TextRun>
@@ -4032,7 +4174,7 @@
               </Textbox>
             </ReportItems>
             <KeepTogether>true</KeepTogether>
-            <Top>26.4287cm</Top>
+            <Top>27.3812cm</Top>
             <Height>1.78813cm</Height>
             <Width>38.70329cm</Width>
             <ZIndex>7</ZIndex>
@@ -4263,7 +4405,7 @@
                 <Value>=Fields!referencing_entity_name.Value</Value>
               </SortExpression>
             </SortExpressions>
-            <Top>24.30476cm</Top>
+            <Top>25.25726cm</Top>
             <Height>1.2cm</Height>
             <Width>16.79239cm</Width>
             <ZIndex>8</ZIndex>
@@ -4290,7 +4432,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox55</rd:DefaultName>
-            <Top>23.66707cm</Top>
+            <Top>24.61957cm</Top>
             <Height>0.6cm</Height>
             <Width>16.79239cm</Width>
             <ZIndex>9</ZIndex>
@@ -4305,7 +4447,7 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>11.10899in</Height>
+        <Height>12.23399in</Height>
         <Style />
       </Body>
       <Width>18.60075in</Width>

@@ -149,7 +149,6 @@
               </Textbox>
             </ReportItems>
             <KeepTogether>true</KeepTogether>
-            <Left>0.02119cm</Left>
             <Height>0.81167cm</Height>
             <Width>22.18439cm</Width>
             <Style>
@@ -176,102 +175,12 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox93</rd:DefaultName>
-            <Top>1.3839cm</Top>
-            <Left>0.01239cm</Left>
+            <Top>1.0664cm</Top>
             <Height>0.6cm</Height>
             <Width>4.32562cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Textbox94">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>Database:</Value>
-                    <Style>
-                      <FontSize>11pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox93</rd:DefaultName>
-            <Top>1.9839cm</Top>
-            <Left>0.01239cm</Left>
-            <Height>0.6cm</Height>
-            <Width>4.32562cm</Width>
-            <ZIndex>2</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Textbox88">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=Parameters!Database.Value</Value>
-                    <Style>
-                      <FontSize>11pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                      <TextDecoration>Underline</TextDecoration>
-                      <Color>="Blue"</Color>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox88</rd:DefaultName>
-            <ActionInfo>
-              <Actions>
-                <Action>
-                  <Drillthrough>
-                    <ReportName>SQLDoc_Database</ReportName>
-                    <Parameters>
-                      <Parameter Name="Server">
-                        <Value>=Parameters!Server.Value</Value>
-                      </Parameter>
-                      <Parameter Name="Database">
-                        <Value>=Parameters!Database.Value</Value>
-                      </Parameter>
-                      <Parameter Name="UserMode">
-                        <Value>=Parameters!UserMode.Value</Value>
-                      </Parameter>
-                    </Parameters>
-                  </Drillthrough>
-                </Action>
-              </Actions>
-            </ActionInfo>
-            <Top>1.9839cm</Top>
-            <Left>4.71897cm</Left>
-            <Height>0.6cm</Height>
-            <Width>17.48661cm</Width>
-            <ZIndex>3</ZIndex>
-            <Style>
-              <Border>
-                <Color>LightGrey</Color>
                 <Style>None</Style>
               </Border>
               <PaddingLeft>2pt</PaddingLeft>
@@ -314,11 +223,11 @@
                 </Action>
               </Actions>
             </ActionInfo>
-            <Top>1.29444cm</Top>
-            <Left>4.71897cm</Left>
+            <Top>1.0664cm</Top>
+            <Left>4.62666cm</Left>
             <Height>0.6cm</Height>
             <Width>17.48661cm</Width>
-            <ZIndex>4</ZIndex>
+            <ZIndex>2</ZIndex>
             <Style>
               <Border>
                 <Color>LightGrey</Color>
@@ -334,7 +243,7 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>6.1914cm</Width>
+                  <Width>7.01858cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>3.46271cm</Width>
@@ -345,7 +254,7 @@
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.67938cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -618,20 +527,120 @@
               </SortExpression>
             </SortExpressions>
             <Top>2.99985cm</Top>
-            <Height>1.13385cm</Height>
-            <Width>26.42661cm</Width>
-            <ZIndex>5</ZIndex>
+            <Height>1.21323cm</Height>
+            <Width>27.25379cm</Width>
+            <ZIndex>3</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
               </Border>
             </Style>
           </Tablix>
+          <Textbox Name="Textbox2">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Label>Server</Label>
+                    <Value>=Parameters!Server.Value</Value>
+                    <ActionInfo>
+                      <Actions>
+                        <Action>
+                          <Drillthrough>
+                            <ReportName>SQLDb Documentation</ReportName>
+                            <Parameters>
+                              <Parameter Name="UserMode">
+                                <Value>=Parameters!UserMode.Value</Value>
+                              </Parameter>
+                            </Parameters>
+                          </Drillthrough>
+                        </Action>
+                      </Actions>
+                    </ActionInfo>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                      <TextDecoration>Underline</TextDecoration>
+                      <Color>="Blue"</Color>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Label>spacer</Label>
+                    <Value>=" - "</Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>="Blue"</Color>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Label>Database</Label>
+                    <Value>=Parameters!Database.Value</Value>
+                    <ActionInfo>
+                      <Actions>
+                        <Action>
+                          <Drillthrough>
+                            <ReportName>SQLDoc_Database</ReportName>
+                            <Parameters>
+                              <Parameter Name="Server">
+                                <Value>=Parameters!Server.Value</Value>
+                              </Parameter>
+                              <Parameter Name="Database">
+                                <Value>=Parameters!Database.Value</Value>
+                              </Parameter>
+                              <Parameter Name="UserMode">
+                                <Value>=Parameters!UserMode.Value</Value>
+                              </Parameter>
+                            </Parameters>
+                          </Drillthrough>
+                        </Action>
+                      </Actions>
+                    </ActionInfo>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                      <TextDecoration>Underline</TextDecoration>
+                      <Color>Blue</Color>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Label>spacer</Label>
+                    <Value>=" - "</Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>="Blue"</Color>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Label>ObjectType</Label>
+                    <Value>=Parameters!ObjectType.Value</Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox2</rd:DefaultName>
+            <Top>2.03412cm</Top>
+            <Height>0.61566cm</Height>
+            <Width>26.87788cm</Width>
+            <ZIndex>4</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
-        <Height>1.80754in</Height>
+        <Height>1.72119in</Height>
         <Style />
       </Body>
-      <Width>10.72984in</Width>
+      <Width>10.76133in</Width>
       <Page>
         <PageHeight>50cm</PageHeight>
         <PageWidth>21cm</PageWidth>
