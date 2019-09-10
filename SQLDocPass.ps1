@@ -231,14 +231,39 @@ SELECT
 	,OBJECT_NAME(ISNULL(NULLIF(c.parent_object_id, 0), C.OBJECT_ID)) AS [ParentObjectName]
 	,object_schema_name(C.OBJECT_ID) AS [SchemaName]
 	,OBJECT_NAME(c.OBJECT_ID) AS OBJECTNAME
-	,COALESCE(ic.fields, fk.fields, dcon.fields, ccon.fields) AS fields
+	,iif(c.type = 'U', NULL, COALESCE(pk.fields, ic.fields, fk.fields, dcon.fields, ccon.fields)) AS fields
 	,COALESCE(dcon.DEFINITION, ccon.DEFINITION) AS DEFINITION
 	,CAST(p.value AS NVARCHAR(MAX)) AS DocumentationDescription
 FROM sys.objects AS c
-LEFT JOIN sys.extended_properties AS p ON p.major_id = c.OBJECT_ID
+LEFT JOIN sys.extended_properties AS p
+	ON p.major_id = c.OBJECT_ID
 	AND p.CLASS = 1
 	AND p.minor_id = 0
 	AND p.name =  'MS_Description'
+LEFT JOIN /*PK fields*/
+	(
+	SELECT ic.object_id --tab.object_id
+		,pk.index_id
+		,pk.[name] AS pk_name
+		,fields = COALESCE(STUFF((
+					SELECT ', ' + COL_NAME(t.OBJECT_ID, t.column_id)
+					FROM sys.index_columns AS T
+					WHERE T.OBJECT_ID = IC.OBJECT_ID
+					FOR XML PATH('')
+					), 1, 2, N''), N'')
+	FROM sys.tables tab
+	INNER JOIN sys.indexes pk
+		ON tab.object_id = pk.object_id
+			AND pk.is_primary_key = 1
+	INNER JOIN sys.index_columns ic
+		ON ic.object_id = pk.object_id
+			AND ic.index_id = pk.index_id
+	GROUP BY ic.object_id
+		,pk.index_id
+		,pk.[name]
+	) pk
+	ON pk.object_id = c.parent_object_id
+		AND pk.pk_name = OBJECT_NAME(c.OBJECT_ID)
 LEFT JOIN /*index_columns*/ (
 	SELECT O.OBJECT_ID
 		,fields = COALESCE(STUFF((
@@ -248,27 +273,24 @@ LEFT JOIN /*index_columns*/ (
 					FOR XML PATH('')
 					), 1, 2, N''), N'')
 	FROM sys.index_columns O
-	LEFT JOIN sys.indexes AS i ON i.OBJECT_ID = O.OBJECT_ID
+	LEFT JOIN sys.indexes AS i
+		ON i.OBJECT_ID = O.OBJECT_ID
 		AND i.index_id = O.index_id
 	GROUP BY O.OBJECT_ID
-
-	) ic ON ic.OBJECT_ID = c.OBJECT_ID /*index_columns*/
+	) ic
+	ON ic.OBJECT_ID = c.OBJECT_ID /*index_columns*/
 LEFT JOIN /*foreign_key_columns*/(
-
-
 	SELECT O.constraint_object_id
 		,fields = COALESCE(STUFF((
 					SELECT ', ' + COL_NAME(t.parent_object_id, t.parent_column_id)
 					FROM sys.foreign_key_columns AS T
 					WHERE T.constraint_object_id = O.constraint_object_id
-				
 					FOR XML PATH('')
 					), 1, 2, N''), N'')
 	FROM sys.foreign_key_columns O
 	GROUP BY O.constraint_object_id
-
-
-	) fk ON fk.constraint_object_id = c.OBJECT_ID /*foreign_key_columns*/
+	) fk
+	ON fk.constraint_object_id = c.OBJECT_ID /*foreign_key_columns*/
 LEFT JOIN /*default_constraints*/ (
 	SELECT O.OBJECT_ID
 		,O.DEFINITION
@@ -282,9 +304,9 @@ LEFT JOIN /*default_constraints*/ (
 	FROM sys.default_constraints O
 	GROUP BY O.OBJECT_ID
 		,O.DEFINITION
-	) dcon ON dcon.OBJECT_ID = c.OBJECT_ID /*default_constraints*/
+	) dcon
+	ON dcon.OBJECT_ID = c.OBJECT_ID /*default_constraints*/
 LEFT JOIN /*check_constraints*/ (
-	
 	SELECT O.OBJECT_ID
 		,O.DEFINITION
 		,fields = COALESCE(STUFF((
@@ -297,8 +319,9 @@ LEFT JOIN /*check_constraints*/ (
 	FROM sys.check_constraints O
 	GROUP BY O.OBJECT_ID
 		,O.DEFINITION
-	) ccon ON ccon.OBJECT_ID = c.OBJECT_ID /*check_constraints*/
-WHERE c.TYPE NOT IN ('S', 'IT', 'SQ')
+	) ccon
+	ON ccon.OBJECT_ID = c.OBJECT_ID /*check_constraints*/
+WHERE c.TYPE NOT IN ('S', 'IT', 'TT','SQ')
 
 
 UNION ALL
