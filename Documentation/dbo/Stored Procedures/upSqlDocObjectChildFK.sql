@@ -20,12 +20,15 @@ AS (
 		,ObjectName AS FKName --AS [referenced_database_name]
 		,IIF(ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object, ParentSchemaName, ReferencedSchemaName) AS [referencing_schema_name]
 		,IIF(ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object, ParentObjectName, ReferencedObjectName) AS [referencing_entity_name]
-		,IIF(ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object, ReferencedSchemaName, ParentSchemaName) AS [referenced_schema_name]
-		,IIF(ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object, ReferencedObjectName, ParentObjectName) AS [referenced_entity_name]
-		,referencedColumnName as referenced_column
-		,TypeGroup
-		,TypeCode
-		,DocumentationLoadDate
+		
+
+		--,IIF(ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object, ReferencedSchemaName, ParentSchemaName) AS [referenced_schema_name]
+		--,IIF(ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object, ReferencedObjectName, ParentObjectName) AS [referenced_entity_name]
+		--,IIF(ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object, ReferencedTypeCode, ParentTypeCode) AS [referenced_TypeCode]
+		--,referencedColumnName AS referenced_column
+		--,TypeGroup
+		--,TypeCode
+		--,DocumentationLoadDate
 		,CASE WHEN ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object THEN 1 ELSE 0 END AS isChildFK
 	FROM dbo.vwChildObjects
 	WHERE TypeCode = 'F'
@@ -47,34 +50,34 @@ AS (
 	AS (
 	SELECT ServerName
 		,DatabaseName
+		,referencing_schema_name as ReferencedSchemaName
+		,referencing_entity_name as ReferencedObjectName
+		
 		,FKName
-		,referencing_schema_name
-		,referencing_entity_name
-		,referenced_schema_name
-		,referenced_entity_name
-		,referenced_column
-		,TypeGroup
-		,TypeCode
-		,DocumentationLoadDate
 		,isChildFK
 
 		,CONCAT (
 			[referencing_schema_name]
 			,[referencing_entity_name]
 			,FKName
-			,referenced_column
+			--,referenced_column
 			) AS Seq
 		,CONCAT (
 			[referencing_schema_name]
 			,'.'
 			,[referencing_entity_name]
 			) AS DimensionCaption
-		,@Object AS MeasureGroupCaption
+		,CONCAT (
+			NULLIF(@Schema, '')
+			,'.'
+			,@Object
+			) AS MeasureGroupCaption
 		
 		,'Table' as ReferencedObjectType
 		,'Table' AS [TypeDescriptionUser]
 	FROM CTE
 	where isChildFK=@FKType 
+	and referencing_entity_name is not null
 )
 		,TotCount
 	AS (
@@ -133,4 +136,4 @@ AS (
 	SELECT *
 	FROM Results;
 
-END
+END;

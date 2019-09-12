@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[upSqlDocObjectColumns] (
+﻿CREATE PROCEDURE [dbo].[upSqlDocObjectColumns] (
 	@Server VARCHAR(255)
 	,@DatabaseName VARCHAR(255)
 	,@Schema VARCHAR(255) = NULL
@@ -46,11 +45,12 @@ SELECT cd.[ServerName]
 					,cd.[ObjectName]
 					) > 1, 'composite PK', 'yes'), NULL) AS VARCHAR(25)) AS [PK]
 	,od.[ObjectName] AS [FK_NAME]
-	,iif(cd.TypeCode = 'V', vc.[SourceTableSchema], od.[ReferencedSchemaName]) AS [ReferencedTableSchemaName]
-	,iif(cd.TypeCode = 'V', vc.[SourceTableName], od.[ReferencedObjectName]) AS [ReferencedTableName]
-	,iif(cd.TypeCode = 'V', vc.[ColumnName], od.[ReferencedColumnName]) AS [referenced_column]
-	,iif(cd.TypeCode = 'V', vc.[SourceTableName] + '.' + vc.[ColumnName], od.ReferencedSchemaName + '.'+ od.[ReferencedObjectName] + '.' + od.[ReferencedColumnName]) AS FK
+	,iif(cd.TypeCode = 'V', vc.[SourceTableSchema], od.[ReferencedSchemaName]) AS [ReferencedSchemaName]
+	,iif(cd.TypeCode = 'V', vc.[SourceTableName], od.[ReferencedObjectName]) AS [ReferencedObjectName]
+	,IIF(cd.TypeCode = 'V', vc.TypeCode, 'U') AS RefencedTypeCode
+	,iif(cd.TypeCode = 'V', vc.[ColumnName], od.[ReferencedColumnName]) AS [ReferencedColumn]
 	,iif(cd.TypeCode = 'V', vc.TypeDescriptionUser, 'Table') AS ReferencedObjectType
+	,iif(cd.TypeCode = 'V', vc.[SourceTableName] + '.' + vc.[ColumnName], od.ReferencedSchemaName + '.'+ od.[ReferencedObjectName] + '.' + od.[ReferencedColumnName]) AS FK
 	,iif(od.[FK_NAME] IS NOT NULL, 'yes', NULL) AS isFK
 	,iif(cd.TypeCode = 'V', 'Source', 'FK') AS fk_title
 	,cd.DocumentationLoadDate

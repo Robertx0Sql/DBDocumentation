@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [dbo].[upSqlDocObjectChildObjects] (
+﻿CREATE PROCEDURE [dbo].[upSqlDocObjectChildObjects] (
 	@Server VARCHAR(255)
 	,@DatabaseName VARCHAR(255)
 	,@Schema VARCHAR(255) = NULL
@@ -17,9 +16,9 @@ SELECT [ServerName]
 	,DocumentationLoadDate
 	,fields
 	,DEFINITION
-	,ReferencedColumnName  as referenced_column
-	,ReferencedObjectName  as ReferencedTableName
-	,ReferencedSchemaName  as ReferencedTableSchemaName
+	,ReferencedColumnName  as ReferencedColumn
+	,ReferencedObjectName  as ReferencedObjectName
+	,ReferencedSchemaName  as ReferencedSchemaName
 	,ReferencedObjectType = 'Table'
 FROM dbo.vwChildObjects
 WHERE DatabaseName = @DatabaseName

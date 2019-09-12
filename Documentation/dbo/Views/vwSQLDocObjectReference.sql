@@ -1,6 +1,4 @@
-﻿
-
-CREATE VIEW [dbo].[vwSQLDocObjectReference]
+﻿CREATE VIEW [dbo].[vwSQLDocObjectReference]
 AS
 WITH cte
 AS (
@@ -10,12 +8,12 @@ AS (
 		,[referencing_entity_name]
 		,[referencing_TypeCode]
 		,referencing_TypeDescriptionSQL
-		,[referenced_server_name]
-		,[referenced_database_name]
+		,COALESCE([referenced_server_name], [ServerName]) AS [referenced_server_name]
+		,COALESCE([referenced_database_name], [DatabaseName]) AS [referenced_database_name]
 		,[referenced_schema_name]
 		,[referenced_entity_name]
 		,StagingDateTime AS DocumentationLoadDate
-	,'I' as RefType
+		,'I' AS DependencyTypeCode
 	FROM [Staging].[SQLDocObjectReference]
 	
 	UNION ALL
@@ -31,8 +29,7 @@ AS (
 		,[referencing_schema_name]
 		,[referencing_entity_name]
 		,R.StagingDateTime AS DocumentationLoadDate
-	,'O' as RefType
-
+		,'O' AS DependencyTypeCode
 	FROM [Staging].[SQLDocObjectReference] R
 	LEFT JOIN [dbo].[vwObjectDoc] OD
 		ON R.SERVERNAME = od.SERVERNAME
@@ -55,7 +52,7 @@ SELECT [ServerName]
 	,T.TypeGroupOrder
 	,T.TypeOrder
 	,DocumentationLoadDate
-	,RefType as ReferenceTypeCode
+	,DependencyTypeCode AS DependencyTypeCode
 	,t.UserModeFlag
 FROM cte
 LEFT JOIN dbo.vwObjectType T
