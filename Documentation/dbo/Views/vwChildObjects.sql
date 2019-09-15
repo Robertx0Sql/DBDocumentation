@@ -12,10 +12,12 @@ SELECT d.[ServerName]
 	,d.DocumentationLoadDate
 	,d.fields
 	,ISNULL(d.[Definition], od.ReferencedSchemaName + '.' + od.ReferencedObjectName + '.' + od.ReferencedColumnName) AS [Definition]
-	,ParentSchemaName
-	,ParentObjectName
+	,d.ParentSchemaName
+	,d.ParentObjectName
+	,d.ParentTypeCode
 	,od.ReferencedColumnName
 	,od.ReferencedObjectName
+	,iif(od.ReferencedObjectName IS NULL, NULL, 'U') AS ReferencedTypeCode
 	,od.ReferencedSchemaName
 	,d.UserModeFlag
 FROM dbo.vwObjectDoc d

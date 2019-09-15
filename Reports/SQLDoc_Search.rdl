@@ -48,12 +48,16 @@
           <DataField>DatabaseName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="SchemaName">
-          <DataField>SchemaName</DataField>
+        <Field Name="ReferencedSchemaName">
+          <DataField>ReferencedSchemaName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="ObjectName">
-          <DataField>ObjectName</DataField>
+        <Field Name="ReferencedObjectName">
+          <DataField>ReferencedObjectName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ReferencedTypeCode">
+          <DataField>ReferencedTypeCode</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="TypeDescriptionUser">
@@ -61,7 +65,7 @@
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="ObjectFullName">
-          <Value>=Fields!SchemaName.Value &amp; "." &amp; Fields!ObjectName.Value</Value>
+          <Value>=Fields!ReferencedSchemaName.Value &amp; "." &amp; Fields!ReferencedObjectName.Value</Value>
         </Field>
       </Fields>
     </DataSet>
@@ -560,14 +564,14 @@
                                     <Parameter Name="Database">
                                       <Value>=Fields!DatabaseName.Value</Value>
                                     </Parameter>
-                                    <Parameter Name="ObjectType">
-                                      <Value>=Fields!TypeDescriptionUser.Value</Value>
-                                    </Parameter>
                                     <Parameter Name="Schema">
-                                      <Value>=Fields!SchemaName.Value</Value>
+                                      <Value>=Fields!ReferencedSchemaName.Value</Value>
                                     </Parameter>
                                     <Parameter Name="Object">
-                                      <Value>=Fields!ObjectName.Value</Value>
+                                      <Value>=Fields!ReferencedObjectName.Value</Value>
+                                    </Parameter>
+                                    <Parameter Name="ObjectType">
+                                      <Value>=Fields!ReferencedTypeCode.Value</Value>
                                     </Parameter>
                                     <Parameter Name="UserMode">
                                       <Value>=Parameters!UserMode.Value</Value>
@@ -623,13 +627,13 @@
                                       <Value>=Fields!DatabaseName.Value</Value>
                                     </Parameter>
                                     <Parameter Name="ObjectType">
-                                      <Value>=Fields!TypeDescriptionUser.Value</Value>
+                                      <Value>=Fields!ReferencedTypeCode.Value</Value>
                                     </Parameter>
                                     <Parameter Name="Schema">
-                                      <Value>=Fields!SchemaName.Value</Value>
+                                      <Value>=Fields!ReferencedSchemaName.Value</Value>
                                     </Parameter>
                                     <Parameter Name="Object">
-                                      <Value>=Fields!ObjectName.Value</Value>
+                                      <Value>=Fields!ReferencedObjectName.Value</Value>
                                     </Parameter>
                                     <Parameter Name="UserMode">
                                       <Value>=Parameters!UserMode.Value</Value>

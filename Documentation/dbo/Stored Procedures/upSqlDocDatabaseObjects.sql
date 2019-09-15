@@ -2,28 +2,30 @@
 CREATE PROCEDURE [dbo].[upSqlDocDatabaseObjects] (
 	@Server VARCHAR(255) = NULL
 	,@DatabaseName VARCHAR(255) = NULL
-	,@ObjectType VARCHAR(255) = NULL
+	,@ObjectType VARCHAR(10) = NULL
 	,@Schema VARCHAR(255) = NULL
 	,@UserMode bit = 1
 	)
 AS
 SELECT [ServerName]
 	,[DatabaseName]
+	,SchemaName AS ReferencedSchemaName 
+	,ObjectName AS ReferencedObjectName 
+	,TypeCode AS ReferencedTypeCode
 	,TypeGroup
 	,[TypeDescriptionUser]
-	,SchemaName AS [TableSchemaName]
-	,ObjectName AS [TableName]
-	,[DocumentationDescription]
 	,TypeGroupOrder
 	,TypeOrder
 	,TypeCount
+	,[DocumentationDescription]
 	,DocumentationLoadDate
+
 FROM dbo.vwObjectDoc
 WHERE DatabaseName = @DatabaseName
 	AND SERVERNAME = @Server
 	AND Typecode != 'C' -- Check Constraint
 	AND (
-		[TypeDescriptionUser] = @ObjectType
+		TypeCode = @ObjectType
 		OR @ObjectType IS NULL
 		)
 	AND (
@@ -37,6 +39,6 @@ ORDER BY [ServerName]
 	,TypeOrder
 	,TypeGroup
 	,[TypeDescriptionUser]
-	,[TableSchemaName]
-	,[TableName];
+	,[SchemaName]
+	,[ObjectName];
 

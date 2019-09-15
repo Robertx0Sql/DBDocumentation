@@ -3,6 +3,7 @@
 	,@DatabaseName VARCHAR(255)
 	,@Schema VARCHAR(255)
 	,@Object VARCHAR(255)
+	,@ObjectType VARCHAR(10)
 	,@UserMode BIT = 1
 	)
 AS
@@ -24,6 +25,8 @@ BEGIN
 		AND SERVERNAME = @Server
 		AND [referenced_schema_name] = @Schema
 		AND [referenced_entity_name] = @Object
+		AND [referenced_entity_TypeCode] = @ObjectType
+
 		AND NOT (
 			[referencing_schema_name] = @Schema
 			AND [referencing_entity_name] = @Object
@@ -53,6 +56,9 @@ BEGIN
 		AND SERVERNAME = @Server
 		AND ReferencedSchemaName = @Schema
 		AND ReferencedObjectName = @Object
-		AND (@UserMode = UserModeFlag
-	or @UserMode = 0 )
-END
+		AND ReferencedTypeCode = @ObjectType
+		AND (
+			@UserMode = UserModeFlag
+			OR @UserMode = 0
+			);
+END;

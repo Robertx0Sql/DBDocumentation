@@ -9,6 +9,7 @@
     [referenced_database_name]       NVARCHAR (128) NULL,
     [referenced_schema_name]         NVARCHAR (128) NULL,
     [referenced_entity_name]         NVARCHAR (128) NOT NULL,
+	[referenced_TypeCode]			 VARCHAR (10)   NULL,
     [StagingId]                      INT            IDENTITY (1, 1) NOT NULL,
     [StagingDateTime]                DATETIME2 (7)  CONSTRAINT [DF_Staging_ObjectReference_StagingDateTime] DEFAULT (getutcdate()) NOT NULL,
     CONSTRAINT [PK_ObjectReference] PRIMARY KEY CLUSTERED ([StagingId] ASC)

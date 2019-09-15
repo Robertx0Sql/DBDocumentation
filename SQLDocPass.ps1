@@ -87,30 +87,35 @@ function Save-AutoMapForeignKeys($ServerInstance , $Database, $SQLConnectionStri
     $SQLconn.Close()
 	
 }
+
 function Get-SQLDOCReferencedObjectQuery($extentedPropertyName) {
     $query = @"
 	WITH CTE AS (
-		SELECT OBJECT_schema_NAME(referencing_id) AS referencing_schema_name
+		SELECT 
+			OBJECT_schema_NAME(referencing_id) AS referencing_schema_name
 			,OBJECT_NAME(referencing_id) AS referencing_entity_name
 			,o.type AS referencingTypeCode
-			,o.type_desc AS referencingTypeDescription
 			,referenced_server_name
 			,referenced_database_name
-			,coalesce(referenced_schema_name, object_schema_name(referenced_id)) AS referenced_schema_name
+			,iif(tt.is_table_type=1, 'TT', ref.type )  AS referencedTypeCode
+			,coalesce(referenced_schema_name, object_schema_name(referenced_id), schema_name(tt.schema_id)) AS referenced_schema_name
 			,referenced_entity_name
 	
 		FROM sys.sql_expression_dependencies AS sed
 		INNER JOIN sys.objects AS o
 			ON sed.referencing_id = o.object_id
-		
-		UNION ALL 
-		
-		SELECT coalesce(X.referencing_schema_name, OBJECT_SCHEMA_NAME(t.object_id)) as referencing_schema_name
+		left outer join  sys.objects ref on ref.object_id= sed.referenced_id
+		left outer join sys.table_types tt on tt.user_type_id =sed.referenced_id and tt.is_table_type=1
+
+		UNION ALL
+
+		SELECT 
+			coalesce(X.referencing_schema_name, OBJECT_SCHEMA_NAME(t.object_id)) as referencing_schema_name
 			,X.referencing_entity_name
 			,so.type AS referencingTypeCode
-			,so.type_desc AS referencingTypeDescription
 			,NULL AS referenced_server_name
 			,NULL AS referenced_database_name
+			,t.type AS referencedTypeCode
 			,OBJECT_SCHEMA_NAME(t.object_id) AS referenced_schema_name
 			,OBJECT_NAME(t.object_id) AS referenced_entity_name
 		FROM sys.tables t
@@ -118,19 +123,21 @@ function Get-SQLDOCReferencedObjectQuery($extentedPropertyName) {
 		LEFT JOIN sys.objects so
 			ON so.name = X.referencing_entity_name
 				AND schema_name(so.schema_id) = X.referencing_schema_name
-		)
+	
+	)
 	SELECT DISTINCT 
 		 @@SERVERNAME AS ServerName
 		,DB_NAME() AS DatabaseName
 		,X.referencing_schema_name
 		,X.referencing_entity_name
 		,referencingTypeCode
-		,referencingTypeDescription
 		,referenced_server_name
 		,referenced_database_name
+		,referencedTypeCode
 		,referenced_schema_name
 		,referenced_entity_name
 	 FROM CTE X ;
+
 "@
     return  $query
 }

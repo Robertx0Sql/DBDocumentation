@@ -3,6 +3,7 @@
 	,@DatabaseName VARCHAR(255)
 	,@Schema VARCHAR(255) = NULL
 	,@Object VARCHAR(255) = NULL
+	,@ObjectType VARCHAR(10) = 'U'
 	,@FKType bit =0
 	)
 AS
@@ -20,6 +21,7 @@ AS (
 		,ObjectName AS FKName --AS [referenced_database_name]
 		,IIF(ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object, ParentSchemaName, ReferencedSchemaName) AS [referencing_schema_name]
 		,IIF(ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object, ParentObjectName, ReferencedObjectName) AS [referencing_entity_name]
+		,IIF(ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object, ParentTypeCode, ReferencedTypeCode) AS [referencing_TypeCode]
 		
 
 		--,IIF(ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object, ReferencedSchemaName, ParentSchemaName) AS [referenced_schema_name]
@@ -38,10 +40,12 @@ AS (
 			(
 				ParentSchemaName = @Schema
 				AND ParentObjectName = @Object
+				AND ParentTypeCode =@ObjectType
 				)
 			OR (
 				ReferencedSchemaName = @Schema
 				AND ReferencedObjectName = @Object
+				AND ReferencedTypeCode =@ObjectType
 				)
 			)
 		)
@@ -52,7 +56,7 @@ AS (
 		,DatabaseName
 		,referencing_schema_name as ReferencedSchemaName
 		,referencing_entity_name as ReferencedObjectName
-		
+		,[referencing_TypeCode] as ReferencedTypeCode
 		,FKName
 		,isChildFK
 
@@ -73,7 +77,6 @@ AS (
 			,@Object
 			) AS MeasureGroupCaption
 		
-		,'Table' as ReferencedObjectType
 		,'Table' AS [TypeDescriptionUser]
 	FROM CTE
 	where isChildFK=@FKType 

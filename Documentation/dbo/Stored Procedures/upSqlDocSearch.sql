@@ -1,27 +1,21 @@
 ﻿
-CREATE PROCEDURE dbo.upSqlDocSearch (
+CREATE PROCEDURE [dbo].[upSqlDocSearch] (
 	@Search VARCHAR(255)
 	,@server VARCHAR(255) = NULL
 	,@database VARCHAR(255) = NULL
 	)
 AS
---DECLARE @server VARCHAR(255); 
---DECLARE @database VARCHAR(255); 
---DECLARE @separator    CHAR(1) = ':';
---DECLARE @pos INT = CHARINDEX (@separator,@catalog,0);
---IF ( @pos >0 )
---BEGIN
---	SELECT @server = LEFT (@Catalog, @pos -1) , @database= SUBSTRING(@Catalog,@pos+1, 255);	
---END;
-WITH dbo
+
+WITH cte
 AS (
 	SELECT CAST('column ' AS VARCHAR(50)) AS [Type]
 		,CAST([ColumnName] AS VARCHAR(255)) AS [Name]
 		,CAST([DocumentationDescription] AS VARCHAR(4000)) AS [Description]
 		,CAST(SERVERNAME AS VARCHAR(255)) AS ServerName
 		,CAST(DatabaseName AS VARCHAR(255)) AS DatabaseName
-		,CAST([ObjectSchemaName] AS VARCHAR(255)) AS SchemaName
-		,CAST([ObjectName] AS VARCHAR(255)) AS ObjectName
+		,CAST([ObjectSchemaName] AS VARCHAR(255)) AS ReferencedSchemaName
+		,CAST([ObjectName] AS VARCHAR(255)) AS ReferencedObjectName
+		,CAST(t.TypeCode AS VARCHAR(255)) as ReferencedTypeCode
 		,CAST(ot.TypeDescriptionUser AS VARCHAR(255)) AS TypeDescriptionUser
 	FROM [dbo].[vwColumnDoc] t
 	LEFT JOIN dbo.vwObjectType ot
@@ -44,8 +38,9 @@ AS (
 		,CAST(t.[DocumentationDescription] AS VARCHAR(4000)) AS [Description]
 		,CAST(t.SERVERNAME AS VARCHAR(255)) AS ServerName
 		,CAST(t.DatabaseName AS VARCHAR(255)) AS DatabaseName
-		,CAST(t.parentSchemaName AS VARCHAR(255)) AS SchemaName
-		,CAST(t.parentObjectName AS VARCHAR(255)) AS ObjectName
+		,CAST(t.parentSchemaName AS VARCHAR(255)) AS ReferencedSchemaName
+		,CAST(t.parentObjectName AS VARCHAR(255)) AS ReferencedObjectName
+		,CAST(t.ParentTypeCode AS VARCHAR(255)) as ReferencedTypeCode
 		,CAST(p.TypeDescriptionUser AS VARCHAR(255)) AS TypeDescriptionUser
 	FROM [dbo].vwObjectDoc t
 	LEFT JOIN [dbo].vwObjectDoc p
@@ -62,16 +57,17 @@ AS (
 			)
 	)
 SELECT DISTINCT 
-	 dbo.[Type]
-	,dbo.[Name]					
-	,dbo.[Description]			
-	,dbo.ServerName				
-	,dbo.DatabaseName			
-	,dbo.SchemaName				
-	,dbo.ObjectName				
-	,dbo.TypeDescriptionUser	
-FROM dbo
+	 [Type]
+	,[Name]					
+	,[Description]			
+	,ServerName				
+	,DatabaseName			
+	,ReferencedSchemaName				
+	,ReferencedObjectName 
+	,ReferencedTypeCode
+	,TypeDescriptionUser	
+FROM cte
 ORDER BY TypeDescriptionUser
-	,SchemaName
-	,objectName
+	,ReferencedSchemaName
+	,ReferencedObjectName
 	,[Type];

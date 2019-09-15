@@ -7,14 +7,15 @@ AS (
 		,[referencing_schema_name]
 		,[referencing_entity_name]
 		,[referencing_TypeCode]
-		,referencing_TypeDescriptionSQL
+		--,referencing_TypeDescriptionSQL
 		,COALESCE([referenced_server_name], [ServerName]) AS [referenced_server_name]
 		,COALESCE([referenced_database_name], [DatabaseName]) AS [referenced_database_name]
 		,[referenced_schema_name]
 		,[referenced_entity_name]
+		,r.referenced_TypeCode AS [referenced_entity_TypeCode]
 		,StagingDateTime AS DocumentationLoadDate
 		,'I' AS DependencyTypeCode
-	FROM [Staging].[SQLDocObjectReference]
+	FROM [Staging].[SQLDocObjectReference] r
 	
 	UNION ALL
 	
@@ -23,11 +24,12 @@ AS (
 		,[referenced_schema_name]
 		,[referenced_entity_name]
 		,od.TypeCode
-		,od.TypeDescriptionSQL
+		--,od.TypeDescriptionSQL
 		,R.[ServerName]
 		,R.[DatabaseName]
 		,[referencing_schema_name]
 		,[referencing_entity_name]
+		,odr.TypeCode AS [referenced_entity_TypeCode]
 		,R.StagingDateTime AS DocumentationLoadDate
 		,'O' AS DependencyTypeCode
 	FROM [Staging].[SQLDocObjectReference] R
@@ -36,18 +38,24 @@ AS (
 			AND r.DatabaseName = od.DatabaseName
 			AND od.ObjectName = [referenced_entity_name]
 			AND od.SchemaName = referenced_schema_name
-	WHERE referencing_schema_name IS NOT NULL
+	LEFT JOIN dbo.[vwObjectDoc] odr
+		ON odr.DatabaseName = r.DatabaseName
+			AND odr.ServerName = r.ServerName
+			AND odr.ObjectName = r.referencing_entity_name
+			AND odr.SchemaName = r.referencing_schema_name
+	WHERE r.referencing_schema_name IS NOT NULL
 	)
 SELECT [ServerName]
 	,[DatabaseName]
 	,[referencing_schema_name]
 	,[referencing_entity_name]
 	,[referencing_TypeCode] AS TypeCode
-	,ISNULL(t.TypeDescriptionUser, cte.[referencing_TypeDescriptionSQL]) AS [TypeDescriptionUser]
+	,t.TypeDescriptionUser AS [TypeDescriptionUser]
 	,[referenced_server_name]
 	,[referenced_database_name]
 	,[referenced_schema_name]
 	,[referenced_entity_name]
+	,[referenced_entity_TypeCode]
 	,t.TypeGroup
 	,T.TypeGroupOrder
 	,T.TypeOrder
@@ -57,4 +65,4 @@ SELECT [ServerName]
 FROM cte
 LEFT JOIN dbo.vwObjectType T
 	ON t.TypeCode = cte.[referencing_TypeCode]
-WHERE cte.[referencing_TypeDescriptionSQL] IS NOT NULL
+

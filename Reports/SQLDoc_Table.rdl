@@ -25,6 +25,9 @@
           <QueryParameter Name="@Object">
             <Value>=Parameters!Object.Value</Value>
           </QueryParameter>
+          <QueryParameter Name="@ObjectType">
+            <Value>=Parameters!ObjectType.Value</Value>
+          </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
         <CommandText>dbo.upSqlDocObjectColumns</CommandText>
@@ -106,16 +109,16 @@
           <DataField>ReferencedObjectName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="RefencedTypeCode">
-          <DataField>RefencedTypeCode</DataField>
+        <Field Name="ReferencedTypeCode">
+          <DataField>ReferencedTypeCode</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="ReferencedColumn">
           <DataField>ReferencedColumn</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="ReferencedObjectType">
-          <DataField>ReferencedObjectType</DataField>
+        <Field Name="ReferencedTypeDescriptionUser">
+          <DataField>ReferencedTypeDescriptionUser</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="FK">
@@ -151,6 +154,9 @@
           </QueryParameter>
           <QueryParameter Name="@Object">
             <Value>=Parameters!Object.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@ObjectType">
+            <Value>=Parameters!ObjectType.Value</Value>
           </QueryParameter>
           <QueryParameter Name="@UserMode">
             <Value>=Parameters!UserMode.Value</Value>
@@ -282,6 +288,9 @@
           <QueryParameter Name="@Object">
             <Value>=Parameters!Object.Value</Value>
           </QueryParameter>
+          <QueryParameter Name="@ObjectType">
+            <Value>=Parameters!ObjectType.Value</Value>
+          </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
         <CommandText>dbo.upSqlDocObjectCode</CommandText>
@@ -308,6 +317,9 @@
           </QueryParameter>
           <QueryParameter Name="@Object">
             <Value>=Parameters!Object.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@ObjectType">
+            <Value>=Parameters!ObjectType.Value</Value>
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
@@ -370,6 +382,10 @@
           <DataField>ReferencedSchemaName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="ReferencedTypeCode">
+          <DataField>ReferencedTypeCode</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="ReferencedObjectType">
           <DataField>ReferencedObjectType</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -391,6 +407,9 @@
           </QueryParameter>
           <QueryParameter Name="@Object">
             <Value>=Parameters!Object.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@ObjectType">
+            <Value>=Parameters!ObjectType.Value</Value>
           </QueryParameter>
           <QueryParameter Name="@FKType">
             <Value>=0</Value>
@@ -428,6 +447,10 @@
           <DataField>ReferencedObjectName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="ReferencedTypeCode">
+          <DataField>ReferencedTypeCode</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="TypeDescriptionUser">
           <DataField>TypeDescriptionUser</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -442,10 +465,6 @@
         </Field>
         <Field Name="MeasureGroupCaption">
           <DataField>MeasureGroupCaption</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="ReferencedObjectType">
-          <DataField>ReferencedObjectType</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Seq">
@@ -494,6 +513,9 @@
           <QueryParameter Name="@Object">
             <Value>=Parameters!Object.Value</Value>
           </QueryParameter>
+          <QueryParameter Name="@ObjectType">
+            <Value>=Parameters!ObjectType.Value</Value>
+          </QueryParameter>
           <QueryParameter Name="@FKType">
             <Value>=1</Value>
           </QueryParameter>
@@ -530,6 +552,10 @@
           <DataField>ReferencedObjectName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="ReferencedTypeCode">
+          <DataField>ReferencedTypeCode</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="isChildFK">
           <DataField>isChildFK</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
@@ -544,10 +570,6 @@
         </Field>
         <Field Name="MeasureGroupCaption">
           <DataField>MeasureGroupCaption</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="ReferencedObjectType">
-          <DataField>ReferencedObjectType</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="TypeDescriptionUser">
@@ -893,7 +915,7 @@
                                       <Value>=Fields!ReferencedObjectName.Value</Value>
                                     </Parameter>
                                     <Parameter Name="ObjectType">
-                                      <Value>=Fields!TypeDescriptionUser.Value</Value>
+                                      <Value>=Fields!ReferencedTypeCode.Value</Value>
                                     </Parameter>
                                     <Parameter Name="UserMode">
                                       <Value>=Parameters!UserMode.Value</Value>
@@ -1638,7 +1660,7 @@
                                           <Value>=Fields!ReferencedObjectName.Value</Value>
                                         </Parameter>
                                         <Parameter Name="ObjectType">
-                                          <Value>=Fields!ReferencedObjectType.Value</Value>
+                                          <Value>=Fields!ReferencedTypeCode.Value</Value>
                                         </Parameter>
                                         <Parameter Name="UserMode">
                                           <Value>=Parameters!UserMode.Value</Value>
@@ -2098,7 +2120,7 @@
                                               <Value>=Fields!ReferencedObjectName.Value</Value>
                                             </Parameter>
                                             <Parameter Name="ObjectType">
-                                              <Value>=Fields!ReferencedObjectType.Value</Value>
+                                              <Value>=Fields!ReferencedTypeCode.Value</Value>
                                             </Parameter>
                                             <Parameter Name="UserMode">
                                               <Value>=Parameters!UserMode.Value</Value>
@@ -2617,11 +2639,11 @@
                             <MapFieldName>ReferencedSchemaName</MapFieldName>
                             <MapFieldName>FKName</MapFieldName>
                             <MapFieldName>ReferencedObjectName</MapFieldName>
+                            <MapFieldName>ReferencedTypeCode</MapFieldName>
                             <MapFieldName>TypeDescriptionUser</MapFieldName>
                             <MapFieldName>isChildFK</MapFieldName>
                             <MapFieldName>DimensionCaption</MapFieldName>
                             <MapFieldName>MeasureGroupCaption</MapFieldName>
-                            <MapFieldName>ReferencedObjectType</MapFieldName>
                             <MapFieldName>Seq</MapFieldName>
                             <MapFieldName>x</MapFieldName>
                             <MapFieldName>y</MapFieldName>
@@ -2660,7 +2682,7 @@
                                       <Value>=Fields!ReferencedObjectName.Value</Value>
                                     </Parameter>
                                     <Parameter Name="ObjectType">
-                                      <Value>=Fields!TypeDescriptionUser.Value</Value>
+                                      <Value>=Fields!ReferencedTypeCode.Value</Value>
                                     </Parameter>
                                     <Parameter Name="UserMode">
                                       <Value>=Parameters!UserMode.Value</Value>
@@ -2741,11 +2763,11 @@
                             <MapFieldName>ReferencedSchemaName</MapFieldName>
                             <MapFieldName>FKName</MapFieldName>
                             <MapFieldName>ReferencedObjectName</MapFieldName>
+                            <MapFieldName>ReferencedTypeCode</MapFieldName>
                             <MapFieldName>TypeDescriptionUser</MapFieldName>
                             <MapFieldName>isChildFK</MapFieldName>
                             <MapFieldName>DimensionCaption</MapFieldName>
                             <MapFieldName>MeasureGroupCaption</MapFieldName>
-                            <MapFieldName>ReferencedObjectType</MapFieldName>
                             <MapFieldName>Seq</MapFieldName>
                             <MapFieldName>x</MapFieldName>
                             <MapFieldName>y</MapFieldName>
@@ -2990,11 +3012,11 @@
                             <MapFieldName>ReferencedSchemaName</MapFieldName>
                             <MapFieldName>FKName</MapFieldName>
                             <MapFieldName>ReferencedObjectName</MapFieldName>
+                            <MapFieldName>ReferencedTypeCode</MapFieldName>
                             <MapFieldName>isChildFK</MapFieldName>
                             <MapFieldName>Seq</MapFieldName>
                             <MapFieldName>DimensionCaption</MapFieldName>
                             <MapFieldName>MeasureGroupCaption</MapFieldName>
-                            <MapFieldName>ReferencedObjectType</MapFieldName>
                             <MapFieldName>TypeDescriptionUser</MapFieldName>
                             <MapFieldName>x</MapFieldName>
                             <MapFieldName>y</MapFieldName>
@@ -3033,7 +3055,7 @@
                                       <Value>=Fields!ReferencedObjectName.Value</Value>
                                     </Parameter>
                                     <Parameter Name="ObjectType">
-                                      <Value>=Fields!TypeDescriptionUser.Value</Value>
+                                      <Value>=Fields!ReferencedTypeCode.Value</Value>
                                     </Parameter>
                                     <Parameter Name="UserMode">
                                       <Value>=Parameters!UserMode.Value</Value>
@@ -3121,11 +3143,11 @@
                             <MapFieldName>ReferencedSchemaName</MapFieldName>
                             <MapFieldName>FKName</MapFieldName>
                             <MapFieldName>ReferencedObjectName</MapFieldName>
+                            <MapFieldName>ReferencedTypeCode</MapFieldName>
                             <MapFieldName>isChildFK</MapFieldName>
                             <MapFieldName>Seq</MapFieldName>
                             <MapFieldName>DimensionCaption</MapFieldName>
                             <MapFieldName>MeasureGroupCaption</MapFieldName>
-                            <MapFieldName>ReferencedObjectType</MapFieldName>
                             <MapFieldName>TypeDescriptionUser</MapFieldName>
                             <MapFieldName>x</MapFieldName>
                             <MapFieldName>y</MapFieldName>
@@ -3401,7 +3423,7 @@
                                               <Value>=Fields!ReferencedObjectName.Value</Value>
                                             </Parameter>
                                             <Parameter Name="ObjectType">
-                                              <Value>=Fields!TypeDescriptionUser.Value</Value>
+                                              <Value>=Fields!ReferencedTypeCode.Value</Value>
                                             </Parameter>
                                             <Parameter Name="UserMode">
                                               <Value>=Parameters!UserMode.Value</Value>
@@ -3964,29 +3986,6 @@
                   <TextRun>
                     <Label>ObjectType</Label>
                     <Value>=First(Fields!TypeDescriptionUser.Value, "dsObject")</Value>
-                    <ActionInfo>
-                      <Actions>
-                        <Action>
-                          <Drillthrough>
-                            <ReportName>SQLDoc_DatabaseObjects</ReportName>
-                            <Parameters>
-                              <Parameter Name="Server">
-                                <Value>=Parameters!Server.Value</Value>
-                              </Parameter>
-                              <Parameter Name="Database">
-                                <Value>=Parameters!Database.Value</Value>
-                              </Parameter>
-                              <Parameter Name="ObjectType">
-                                <Value>=First(Fields!TypeDescriptionUser.Value, "dsObject")</Value>
-                              </Parameter>
-                              <Parameter Name="UserMode">
-                                <Value>=Parameters!UserMode.Value</Value>
-                              </Parameter>
-                            </Parameters>
-                          </Drillthrough>
-                        </Action>
-                      </Actions>
-                    </ActionInfo>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>Underline</TextDecoration>
@@ -4231,7 +4230,7 @@
                                       <Value>=Fields!ReferencedObjectName.Value</Value>
                                     </Parameter>
                                     <Parameter Name="ObjectType">
-                                      <Value>=Fields!TypeDescriptionUser.Value</Value>
+                                      <Value>=Fields!ReferencedTypeCode.Value</Value>
                                     </Parameter>
                                     <Parameter Name="UserMode">
                                       <Value>=Parameters!UserMode.Value</Value>

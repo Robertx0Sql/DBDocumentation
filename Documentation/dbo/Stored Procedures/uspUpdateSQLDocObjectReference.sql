@@ -17,9 +17,9 @@ BEGIN
 		,[referencing_schema_name]
 		,[referencing_entity_name]
 		,[referencing_TypeCode]
-		,[referencing_TypeDescriptionSQL]
 		,[referenced_server_name]
 		,[referenced_database_name]
+		,[referenced_TypeCode]
 		,[referenced_schema_name]
 		,[referenced_entity_name]
 		)
@@ -28,9 +28,9 @@ BEGIN
 		,[referencing_schema_name]
 		,[referencing_entity_name]
 		,[referencing_TypeCode]
-		,[referencing_TypeDescriptionSQL]
 		,[referenced_server_name]
 		,[referenced_database_name]
+		,[referenced_TypeCode]
 		,[referenced_schema_name]
 		,[referenced_entity_name]
 	FROM @TVPObjRef;
