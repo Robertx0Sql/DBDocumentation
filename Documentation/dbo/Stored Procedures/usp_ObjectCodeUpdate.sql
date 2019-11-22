@@ -13,12 +13,14 @@ BEGIN
 	INSERT INTO [Staging].[ObjectCode] (
 		[ServerName]
 		,[DatabaseName]
+		,[SMOObjectType]
 		,[SchemaName]
 		,[ObjectName]
 		,[Code]
 		)
 	SELECT [ServerName]
 		,[DatabaseName]
+		,[SMOObjectType]
 		,[SchemaName]
 		,[ObjectName]
 		,[Code]

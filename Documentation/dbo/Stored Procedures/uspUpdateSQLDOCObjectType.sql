@@ -14,6 +14,7 @@ BEGIN
 				,[TypeCode]
 				,[TypeDescriptionSQL]
 				,[TypeDescriptionUser]
+				,[SMOObjectType]
 				,[TypeOrder]
 				,[TypeCount]
 				,[UserModeFlag]
@@ -24,6 +25,7 @@ BEGIN
 				,SRC.[TypeCode]
 				,SRC.[TypeDescriptionSQL]
 				,SRC.[TypeDescriptionUser]
+				,SRC.[SMOObjectType]
 				,SRC.[TypeOrder]
 				,SRC.[TypeCount]
 				,SRC.[UserModeFlag]
@@ -35,6 +37,7 @@ BEGIN
 				,SRC.[TypeCode]
 				,SRC.[TypeDescriptionSQL]
 				,SRC.[TypeDescriptionUser]
+				,SRC.[SMOObjectType]
 				,SRC.[TypeOrder]
 				,SRC.[TypeCount]
 				,SRC.[UserModeFlag]
@@ -46,6 +49,7 @@ BEGIN
 				,DST.[TypeCode]
 				,DST.[TypeDescriptionSQL]
 				,DST.[TypeDescriptionUser]
+				,DST.[SMOObjectType]
 				,DST.[TypeOrder]
 				,DST.[TypeCount]
 				,DST.[UserModeFlag]
@@ -57,6 +61,7 @@ BEGIN
 				,DST.[TypeCode] = SRC.TypeCode
 				,DST.[TypeDescriptionSQL] = SRC.TypeDescriptionSQL
 				,DST.[TypeDescriptionUser] = SRC.TypeDescriptionUser
+				,DST.[SMOObjectType] = SRC.[SMOObjectType]
 				,DST.[TypeOrder] = SRC.TypeOrder
 				,DST.[TypeCount] = SRC.TypeCount
 				,DST.[UserModeFlag] = SRC.UserModeFlag

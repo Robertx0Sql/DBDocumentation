@@ -5,6 +5,7 @@ SELECT T.TypeGroup
 	,T.[TypeCode]
 	,T.[TypeDescriptionSQL]
 	,T.[TypeDescriptionUser]
+	,T.[SMOObjectType]
 	,TypeOrder
 	,TypeCount
 	,UserModeFlag

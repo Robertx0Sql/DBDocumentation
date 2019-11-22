@@ -4,7 +4,7 @@ CREATE PROCEDURE [dbo].[upSqlDocObject] (
 	,@DatabaseName VARCHAR(255)
 	,@Schema VARCHAR(255) = NULL
 	,@Object VARCHAR(255) = NULL
-	,@ObjectType VARCHAR(255) = NULL
+	,@ObjectType VARCHAR(10) = NULL
 	)
 AS
 SELECT [ServerName]
@@ -26,7 +26,7 @@ WHERE DatabaseName = @DatabaseName
 			SchemaName = @Schema
 			AND ObjectName = @Object
 			AND (
-				[TypeDescriptionUser] = @ObjectType
+				TypeCode = @ObjectType
 				OR @ObjectType IS NULL
 				)
 			)

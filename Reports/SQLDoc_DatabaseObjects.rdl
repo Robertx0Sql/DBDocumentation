@@ -41,20 +41,24 @@
           <DataField>DatabaseName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="ReferencedSchemaName">
+          <DataField>ReferencedSchemaName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="TypeGroup">
           <DataField>TypeGroup</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ReferencedObjectName">
+          <DataField>ReferencedObjectName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="TypeDescriptionUser">
           <DataField>TypeDescriptionUser</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="TableSchemaName">
-          <DataField>TableSchemaName</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="TableName">
-          <DataField>TableName</DataField>
+        <Field Name="ReferencedTypeCode">
+          <DataField>ReferencedTypeCode</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="DocumentationDescription">
@@ -261,7 +265,7 @@
                         <Textbox Name="Textbox4">
                           <CanGrow>true</CanGrow>
                           <UserSort>
-                            <SortExpression>=Fields!TableName.Value</SortExpression>
+                            <SortExpression>=Fields!ReferencedObjectName.Value</SortExpression>
                             <SortTarget>dsObjects</SortTarget>
                           </UserSort>
                           <KeepTogether>true</KeepTogether>
@@ -298,7 +302,7 @@
                         <Textbox Name="Textbox6">
                           <CanGrow>true</CanGrow>
                           <UserSort>
-                            <SortExpression>=Fields!TableSchemaName.Value</SortExpression>
+                            <SortExpression>=Fields!ReferencedSchemaName.Value</SortExpression>
                             <SortTarget>dsObjects</SortTarget>
                           </UserSort>
                           <KeepTogether>true</KeepTogether>
@@ -377,7 +381,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!TableName.Value</Value>
+                                  <Value>=Fields!ReferencedObjectName.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -403,13 +407,13 @@
                                       <Value>=Fields!DatabaseName.Value</Value>
                                     </Parameter>
                                     <Parameter Name="ObjectType">
-                                      <Value>=Fields!TypeDescriptionUser.Value</Value>
+                                      <Value>=Fields!ReferencedTypeCode.Value</Value>
                                     </Parameter>
                                     <Parameter Name="Schema">
-                                      <Value>=Fields!TableSchemaName.Value</Value>
+                                      <Value>=Fields!ReferencedSchemaName.Value</Value>
                                     </Parameter>
                                     <Parameter Name="Object">
-                                      <Value>=Fields!TableName.Value</Value>
+                                      <Value>=Fields!ReferencedObjectName.Value</Value>
                                     </Parameter>
                                     <Parameter Name="UserMode">
                                       <Value>=Parameters!UserMode.Value</Value>
@@ -441,7 +445,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!TableSchemaName.Value</Value>
+                                  <Value>=Fields!ReferencedSchemaName.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
@@ -451,7 +455,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>TableSchemaName</rd:DefaultName>
+                          <rd:DefaultName>ReferencedSchemaName</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -520,10 +524,10 @@
             <DataSetName>dsObjects</DataSetName>
             <SortExpressions>
               <SortExpression>
-                <Value>=Fields!TableName.Value</Value>
+                <Value>=Fields!ReferencedObjectName.Value</Value>
               </SortExpression>
               <SortExpression>
-                <Value>=Fields!TableSchemaName.Value</Value>
+                <Value>=Fields!ReferencedObjectName.Value</Value>
               </SortExpression>
             </SortExpressions>
             <Top>2.99985cm</Top>

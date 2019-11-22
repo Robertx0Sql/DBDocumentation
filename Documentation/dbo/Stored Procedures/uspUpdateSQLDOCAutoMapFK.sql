@@ -45,23 +45,27 @@ INSERT INTO [dbo].[SQLColumnReference] (
 		[ServerName]
 		,[DatabaseName]
 		,[SchemaName]
+		,[ObjectType]
 		,[ObjectName]
 		,[ColumnName]
 		,[ColumnId]
 		,[FK_NAME]
 		,[ReferencedSchemaName]
 		,[ReferencedObjectName]
+		,[ReferencedObjectType] 
 		,[ReferencedColumnName]
 		)
 	SELECT AFK.[ServerName] AS [ServerName]
 		,AFK.[DatabaseName] AS [DatabaseName]
 		,AFK.[ObjectSchemaName] AS [SchemaName]
+		,'U' AS [ObjectType]
 		,AFK.[ObjectName] AS [ObjectName]
 		,AFK.[ColumnName] AS [ColumnName]
 		,AFK.[ColumnId] AS [ColumnId]
 		,AFK.[FK_NAME] AS [FK_NAME]
 		,[ReferencedTableSchemaName] AS [ReferencedSchemaName]
 		,[ReferencedTableName] AS [ReferencedObjectName]
+		,'U' AS [ReferencedObjectType] 
 		,[referenced_column] AS [ReferencedColumnName]
 
 	FROM [dbo].[vwAutoMapFKList] AFK
@@ -70,6 +74,7 @@ INSERT INTO [dbo].[SQLColumnReference] (
 			AND E.DatabaseName = afk.DatabaseName
 			AND e.[SchemaName] = afk.[ObjectSchemaName]
 			AND e.[ObjectName] = afk.[ObjectName]
+			and e.[ObjectType] = afk.[TypeCode]
 			AND e.[ColumnName] = AFK.[ColumnName]
 	WHERE E.[SQLColumnReferenceId] IS NULL
 		AND AFK.FKCount = 1
