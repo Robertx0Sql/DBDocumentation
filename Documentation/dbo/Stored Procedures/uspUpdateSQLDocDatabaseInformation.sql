@@ -1,6 +1,6 @@
 ﻿
 
-CREATE PROCEDURE [dbo].[usp_DatabaseInformationUpdate] 
+CREATE PROCEDURE [dbo].[uspUpdateSQLDocDatabaseInformation] 
 	@TVPDbInfo [DatabaseInformationTableType] READONLY
 AS
 BEGIN

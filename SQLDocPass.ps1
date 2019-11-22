@@ -77,7 +77,7 @@ function Save-AutoMapForeignKeys($ServerInstance , $Database, $SQLConnectionStri
     $SQLConn.Open()
 
     $SQLCmd = New-object System.Data.SQLClient.SQLCommand
-	$SQLCmd.CommandText = "[dbo].[uspUpdateSQLDOCAutoMapFK]"
+	$SQLCmd.CommandText = "[dbo].[uspUpdateSQLDocAutoMapFK]"
 	$SQLCmd.CommandType = [System.Data.CommandType]::StoredProcedure
     $SQLCmd.Connection = $SQLConn
     $SQLCmd.Parameters.AddWithValue("@Server", $ServerInstance ) | Out-Null
@@ -642,7 +642,7 @@ WHERE fk_obj.name IS NOT NULL
 }
 
 function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Credential) {
-    $Procedure = "[dbo].[usp_ObjectCodeUpdate]"
+    $Procedure = "[dbo].[uspUpdateSQLDocObjectCode]"
     $ProcedureParamName = "@TVPObjectCode"
 
     [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.SMO') | out-null
@@ -789,11 +789,11 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
 
 Write-Verbose "Start  SQLDocColumnQuery"
 $query = SQLDocColumnQuery  -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ColumnDocUpdate]" -ProcedureParamName  "@TVP"
+Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocColumn]" -ProcedureParamName  "@TVP"
 
 Write-Verbose "Start  SQLColumnReference"
 $query = SQLColumnReference
-Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLColumnReference]" -ProcedureParamName  "@TVP"
+Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocColumnReference]" -ProcedureParamName  "@TVP"
 
 
 Write-Verbose "Start Get-SQLDOCReferencedObjectQuery"
@@ -803,7 +803,7 @@ Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLCo
  
 Write-Verbose "Start  SQLDOCObjects"
 $query = Get-SQLDOCObjectQuery -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_ObjectDocumentationUpdate]" -ProcedureParamName  "@TVPObjDoc"
+Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocObjectDocumentation]" -ProcedureParamName  "@TVPObjDoc"
 
 Write-Verbose "Start ViewColumnMap Query"
 $query = Get-ViewColumnMapQuery -extentedPropertyName $extentedPropertyName 
@@ -812,7 +812,7 @@ Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLCo
 
 Write-Verbose "Start Database Info"
 $query = SQLDatabaseInformation -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[usp_DatabaseInformationUpdate]" -ProcedureParamName  "@TVPDbInfo"
+Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocDatabaseInformation]" -ProcedureParamName  "@TVPDbInfo"
 
 
 Write-Verbose "Start Get-SQLObjectCode" #this has to happen all within the function as cannot marshall the dataset out of the function 

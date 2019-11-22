@@ -168,4 +168,39 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="[ColumnId]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="29f0983a-2390-490c-814c-b8d149568b8a" ChangeDateTime="11/22/2019 01:58:29">
+    <Property Name="ElementName" Value="[dbo].[usp_ColumnDocUpdate]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[uspUpdateSQLDocColumn]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="56b55164-ad58-4ca2-832a-687c0487ff1c" ChangeDateTime="11/22/2019 01:59:47">
+    <Property Name="ElementName" Value="[dbo].[usp_DatabaseInformationUpdate]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[uspUpdateSQLDocDatabaseInformation]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="421fba77-042a-404e-8402-989c89075c9c" ChangeDateTime="11/22/2019 02:00:49">
+    <Property Name="ElementName" Value="[dbo].[usp_ObjectCodeUpdate]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[uspUpdateSQLDocObjectCode]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="87a81754-747a-461f-a70a-b87fe3020d37" ChangeDateTime="11/22/2019 02:01:58">
+    <Property Name="ElementName" Value="[dbo].[uspUpdateSQLColumnReference]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[uspUpdateSQLDocColumnReference]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8bd469d9-ea4b-4e85-91e1-a987b7ad5b12" ChangeDateTime="11/22/2019 02:03:00">
+    <Property Name="ElementName" Value="[dbo].[usp_ObjectDocumentationUpdate]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[uspUpdateSQLDocObjectDocumentation]" />
+  </Operation>
 </Operations>

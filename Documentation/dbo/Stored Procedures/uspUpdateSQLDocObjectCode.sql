@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[usp_ObjectCodeUpdate] (@TVPObjectCode [ObjectCodeTableType] READONLY)
+CREATE PROCEDURE [dbo].[uspUpdateSQLDocObjectCode] (@TVPObjectCode [ObjectCodeTableType] READONLY)
 AS
 BEGIN
 	SET NOCOUNT ON;

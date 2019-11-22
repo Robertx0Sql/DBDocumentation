@@ -81,7 +81,7 @@
     <Build Include="dbo\Tables\MDSCHEMA_MEASURES.sql" />
     <Build Include="dbo\Views\vwColumnDoc.sql" />
     <Build Include="dbo\Views\vwObjectDoc.sql" />
-    <Build Include="dbo\Stored Procedures\usp_ColumnDocUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\uspUpdateSQLDocColumn.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabases.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabaseObjects.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocObject.sql" />
@@ -104,7 +104,7 @@
     <Build Include="dbo\Views\vwObjectType.sql" />
     <Build Include="dbo\Views\vwSQLDocObjectReference.sql" />
     <Build Include="Staging\Tables\ObjectDocumentation.sql" />
-    <Build Include="dbo\Stored Procedures\usp_ObjectDocumentationUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\uspUpdateSQLDocObjectDocumentation.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocObjectChildObjects.sql" />
     <Build Include="dbo\User Defined Types\ObjectDocumentationTableType.sql" />
     <Build Include="Staging\Tables\SQLDocViewDefinitionColumnMap.sql" />
@@ -112,11 +112,11 @@
     <Build Include="dbo\Stored Procedures\uspUpdateSQLDocViewColumnMap.sql" />
     <Build Include="dbo\User Defined Types\ViewColumnTableType.sql" />
     <Build Include="Staging\Tables\ObjectCode.sql" />
-    <Build Include="dbo\Stored Procedures\usp_ObjectCodeUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\uspUpdateSQLDocObjectCode.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocObjectCode.sql" />
     <Build Include="dbo\User Defined Types\ObjectCodeTableType.sql" />
     <Build Include="Staging\Tables\DatabaseInformation.sql" />
-    <Build Include="dbo\Stored Procedures\usp_DatabaseInformationUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\uspUpdateSQLDocDatabaseInformation.sql" />
     <Build Include="dbo\User Defined Types\DatabaseInformationTableType.sql" />
     <Build Include="dbo\Views\vwChildObjects.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabaseInformation.sql" />
@@ -134,7 +134,7 @@
     <Build Include="dbo\Views\vwAutoMapFK.sql" />
     <Build Include="dbo\Tables\SQLColumnReference.sql" />
     <Build Include="dbo\User Defined Types\SQLColumnReferenceTableType.sql" />
-    <Build Include="dbo\Stored Procedures\uspUpdateSQLColumnReference.sql" />
+    <Build Include="dbo\Stored Procedures\uspUpdateSQLDocColumnReference.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">

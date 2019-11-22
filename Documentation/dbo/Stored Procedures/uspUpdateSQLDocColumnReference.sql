@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[uspUpdateSQLColumnReference] (@TVP [SQLColumnReferenceTableType] READONLY)
+﻿CREATE PROCEDURE [dbo].[uspUpdateSQLDocColumnReference] (@TVP [SQLColumnReferenceTableType] READONLY)
 AS
 BEGIN
 	SET NOCOUNT ON;
