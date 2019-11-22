@@ -9,8 +9,8 @@ Post-Deployment Script Template
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
 */
-
-
+GO
+EXEC [dbo].[uspUpdateSQLDOCObjectType]
 GO
 SELECT * INTO #tmp_GridResults_1
 FROM (
