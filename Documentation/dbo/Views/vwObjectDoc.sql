@@ -17,6 +17,8 @@ SELECT d.[ServerName]
 	,d.ParentObjectName
 	,d.ParentSchemaName
 	,rtrim(pd.[ObjectType]) AS ParentTypeCode
+	,iif(rtrim(d.[objectType]) in ('PK','D','UQ','C','F' ,'INDEX') , 'U',rtrim(d.[objectType]) ) as ParentObjectType
+
 	,d.fields
 	,d.Definition
 	,t.UserModeFlag

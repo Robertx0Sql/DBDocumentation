@@ -223,7 +223,43 @@ function  SQLDocColumnQuery ($extentedPropertyName) {
 	LEFT JOIN sys.extended_properties AS p ON p.major_id=sp.OBJECT_ID AND p.CLASS=2
 			AND p.minor_id = par.parameter_id
 			AND p.name =  'MS_Description'
-	WHERE par.name!=''; 
+	WHERE par.name!=''
+	
+	UNION ALL
+
+	SELECT 
+		@@SERVERNAME AS SERVERNAME
+		,DB_NAME() AS DatabaseName
+		,[ObjectType] = 'TT'
+		,schema_name(tt.schema_id)  AS [SchemaName]
+		,tt.name AS OBJECTName
+		,c.name
+		,c.column_id
+		,t.name AS datatype
+		,c.max_length
+		,c.PRECISION
+		,c.scale
+		,c.collation_name
+		,NULL AS is_nullable
+		,NULL AS is_identity
+		,NULL AS is_computed
+		,NULL AS is_primary_key
+		,NULL AS ident_col_seed_value
+		,NULL AS ident_col_increment_value
+		,NULL AS Column_Default
+		,CAST(p.value AS NVARCHAR(MAX)) AS DocumentationDescription
+	FROM sys.table_types tt
+	INNER JOIN sys.columns c
+		ON c.object_id = tt.type_table_object_id
+	LEFT JOIN sys.types t
+		ON t.user_type_id = c.user_type_id
+	LEFT JOIN sys.extended_properties AS p
+		ON p.major_id = c.OBJECT_ID
+			AND p.minor_id = c.column_id
+			AND p.CLASS = 1
+			AND p.name = 'MS_Description'
+
+	; 
 "@
     return  $queryColumns
 
@@ -370,6 +406,28 @@ LEFT JOIN (
 	) ic
 	ON ic.object_id = ix.object_id
 		AND ic.index_id = ix.index_id
+
+	UNION ALL
+
+	SELECT 
+		@@SERVERNAME AS ServerName
+		,DB_NAME() AS DatabaseName
+		,[objectType] = 'TT'
+		,schema_name(t.schema_id) AS [ParentSchemaName]
+		,t.name AS [ParentObjectName]
+		,schema_name(t.schema_id)  AS [SchemaName]
+		,t.name AS OBJECTName
+		,NULL AS fields
+		,NULL AS DEFINITION
+		,CAST(p.value AS NVARCHAR(MAX)) AS DocumentationDescription
+	from sys.types t
+
+	LEFT JOIN sys.extended_properties AS p ON p.major_id = t.user_type_id
+		AND p.CLASS = 6
+		AND p.minor_id = 0
+		AND p.name =  'MS_Description'
+
+	where is_table_type=1
 		;
 "@
 	return $query
@@ -557,11 +615,13 @@ SELECT
 	,DB_NAME() AS DatabaseName
 	,object_schema_name(C.OBJECT_ID) AS [SchemaName]
 	,OBJECT_NAME(c.OBJECT_ID) AS [ObjectName]
+		,obj.type as ObjectType
 	,c.name
 	,c.column_id
 	,fk_obj.name AS FK_NAME
 	,object_schema_name(fkc.referenced_object_id) AS [ReferencedTableSchemaName]
 	,OBJECT_NAME(fkc.referenced_object_id) AS [ReferencedTableName]
+		,fk_parent.type as [ReferencedObjectType]
 	,col2.name AS [referenced_column]
 FROM sys.columns AS c
 INNER JOIN sys.objects obj
@@ -574,6 +634,8 @@ LEFT JOIN sys.objects fk_obj
 LEFT JOIN sys.columns col2
 	ON col2.column_id = referenced_column_id
 		AND col2.OBJECT_ID = fkc.referenced_object_id
+	LEFT JOIN sys.objects fk_parent
+		ON fk_parent.OBJECT_ID = fkc.referenced_object_id
 WHERE fk_obj.name IS NOT NULL
 "@
 	return $query
@@ -585,20 +647,28 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
 
     [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.SMO') | out-null
     $serverInstance = New-Object ('Microsoft.SqlServer.Management.Smo.Server') $ServerSource 
-    $IncludeTypes = @(
+    
+    # $serverInstance.SetDefaultInitFields($true)
+    # $serverInstance.SetDefaultInitFields([Microsoft.SqlServer.Management.Smo.Database], "PageVerify")
+
+	$serverInstance.SetDefaultInitFields($true)
+	$serverInstance.SetDefaultInitFields([Microsoft.SqlServer.Management.Smo.DataFile], $false)
+
+
+	$IncludeTypes = @(
 		"Defaults",
 		"ExtendedStoredProcedures"
         #,"FileGroups"
 		,"PartitionFunctions","PartitionSchemes",
 		"Roles","Rules"
         , "Schemas"
-        , "Tables"
 		,"StoredProcedures"
 		,"Synonyms"
 		,"UserDefinedAggregates","UserDefinedDataTypes","UserDefinedFunctions","UserDefinedTableTypes","UserDefinedTypes"
 		,"Views"
 		,"Triggers"
-	 ) #object you want do backup. 
+        , "Tables"
+ 	 ) #object you want do backup. 
     $ExcludeSchemas = @("sys", "Information_Schema")
     $so = new-object ('Microsoft.SqlServer.Management.Smo.ScriptingOptions')
 	
@@ -632,7 +702,8 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
 	
         #This sets the password
         $serverInstance.ConnectionContext.set_Password($UserPassword)  
-    }
+	}
+	
 
     $db = $serverInstance.databases[$DatabaseSource]
     #get the "proper names for the server and Database"
@@ -657,10 +728,16 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
 
     #$result =
     foreach ($Type in $IncludeTypes) {
-
-        foreach ($objs in $db.$Type | Where-Object { !($_.IsSystemObject) }) { 
+	#$dbtype=	$db.$Type 
+	$TypeCounter=0
+		Write-Verbose "... $Type $(get-date -format G)"
+		foreach ($objs in $db.$Type  <#| Where-Object { !($_.IsSystemObject) }#>) { 
             If ($ExcludeSchemas -notcontains $objs.Schema ) {
-                        
+				$TypeCounter++
+				if($TypeCounter % 100 -eq 0) 
+				{
+					Write-Verbose "..... Processed $TypeCounter $(get-date -format G)"
+				}       
                 $schema = $objs.Schema
                 $ObjName = $objs.Name 
                 $ObjectType = $objs.GetType().Name 
@@ -671,9 +748,35 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
                 $sql = ( [string]$objs.Script($so) ).replace("SET ANSI_NULLS ONSET QUOTED_IDENTIFIER ON", "")
 
 			    [void]$dt.Rows.Add($ServerSource, $DatabaseSource , $ObjectType , $schema , $ObjName , $sql )
-				#Write-Verbose " complete"
+				
+                if ($ObjectType -eq "Table") {
+					#Write-Verbose  " ... table sub objects"
 
 				
+                    $tableObjects = $objs.Indexes
+                    $tableObjects += $objs.ForeignKeys
+                    $tableObjects += $objs.Checks
+                    $tableObjects += $objs.Triggers
+#ignore check or IsSystemObject https://mitchwheat.com/2011/07/14/fixing-slow-sql-server-management-objects-smo-performance/
+                    foreach ($tableSub in $tableObjects <#| Where-Object { !($_.IsSystemObject) }#>) {   
+						$schema = $tableSub.Schema
+                        $ObjName = $tableSub.Name 
+						$tableSubType = $tableSub.GetType().Name 
+
+						# check to see if index is PrimaryKey	
+						if ($tableSubType -eq "Index") {
+							if ( $tableSub.IndexKeyType -eq "DriPrimaryKey") { 
+                                $tableSubType = "PrimaryKey" 
+                            }
+                        }
+			
+						#Write-Verbose  " ... $tableSubType, $schema , $ObjName"
+
+                        $sql = ( [string]$tableSub.Script($so) ).replace("SET ANSI_NULLS ONSET QUOTED_IDENTIFIER ON", "")
+                        [void]$dt.Rows.Add($ServerSource, $DatabaseSource , $tableSubType , $schema , $ObjName , $sql )
+						#Write-Verbose " complete"
+                    }
+                }
             }
         }
     }     

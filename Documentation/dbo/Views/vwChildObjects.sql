@@ -14,11 +14,13 @@ SELECT d.[ServerName]
 	,ISNULL(d.[Definition], od.ReferencedSchemaName + '.' + od.ReferencedObjectName + '.' + od.ReferencedColumnName) AS [Definition]
 	,d.ParentSchemaName
 	,d.ParentObjectName
+	--,d.ParentObjectType 
 	,d.ParentTypeCode
 	,od.ReferencedColumnName
 	,od.ReferencedObjectName
 	,iif(od.ReferencedObjectName IS NULL, NULL, 'U') AS ReferencedTypeCode
 	,od.ReferencedSchemaName
+	,od.ReferencedObjectType
 	,d.UserModeFlag
 FROM dbo.vwObjectDoc d
 LEFT JOIN dbo.SQLColumnReference od
