@@ -1,28 +1,32 @@
 [CmdletBinding()]
 param(
-    [string]$ServerSource = "(local)"
-    , [string]$DatabaseSource = "AdventureWorks2017"
-    , [string]$SqlServerDoc = "."
-    , [string]$SqlDatabaseDoc = "Documentation"
-    , [PSCredential]$Credential 
+      [Parameter(Mandatory=$True)] [string]$SourceServer 
+    , [Parameter(Mandatory=$True)] [string]$SourceDatabase 
+    , [string]$DocServer = "."
+    , [string]$DocDatabase = "Documentation"
+    , [PSCredential]$SourceCredential 
+	, [PSCredential]$DocCredential 
 )
 
 $extentedPropertyName = "MS_Description"
-$SQLConnectionString = "Data Source={0};Initial Catalog={1};Integrated Security=SSPI;" -f $SqlServerDoc, $SqlDatabaseDoc
-
+$SQLConnectionString = "Data Source={0};Initial Catalog={1};Integrated Security=SSPI;" -f $DocServer, $DocDatabase
+if ($null -ne $DocCredential)
+{
+	$SQLConnectionString = "Data Source={0};Initial Catalog={1};User ID={2};Password={3}" -f $DocServer, $DocDatabase, $DocCredential.UserName , $DocCredential.GetNetworkCredential().Password
+}
 Write-Host "==================================================================================="
-Write-Host "ServerSource $ServerSource"
-Write-Host "DatabaseSource $DatabaseSource"
-Write-Host "SqlServerDoc $SqlServerDoc"
-Write-Host "SqlDatabaseDoc $SqlDatabaseDoc"
+Write-Host "ServerSource $SourceServer"
+Write-Host "DatabaseSource $SourceDatabase"
+Write-Host "SqlServerDoc $DocServer"
+Write-Host "SqlDatabaseDoc $DocDatabase"
 Write-Host "==================================================================================="
 
-function Get-ServerInstance($ServerInstance , $Database ) {
+function Get-ServerInstance($Server , $Database ) {
     $query = "SELECT @@SERVERNAME AS ServerName ,DB_NAME() AS DatabaseName "
-    if ($null -ne $Credential )
-    { $QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $query -OutputAs DataTables -Credential $Credential }
+    if ($null -ne $SourceCredential )
+    { $QueryResult = Invoke-Sqlcmd -ServerInstance $Server -Database $Database  -Query $query -OutputAs DataTables -Credential $SourceCredential }
     else
-    { $QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $query -OutputAs DataTables }
+    { $QueryResult = Invoke-Sqlcmd -ServerInstance $Server -Database $Database  -Query $query -OutputAs DataTables }
 	
     if ($null -eq $QueryResult) {
         Write-Error "QueryResult is null"
@@ -32,21 +36,21 @@ function Get-ServerInstance($ServerInstance , $Database ) {
 
 
 
-function Save-QueryResult ($ServerInstance , $Database  , $Query , $SQLConnectionString, $Procedure, $ProcedureParamName) {
-    Write-Verbose "==================================================================================="
-    Write-Verbose "ServerInstance $ServerInstance"
-    Write-Verbose "Database $Database"
-    Write-Verbose "SQLConnectionString $SQLConnectionString"
-    Write-Verbose "Procedure $Procedure"
-    Write-Verbose "ProcedureParamName $ProcedureParamName"
-    Write-Verbose "==================================================================================="
+function Save-QueryResult ($Server , $Database  , $Query , $SQLConnectionString, $Procedure, $ProcedureParamName) {
+    Write-Debug "==================================================================================="
+    Write-Debug "ServerInstance $Server"
+    Write-Debug "Database $Database"
+    Write-Debug "SQLConnectionString $SQLConnectionString"
+    Write-Debug "Procedure $Procedure"
+    Write-Debug "ProcedureParamName $ProcedureParamName"
+    Write-Debug "==================================================================================="
 	
-    if ($null -ne $Credential )
-    { $QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $query -OutputAs DataTables -Credential $Credential }
+    if ($null -ne $SourceCredential )
+    { $QueryResult = Invoke-Sqlcmd -ServerInstance $Server -Database $Database  -Query $query -OutputAs DataTables -Credential $SourceCredential }
     else
-    { $QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $query -OutputAs DataTables }
+    { $QueryResult = Invoke-Sqlcmd -ServerInstance $Server -Database $Database  -Query $query -OutputAs DataTables }
 	
-    #$QueryResult = Invoke-Sqlcmd -ServerInstance $ServerInstance -Database $Database  -Query $Query -OutputAs DataTables -Credential $Credential
+    #$QueryResult = Invoke-Sqlcmd -ServerInstance $smoServer -Database $Database  -Query $Query -OutputAs DataTables -Credential $SourceCredential
     Save-DoctoDb $SQLConnectionString  -Procedure  $Procedure  -ProcedureParamName $ProcedureParamName  -ProcedureParamValue $QueryResult
 }
 
@@ -69,7 +73,7 @@ function Save-DoctoDb($SQLConnectionString, $Procedure, $ProcedureParamName, $Pr
     $SQLconn.Close()
     Write-Verbose  "$($ProcedureParamValue.Rows.Count) rows added /updated for $Procedure"
 }  
-function Save-AutoMapForeignKeys($ServerInstance , $Database, $SQLConnectionString)
+function Save-AutoMapForeignKeys($Server , $Database, $SQLConnectionString)
 { 
 
     $SQLConn = new-object System.Data.SQLClient.SQLConnection
@@ -80,7 +84,7 @@ function Save-AutoMapForeignKeys($ServerInstance , $Database, $SQLConnectionStri
 	$SQLCmd.CommandText = "[dbo].[uspUpdateSQLDocAutoMapFK]"
 	$SQLCmd.CommandType = [System.Data.CommandType]::StoredProcedure
     $SQLCmd.Connection = $SQLConn
-    $SQLCmd.Parameters.AddWithValue("@Server", $ServerInstance ) | Out-Null
+    $SQLCmd.Parameters.AddWithValue("@Server", $Server ) | Out-Null
     $SQLCmd.Parameters.AddWithValue("@Database", $Database ) | Out-Null
     $SQLCmd.ExecuteNonQuery() | Out-Null
 	
@@ -641,19 +645,40 @@ WHERE fk_obj.name IS NOT NULL
 	return $query
 }
 
-function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Credential) {
+function Save-SQLObjectCode($Server, $Database , [PSCredential]$SourceCredential) {
     $Procedure = "[dbo].[uspUpdateSQLDocObjectCode]"
     $ProcedureParamName = "@TVPObjectCode"
 
     [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.SMO') | out-null
-    $serverInstance = New-Object ('Microsoft.SqlServer.Management.Smo.Server') $ServerSource 
-    
-    # $serverInstance.SetDefaultInitFields($true)
-    # $serverInstance.SetDefaultInitFields([Microsoft.SqlServer.Management.Smo.Database], "PageVerify")
+    $smoServer = New-Object ('Microsoft.SqlServer.Management.Smo.Server') $SourceServer 
 
-	$serverInstance.SetDefaultInitFields($true)
-	$serverInstance.SetDefaultInitFields([Microsoft.SqlServer.Management.Smo.DataFile], $false)
+    if ($null -ne $SourceCredential) {
+        $UserName = $SourceCredential.UserName
+        $UserPassword = $SourceCredential.GetNetworkCredential().Password
+        Write-Verbose "Connect via username $($UserName)"
+        #This sets the connection to mixed-mode authentication
+        $smoServer.ConnectionContext.LoginSecure = $false;
+	
+        #This sets the login name
+        $smoServer.ConnectionContext.set_Login($UserName);
+	
+        #This sets the password
+        $smoServer.ConnectionContext.set_Password($UserPassword)  
+	} 
+	#use SetDefaultInitFields to improve performance of SMO,
+    # $smoServer.SetDefaultInitFields($true)
+    # $smoServer.SetDefaultInitFields([Microsoft.SqlServer.Management.Smo.Database], "PageVerify")
 
+	$smoServer.SetDefaultInitFields($true)
+	$smoServer.SetDefaultInitFields([Microsoft.SqlServer.Management.Smo.DataFile], $false)
+
+	$smoDb = $smoServer.databases[$SourceDatabase]
+
+	if($null -eq $smoDb)
+	{ 
+		"failed to connect to SMO server / database. Unable to retrieve Code  - check user permissions to SMO Server"
+		return 
+	}	
 
 	$IncludeTypes = @(
 		"Defaults",
@@ -690,24 +715,9 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
 	$so.DriDefaults = $True
 	$so.DriAllConstraints = $True
 
-    if ($null -ne $Credential) {
-        $UserName = $Credential.UserName
-        $UserPassword = $Credential.GetNetworkCredential().Password
-        Write-Verbose "Connect via username $($UserName)"
-        #This sets the connection to mixed-mode authentication
-        $serverInstance.ConnectionContext.LoginSecure = $false;
 	
-        #This sets the login name
-        $serverInstance.ConnectionContext.set_Login($UserName);
-	
-        #This sets the password
-        $serverInstance.ConnectionContext.set_Password($UserPassword)  
-	}
-	
-
-    $db = $serverInstance.databases[$DatabaseSource]
     #get the "proper names for the server and Database"
-    $ServerSource = Get-ServerInstance -ServerInstance $ServerSource -Database $DatabaseSource
+    $SourceServer = Get-ServerInstance -Server $SourceServer -Database $SourceDatabase
 
 
     $dt = New-Object System.Data.Datatable 
@@ -728,10 +738,10 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
 
     #$result =
     foreach ($Type in $IncludeTypes) {
-	#$dbtype=	$db.$Type 
+	#$smoDbtype=	$smoDb.$Type 
 	$TypeCounter=0
 		Write-Verbose "... $Type $(get-date -format G)"
-		foreach ($objs in $db.$Type  <#| Where-Object { !($_.IsSystemObject) }#>) { 
+		foreach ($objs in $smoDb.$Type  <#| Where-Object { !($_.IsSystemObject) }#>) { 
             If ($ExcludeSchemas -notcontains $objs.Schema ) {
 				$TypeCounter++
 				if($TypeCounter % 100 -eq 0) 
@@ -747,7 +757,7 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
                 $ofs = ""
                 $sql = ( [string]$objs.Script($so) ).replace("SET ANSI_NULLS ONSET QUOTED_IDENTIFIER ON", "")
 
-			    [void]$dt.Rows.Add($ServerSource, $DatabaseSource , $ObjectType , $schema , $ObjName , $sql )
+			    [void]$dt.Rows.Add($SourceServer, $SourceDatabase , $ObjectType , $schema , $ObjName , $sql )
 				
                 if ($ObjectType -eq "Table") {
 					#Write-Verbose  " ... table sub objects"
@@ -773,7 +783,7 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
 						#Write-Verbose  " ... $tableSubType, $schema , $ObjName"
 
                         $sql = ( [string]$tableSub.Script($so) ).replace("SET ANSI_NULLS ONSET QUOTED_IDENTIFIER ON", "")
-                        [void]$dt.Rows.Add($ServerSource, $DatabaseSource , $tableSubType , $schema , $ObjName , $sql )
+                        [void]$dt.Rows.Add($SourceServer, $SourceDatabase , $tableSubType , $schema , $ObjName , $sql )
 						#Write-Verbose " complete"
                     }
                 }
@@ -789,36 +799,36 @@ function Save-SQLObjectCode($ServerSource, $DatabaseSource , [PSCredential]$Cred
 
 Write-Verbose "Start  SQLDocColumnQuery"
 $query = SQLDocColumnQuery  -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocColumn]" -ProcedureParamName  "@TVP"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocColumn]" -ProcedureParamName  "@TVP"
 
 Write-Verbose "Start  SQLColumnReference"
 $query = SQLColumnReference
-Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocColumnReference]" -ProcedureParamName  "@TVP"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocColumnReference]" -ProcedureParamName  "@TVP"
 
 
 Write-Verbose "Start Get-SQLDOCReferencedObjectQuery"
 $query = Get-SQLDOCReferencedObjectQuery  -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocObjectReference]" -ProcedureParamName  "@TVPObjRef"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocObjectReference]" -ProcedureParamName  "@TVPObjRef"
 
  
 Write-Verbose "Start  SQLDOCObjects"
 $query = Get-SQLDOCObjectQuery -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocObjectDocumentation]" -ProcedureParamName  "@TVPObjDoc"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocObjectDocumentation]" -ProcedureParamName  "@TVPObjDoc"
 
 Write-Verbose "Start ViewColumnMap Query"
 $query = Get-ViewColumnMapQuery -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocViewDefinitionColumnMap]" -ProcedureParamName  "@TVPViewCol"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocViewDefinitionColumnMap]" -ProcedureParamName  "@TVPViewCol"
 
 
 Write-Verbose "Start Database Info"
 $query = SQLDatabaseInformation -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -ServerInstance $ServerSource -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocDatabaseInformation]" -ProcedureParamName  "@TVPDbInfo"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocDatabaseInformation]" -ProcedureParamName  "@TVPDbInfo"
 
 
 Write-Verbose "Start Get-SQLObjectCode" #this has to happen all within the function as cannot marshall the dataset out of the function 
-Save-SQLObjectCode -ServerSource $ServerSource -DatabaseSource $DatabaseSource -Credential $Credential
+Save-SQLObjectCode -Server $SourceServer -Database $SourceDatabase -SourceCredential $SourceCredential
 
 
 Write-Verbose "Save-AutoMapForeignKeys"
-$ServerSourceNoPort = Get-ServerInstance -ServerInstance $ServerSource -Database $DatabaseSource #Note this returns the Server & instance but not the port number.
-Save-AutoMapForeignKeys -ServerInstance $ServerSourceNoPort -Database $DatabaseSource  -SQLConnectionString $SQLConnectionString 
+$SourceServerNoPort = Get-ServerInstance -Server $SourceServer -Database $SourceDatabase #Note this returns the Server & instance but not the port number.
+Save-AutoMapForeignKeys -Server $SourceServerNoPort -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString 
