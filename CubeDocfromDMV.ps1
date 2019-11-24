@@ -1,10 +1,12 @@
 #CubeDocfromDMV.ps1
+[CmdletBinding()]
 
 param([string]$SSASServer = ".", 
     [string]$SSASDatabase = "SLCombinedCube"
-    , [string]$SqlServerDoc = "."
-    , [string]$SqlDatabaseDoc = "Documentation"
+    , [string]$DocServer = "."
+    , [string]$DocDatabase = "Documentation"
     #,[string]$ServerConnection =$(Throw "Parameter missing: -Server Connection")
+	, [PSCredential]$DocCredential 
 )
 function BoolToSqlBit ([string]$val) {
     if ($val -eq $true) { "1" }else { "0" }
@@ -25,8 +27,13 @@ $DMV_array = "MDSCHEMA_CUBES" , "MDSCHEMA_DIMENSIONS", "MDSCHEMA_LEVELS", "MDSCH
 $SQLconn = New-Object System.Data.SqlClient.SqlConnection 
 $SQLcmd = New-Object System.Data.SqlClient.SqlCommand
 
-$SQLConnectionString = "Data Source={0};Initial Catalog={1};Integrated Security=SSPI;" -f $SqlServerDoc, $SqlDatabaseDoc
-$SQLConnectionString 
+$SQLConnectionString = "Data Source={0};Initial Catalog={1};Integrated Security=SSPI;" -f $DocServer, $DocDatabase
+if ($null -ne $DocCredential)
+{
+	$SQLConnectionString = "Data Source={0};Initial Catalog={1};User ID={2};Password={3}" -f $DocServer, $DocDatabase, $DocCredential.UserName , $DocCredential.GetNetworkCredential().Password
+}
+
+Write-Debug "SQLConnectionString $SQLConnectionString" 
 $SQLconn.ConnectionString = $SQLConnectionString 
 
 
