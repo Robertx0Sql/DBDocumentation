@@ -73,6 +73,9 @@
     <Folder Include="TOOLS\" />
     <Folder Include="TOOLS\Tables\" />
     <Folder Include="TOOLS\Stored Procedures\" />
+    <Folder Include="Report" />
+    <Folder Include="Report\Tables" />
+    <Folder Include="REPORT\Stored Procedures\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Staging\Tables\ColumnDoc.sql" />
@@ -83,7 +86,6 @@
     <Build Include="dbo\Tables\MDSCHEMA_MEASUREGROUP_DIMENSIONS.sql" />
     <Build Include="dbo\Tables\MDSCHEMA_MEASURES.sql" />
     <Build Include="dbo\Views\vwColumnDoc.sql" />
-    <Build Include="dbo\Views\vwObjectDoc.sql" />
     <Build Include="dbo\Stored Procedures\uspUpdateSQLDocColumn.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabases.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabaseObjects.sql" />
@@ -145,6 +147,9 @@
     <Build Include="TOOLS\Stored Procedures\usp_ETLLogDetailInsert.sql" />
     <Build Include="TOOLS\Stored Procedures\csp_RethrowError.sql" />
     <Build Include="Security\TOOLS.sql" />
+    <Build Include="Security\Report.sql" />
+    <Build Include="Report\Tables\DatabaseObjectDocumentation.sql" />
+    <Build Include="REPORT\Stored Procedures\upUpdateDatabaseObjectDocumentation.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">

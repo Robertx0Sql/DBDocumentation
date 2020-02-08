@@ -33,12 +33,12 @@ AS (
 		,R.StagingDateTime AS DocumentationLoadDate
 		,'O' AS DependencyTypeCode
 	FROM [Staging].[SQLDocObjectReference] R
-	LEFT JOIN [dbo].[vwObjectDoc] OD
+	LEFT JOIN [REPORT].[DatabaseObjectDocumentation] OD
 		ON R.SERVERNAME = od.SERVERNAME
 			AND r.DatabaseName = od.DatabaseName
 			AND od.ObjectName = [referenced_entity_name]
 			AND od.SchemaName = referenced_schema_name
-	LEFT JOIN dbo.[vwObjectDoc] odr
+	LEFT JOIN [REPORT].[DatabaseObjectDocumentation] odr
 		ON odr.DatabaseName = r.DatabaseName
 			AND odr.ServerName = r.ServerName
 			AND odr.ObjectName = r.referencing_entity_name

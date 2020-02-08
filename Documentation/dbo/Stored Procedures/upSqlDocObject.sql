@@ -18,7 +18,7 @@ SELECT [ServerName]
 	,TypeCode
 	,DocumentationLoadDate
 	,CodeFlag
-FROM dbo.vwObjectDoc
+FROM [REPORT].[DatabaseObjectDocumentation]
 WHERE DatabaseName = @DatabaseName
 	AND SERVERNAME = @Server
 	AND (

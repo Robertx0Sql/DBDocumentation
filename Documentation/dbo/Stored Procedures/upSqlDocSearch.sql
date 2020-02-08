@@ -42,8 +42,8 @@ AS (
 		,CAST(t.parentObjectName AS VARCHAR(255)) AS ReferencedObjectName
 		,CAST(t.ParentTypeCode AS VARCHAR(255)) as ReferencedTypeCode
 		,CAST(p.TypeDescriptionUser AS VARCHAR(255)) AS TypeDescriptionUser
-	FROM [dbo].vwObjectDoc t
-	LEFT JOIN [dbo].vwObjectDoc p
+	FROM [REPORT].[DatabaseObjectDocumentation] t
+	LEFT JOIN [REPORT].[DatabaseObjectDocumentation] p
 		ON t.ParentObjectName = p.ObjectName
 			AND t.ParentSchemaName = p.SchemaName
 	WHERE (

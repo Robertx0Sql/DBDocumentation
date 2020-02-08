@@ -22,7 +22,7 @@ SELECT d.[ServerName]
 	,od.ReferencedSchemaName
 	,od.ReferencedObjectType
 	,d.UserModeFlag
-FROM dbo.vwObjectDoc d
+FROM [REPORT].[DatabaseObjectDocumentation] d
 LEFT JOIN dbo.SQLColumnReference od
 	ON  d.SERVERNAME = od.ServerName
 		AND d.DatabaseName = od.DatabaseName

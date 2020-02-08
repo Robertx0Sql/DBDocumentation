@@ -20,7 +20,7 @@ SELECT [ServerName]
 	,[DocumentationDescription]
 	,DocumentationLoadDate
 
-FROM dbo.vwObjectDoc
+FROM [REPORT].[DatabaseObjectDocumentation]
 WHERE DatabaseName = @DatabaseName
 	AND SERVERNAME = @Server
 	AND Typecode != 'C' -- Check Constraint

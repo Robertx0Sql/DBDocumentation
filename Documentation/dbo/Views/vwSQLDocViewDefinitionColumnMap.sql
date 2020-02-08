@@ -23,7 +23,7 @@ LEFT JOIN [dbo].[vwColumnDoc] cd
 		AND cd.[ObjectSchemaName] = vc.[SourceTableSchema]
 		AND cd.[ObjectName] = vc.[SourceTableName]
 		AND cd.[ColumnName] = vc.[ColumnName]
-LEFT JOIN [dbo].[vwObjectDoc] od
+LEFT JOIN [REPORT].[DatabaseObjectDocumentation] od
 	ON od.SERVERNAME = vc.SERVERNAME
 		AND od.DatabaseName = vc.DatabaseName
 		AND od.[SchemaName] = vc.[SourceTableSchema]
