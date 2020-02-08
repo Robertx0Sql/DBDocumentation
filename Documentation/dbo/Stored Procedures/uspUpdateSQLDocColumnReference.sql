@@ -4,12 +4,12 @@ BEGIN
 	SET NOCOUNT ON;
 
 	DELETE E
-	FROM [dbo].[SQLColumnReference] E
+	FROM [Staging].[SQLColumnReference] E
 	INNER JOIN @TVP X
 		ON x.[ServerName] = E.[ServerName]
 			AND X.[DatabaseName] = E.[DatabaseName];
 
-	INSERT INTO [dbo].[SQLColumnReference] (
+	INSERT INTO [Staging].[SQLColumnReference] (
 		[ServerName]
 		,[DatabaseName]
 		,[SchemaName]

@@ -136,7 +136,6 @@
     <Build Include="dbo\Views\vwAutoMapFKList.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocSearch.sql" />
     <Build Include="dbo\Views\vwAutoMapFK.sql" />
-    <Build Include="dbo\Tables\SQLColumnReference.sql" />
     <Build Include="dbo\User Defined Types\SQLColumnReferenceTableType.sql" />
     <Build Include="dbo\Stored Procedures\uspUpdateSQLDocColumnReference.sql" />
     <Build Include="TOOLS\Tables\ETLLOG.sql" />
@@ -151,6 +150,7 @@
     <Build Include="Report\Tables\DatabaseObjectDocumentation.sql" />
     <Build Include="REPORT\Stored Procedures\upUpdateDatabaseObjectDocumentation.sql" />
     <Build Include="Staging\Views\vwColumnDoc.sql" />
+    <Build Include="Staging\Tables\SQLColumnReference.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">

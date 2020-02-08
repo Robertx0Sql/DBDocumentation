@@ -209,4 +209,10 @@
     <Property Name="NewSchema" Value="Staging" />
     <Property Name="IsNewSchemaExternal" Value="False" />
   </Operation>
+  <Operation Name="Move Schema" Key="eb691396-50e2-4dff-8ce3-86fb8bfb213d" ChangeDateTime="02/08/2020 22:28:22">
+    <Property Name="ElementName" Value="[dbo].[SQLColumnReference]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="NewSchema" Value="Staging" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
 </Operations>

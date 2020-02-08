@@ -23,7 +23,7 @@ SELECT d.[ServerName]
 	,od.ReferencedObjectType
 	,d.UserModeFlag
 FROM [REPORT].[DatabaseObjectDocumentation] d
-LEFT JOIN dbo.SQLColumnReference od
+LEFT JOIN [Staging].SQLColumnReference od
 	ON  d.SERVERNAME = od.ServerName
 		AND d.DatabaseName = od.DatabaseName
 		AND d.ParentSchemaName = od.[SchemaName]

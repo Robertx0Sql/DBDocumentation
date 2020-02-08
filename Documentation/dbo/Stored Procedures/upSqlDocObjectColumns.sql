@@ -57,7 +57,7 @@ BEGIN
 		,iif(cd.TypeCode = 'V', 'Source', 'FK') AS fk_title
 		,cd.DocumentationLoadDate
 	FROM [Staging].[vwColumnDoc] cd
-	left join dbo.SQLColumnReference od
+	left join [Staging].SQLColumnReference od
 		ON cd.SERVERNAME = od.ServerName
 			AND cd.DatabaseName = od.DatabaseName
 			AND cd.[ObjectSchemaName] = od.[SchemaName]
