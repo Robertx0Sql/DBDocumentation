@@ -17,7 +17,7 @@ SELECT vc.[ServerName]
 	,od.TypeDescriptionSQL
 	,od.TypeDescriptionUser
 FROM [Staging].[SQLDocViewDefinitionColumnMap] vc
-LEFT JOIN [dbo].[vwColumnDoc] cd
+LEFT JOIN [Staging].[vwColumnDoc] cd
 	ON cd.SERVERNAME = vc.SERVERNAME
 		AND cd.DatabaseName = vc.DatabaseName
 		AND cd.[ObjectSchemaName] = vc.[SourceTableSchema]

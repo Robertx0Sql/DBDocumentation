@@ -17,7 +17,7 @@ AS (
 		,CAST([ObjectName] AS VARCHAR(255)) AS ReferencedObjectName
 		,CAST(t.TypeCode AS VARCHAR(255)) as ReferencedTypeCode
 		,CAST(ot.TypeDescriptionUser AS VARCHAR(255)) AS TypeDescriptionUser
-	FROM [dbo].[vwColumnDoc] t
+	FROM [Staging].[vwColumnDoc] t
 	LEFT JOIN dbo.vwObjectType ot
 		ON ot.TypeCode = t.TypeCode
 	WHERE (

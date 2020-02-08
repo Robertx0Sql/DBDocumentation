@@ -76,6 +76,7 @@
     <Folder Include="Report" />
     <Folder Include="Report\Tables" />
     <Folder Include="REPORT\Stored Procedures\" />
+    <Folder Include="Staging\Views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Staging\Tables\ColumnDoc.sql" />
@@ -85,7 +86,6 @@
     <Build Include="dbo\Tables\MDSCHEMA_MEASUREGROUPS.sql" />
     <Build Include="dbo\Tables\MDSCHEMA_MEASUREGROUP_DIMENSIONS.sql" />
     <Build Include="dbo\Tables\MDSCHEMA_MEASURES.sql" />
-    <Build Include="dbo\Views\vwColumnDoc.sql" />
     <Build Include="dbo\Stored Procedures\uspUpdateSQLDocColumn.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabases.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabaseObjects.sql" />
@@ -150,6 +150,7 @@
     <Build Include="Security\Report.sql" />
     <Build Include="Report\Tables\DatabaseObjectDocumentation.sql" />
     <Build Include="REPORT\Stored Procedures\upUpdateDatabaseObjectDocumentation.sql" />
+    <Build Include="Staging\Views\vwColumnDoc.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">

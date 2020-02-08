@@ -56,7 +56,7 @@ BEGIN
 		,iif(od.[FK_NAME] IS NOT NULL, 'yes', NULL) AS isFK
 		,iif(cd.TypeCode = 'V', 'Source', 'FK') AS fk_title
 		,cd.DocumentationLoadDate
-	FROM [dbo].[vwColumnDoc] cd
+	FROM [Staging].[vwColumnDoc] cd
 	left join dbo.SQLColumnReference od
 		ON cd.SERVERNAME = od.ServerName
 			AND cd.DatabaseName = od.DatabaseName

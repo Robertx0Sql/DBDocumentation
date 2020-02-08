@@ -203,4 +203,10 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[uspUpdateSQLDocObjectDocumentation]" />
   </Operation>
+  <Operation Name="Move Schema" Key="52b10a6f-2669-4497-b5bd-2dd96b7d57a5" ChangeDateTime="02/08/2020 22:24:43">
+    <Property Name="ElementName" Value="[dbo].[vwColumnDoc]" />
+    <Property Name="ElementType" Value="SqlView" />
+    <Property Name="NewSchema" Value="Staging" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
 </Operations>
