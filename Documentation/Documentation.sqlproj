@@ -129,7 +129,6 @@
     <Build Include="dbo\Tables\SQLDOCAutoMapFK.sql" />
     <Build Include="dbo\Views\vwObjectTypeList.sql" />
     <Build Include="dbo\Views\vwAutoMapFKList.sql" />
-    <Build Include="dbo\Stored Procedures\upSqlDocDatabaseObject.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocSearch.sql" />
     <Build Include="dbo\Views\vwAutoMapFK.sql" />
     <Build Include="dbo\Tables\SQLColumnReference.sql" />
