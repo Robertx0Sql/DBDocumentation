@@ -699,7 +699,7 @@ function Save-SQLObjectCode($Server, $Database , [PSCredential]$SourceCredential
 	
 	$so.ClusteredIndexes = $True;
 	$so.ConvertUserDefinedDataTypesToBaseType = $false;
-	$so.NonClusteredIndexes = $false
+	$so.NonClusteredIndexes = $True
 	$so.WithDependencies = $False
 	$so.Indexes = $True   
 	$so.DriAllConstraints = $True
@@ -761,15 +761,13 @@ function Save-SQLObjectCode($Server, $Database , [PSCredential]$SourceCredential
 				
                 if ($ObjectType -eq "Table") {
 					#Write-Verbose  " ... table sub objects"
-
 				
                     $tableObjects = $objs.Indexes
                     $tableObjects += $objs.ForeignKeys
                     $tableObjects += $objs.Checks
-                    $tableObjects += $objs.Triggers
-#ignore check or IsSystemObject https://mitchwheat.com/2011/07/14/fixing-slow-sql-server-management-objects-smo-performance/
+                   # $tableObjects += $objs.Triggers
+					#ignore check for IsSystemObject https://mitchwheat.com/2011/07/14/fixing-slow-sql-server-management-objects-smo-performance/
                     foreach ($tableSub in $tableObjects <#| Where-Object { !($_.IsSystemObject) }#>) {   
-						$schema = $tableSub.Schema
                         $ObjName = $tableSub.Name 
 						$tableSubType = $tableSub.GetType().Name 
 
