@@ -151,6 +151,7 @@
     <Build Include="REPORT\Stored Procedures\upUpdateDatabaseObjectDocumentation.sql" />
     <Build Include="Staging\Views\vwColumnDoc.sql" />
     <Build Include="Staging\Tables\SQLColumnReference.sql" />
+    <Build Include="REPORT\Stored Procedures\uspOrchestrate.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">

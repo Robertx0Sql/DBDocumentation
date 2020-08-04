@@ -73,7 +73,7 @@ function Save-DoctoDb($SQLConnectionString, $Procedure, $ProcedureParamName, $Pr
     $SQLconn.Close()
     Write-Verbose  "$($ProcedureParamValue.Rows.Count) rows added /updated for $Procedure"
 }  
-function Save-AutoMapForeignKeys($Server , $Database, $SQLConnectionString)
+function Update-ReportData($Server , $Database, $SQLConnectionString)
 { 
 
     $SQLConn = new-object System.Data.SQLClient.SQLConnection
@@ -81,11 +81,11 @@ function Save-AutoMapForeignKeys($Server , $Database, $SQLConnectionString)
     $SQLConn.Open()
 
     $SQLCmd = New-object System.Data.SQLClient.SQLCommand
-	$SQLCmd.CommandText = "[dbo].[uspUpdateSQLDocAutoMapFK]"
+	$SQLCmd.CommandText = "[report].[uspOrchestrate]"
 	$SQLCmd.CommandType = [System.Data.CommandType]::StoredProcedure
     $SQLCmd.Connection = $SQLConn
     $SQLCmd.Parameters.AddWithValue("@Server", $Server ) | Out-Null
-    $SQLCmd.Parameters.AddWithValue("@Database", $Database ) | Out-Null
+    $SQLCmd.Parameters.AddWithValue("@DatabaseName", $Database ) | Out-Null
     $SQLCmd.ExecuteNonQuery() | Out-Null
 	
     $SQLconn.Close()
@@ -827,6 +827,6 @@ Write-Verbose "Start Get-SQLObjectCode" #this has to happen all within the funct
 Save-SQLObjectCode -Server $SourceServer -Database $SourceDatabase -SourceCredential $SourceCredential
 
 
-Write-Verbose "Save-AutoMapForeignKeys"
+Write-Verbose "Update-ReportData"
 $SourceServerNoPort = Get-ServerInstance -Server $SourceServer -Database $SourceDatabase #Note this returns the Server & instance but not the port number.
-Save-AutoMapForeignKeys -Server $SourceServerNoPort -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString 
+Update-ReportData -Server $SourceServerNoPort -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString 

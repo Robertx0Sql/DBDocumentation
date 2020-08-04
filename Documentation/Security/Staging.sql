@@ -1,4 +1,4 @@
-﻿CREATE SCHEMA [Staging]
+﻿CREATE SCHEMA [staging]
     AUTHORIZATION [dbo];
 
 
