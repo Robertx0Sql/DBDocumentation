@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[uspUpdateSQLDocColumn] (@TVP [ColumnDocTableType] READONLY)
+CREATE PROCEDURE [staging].[uspUpdateSQLDocColumn] (@TVP [ColumnDocTableType] READONLY)
 AS
 BEGIN
 	SET NOCOUNT ON;

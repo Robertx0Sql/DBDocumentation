@@ -1,5 +1,5 @@
 
-CREATE PROCEDURE [dbo].[uspUpdateSQLDocObjectDocumentation] 
+CREATE PROCEDURE [staging].[uspUpdateSQLDocObjectDocumentation] 
 (
 	@TVPObjDoc [dbo].[ObjectDocumentationTableType] READONLY
 )

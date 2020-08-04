@@ -77,6 +77,7 @@
     <Folder Include="Report\Tables" />
     <Folder Include="REPORT\Stored Procedures\" />
     <Folder Include="Staging\Views" />
+    <Folder Include="Staging\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Staging\Tables\ColumnDoc.sql" />
@@ -86,7 +87,6 @@
     <Build Include="dbo\Tables\MDSCHEMA_MEASUREGROUPS.sql" />
     <Build Include="dbo\Tables\MDSCHEMA_MEASUREGROUP_DIMENSIONS.sql" />
     <Build Include="dbo\Tables\MDSCHEMA_MEASURES.sql" />
-    <Build Include="dbo\Stored Procedures\uspUpdateSQLDocColumn.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabases.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabaseObjects.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocObject.sql" />
@@ -103,25 +103,20 @@
     <Build Include="dbo\User Defined Types\ColumnDocTableType.sql" />
     <Build Include="Security\Staging.sql" />
     <Build Include="Staging\Tables\SQLDocObjectReference.sql" />
-    <Build Include="dbo\Stored Procedures\uspUpdateSQLDocObjectReference.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocObjectReferences.sql" />
     <Build Include="dbo\User Defined Types\SQLDocObjectReferenceTableType.sql" />
     <Build Include="dbo\Views\vwObjectType.sql" />
     <Build Include="dbo\Views\vwSQLDocObjectReference.sql" />
     <Build Include="Staging\Tables\ObjectDocumentation.sql" />
-    <Build Include="dbo\Stored Procedures\uspUpdateSQLDocObjectDocumentation.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocObjectChildObjects.sql" />
     <Build Include="dbo\User Defined Types\ObjectDocumentationTableType.sql" />
     <Build Include="Staging\Tables\SQLDocViewDefinitionColumnMap.sql" />
     <Build Include="dbo\Views\vwSQLDocViewDefinitionColumnMap.sql" />
-    <Build Include="dbo\Stored Procedures\uspUpdateSQLDocViewColumnMap.sql" />
     <Build Include="dbo\User Defined Types\ViewColumnTableType.sql" />
     <Build Include="Staging\Tables\ObjectCode.sql" />
-    <Build Include="dbo\Stored Procedures\uspUpdateSQLDocObjectCode.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocObjectCode.sql" />
     <Build Include="dbo\User Defined Types\ObjectCodeTableType.sql" />
     <Build Include="Staging\Tables\DatabaseInformation.sql" />
-    <Build Include="dbo\Stored Procedures\uspUpdateSQLDocDatabaseInformation.sql" />
     <Build Include="dbo\User Defined Types\DatabaseInformationTableType.sql" />
     <Build Include="dbo\Views\vwChildObjects.sql" />
     <Build Include="dbo\Stored Procedures\upSqlDocDatabaseInformation.sql" />
@@ -137,7 +132,6 @@
     <Build Include="dbo\Stored Procedures\upSqlDocSearch.sql" />
     <Build Include="dbo\Views\vwAutoMapFK.sql" />
     <Build Include="dbo\User Defined Types\SQLColumnReferenceTableType.sql" />
-    <Build Include="dbo\Stored Procedures\uspUpdateSQLDocColumnReference.sql" />
     <Build Include="TOOLS\Tables\ETLLOG.sql" />
     <Build Include="TOOLS\Tables\ETLLogDetail.sql" />
     <Build Include="TOOLS\Stored Procedures\usp_ETLLOGUpdate.sql" />
@@ -152,6 +146,13 @@
     <Build Include="Staging\Views\vwColumnDoc.sql" />
     <Build Include="Staging\Tables\SQLColumnReference.sql" />
     <Build Include="REPORT\Stored Procedures\uspOrchestrate.sql" />
+    <Build Include="Staging\Stored Procedures\uspUpdateSQLDocColumn.sql" />
+    <Build Include="Staging\Stored Procedures\uspUpdateSQLDocColumnReference.sql" />
+    <Build Include="Staging\Stored Procedures\uspUpdateSQLDocDatabaseInformation.sql" />
+    <Build Include="Staging\Stored Procedures\uspUpdateSQLDocObjectCode.sql" />
+    <Build Include="Staging\Stored Procedures\uspUpdateSQLDocObjectDocumentation.sql" />
+    <Build Include="Staging\Stored Procedures\uspUpdateSQLDocObjectReference.sql" />
+    <Build Include="Staging\Stored Procedures\uspUpdateSQLDocViewColumnMap.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">

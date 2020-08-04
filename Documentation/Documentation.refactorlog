@@ -215,4 +215,46 @@
     <Property Name="NewSchema" Value="Staging" />
     <Property Name="IsNewSchemaExternal" Value="False" />
   </Operation>
+  <Operation Name="Move Schema" Key="604fe0bd-df41-4baf-b086-014d95521f88" ChangeDateTime="08/04/2020 19:44:31">
+    <Property Name="ElementName" Value="[dbo].[uspUpdateSQLDocColumn]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="staging" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="455236e2-549c-48fd-9487-38dc4a8c7d0a" ChangeDateTime="08/04/2020 19:45:28">
+    <Property Name="ElementName" Value="[dbo].[uspUpdateSQLDocViewDefinitionColumnMap]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="staging" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="af27252f-7829-4e66-aac7-155992f98cf7" ChangeDateTime="08/04/2020 19:45:47">
+    <Property Name="ElementName" Value="[dbo].[uspUpdateSQLDocObjectReference]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="staging" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="a1c20984-ff5c-4ac6-9f3d-d80a2d635dec" ChangeDateTime="08/04/2020 19:45:56">
+    <Property Name="ElementName" Value="[dbo].[uspUpdateSQLDocObjectDocumentation]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="staging" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="39c0a81a-cc03-4f39-9d8c-7434d0ed320c" ChangeDateTime="08/04/2020 19:46:07">
+    <Property Name="ElementName" Value="[dbo].[uspUpdateSQLDocObjectCode]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="staging" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="25fd2816-ec0b-451a-bd21-a908b02c7fe6" ChangeDateTime="08/04/2020 19:46:38">
+    <Property Name="ElementName" Value="[dbo].[uspUpdateSQLDocDatabaseInformation]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="staging" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="fed6595c-f4cd-480a-b721-57a6dd86a3f2" ChangeDateTime="08/04/2020 19:46:51">
+    <Property Name="ElementName" Value="[dbo].[uspUpdateSQLDocColumnReference]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="staging" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
 </Operations>

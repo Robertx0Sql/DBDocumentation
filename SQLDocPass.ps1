@@ -646,7 +646,7 @@ WHERE fk_obj.name IS NOT NULL
 }
 
 function Save-SQLObjectCode($Server, $Database , [PSCredential]$SourceCredential) {
-    $Procedure = "[dbo].[uspUpdateSQLDocObjectCode]"
+    $Procedure = "[staging].[uspUpdateSQLDocObjectCode]"
     $ProcedureParamName = "@TVPObjectCode"
 
     [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.SMO') | out-null
@@ -797,30 +797,30 @@ function Save-SQLObjectCode($Server, $Database , [PSCredential]$SourceCredential
 
 Write-Verbose "Start  SQLDocColumnQuery"
 $query = SQLDocColumnQuery  -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocColumn]" -ProcedureParamName  "@TVP"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[staging].[uspUpdateSQLDocColumn]" -ProcedureParamName  "@TVP"
 
 Write-Verbose "Start  SQLColumnReference"
 $query = SQLColumnReference
-Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocColumnReference]" -ProcedureParamName  "@TVP"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[staging].[uspUpdateSQLDocColumnReference]" -ProcedureParamName  "@TVP"
 
 
 Write-Verbose "Start Get-SQLDOCReferencedObjectQuery"
 $query = Get-SQLDOCReferencedObjectQuery  -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocObjectReference]" -ProcedureParamName  "@TVPObjRef"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[staging].[uspUpdateSQLDocObjectReference]" -ProcedureParamName  "@TVPObjRef"
 
  
 Write-Verbose "Start  SQLDOCObjects"
 $query = Get-SQLDOCObjectQuery -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocObjectDocumentation]" -ProcedureParamName  "@TVPObjDoc"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[staging].[uspUpdateSQLDocObjectDocumentation]" -ProcedureParamName  "@TVPObjDoc"
 
 Write-Verbose "Start ViewColumnMap Query"
 $query = Get-ViewColumnMapQuery -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocViewDefinitionColumnMap]" -ProcedureParamName  "@TVPViewCol"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[staging].[uspUpdateSQLDocViewDefinitionColumnMap]" -ProcedureParamName  "@TVPViewCol"
 
 
 Write-Verbose "Start Database Info"
 $query = SQLDatabaseInformation -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocDatabaseInformation]" -ProcedureParamName  "@TVPDbInfo"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[staging].[uspUpdateSQLDocDatabaseInformation]" -ProcedureParamName  "@TVPDbInfo"
 
 
 Write-Verbose "Start Get-SQLObjectCode" #this has to happen all within the function as cannot marshall the dataset out of the function 
