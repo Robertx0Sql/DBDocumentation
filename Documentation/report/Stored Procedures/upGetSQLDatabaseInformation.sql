@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE upSqlDocDatabaseInformation (
+﻿CREATE PROCEDURE [report].[upGetSQLDatabaseInformation] (
 	@Server VARCHAR(255) = NULL
 	,@DatabaseName VARCHAR(255) = NULL
 	)

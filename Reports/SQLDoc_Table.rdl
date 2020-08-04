@@ -30,7 +30,7 @@
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>dbo.upSqlDocObjectColumns</CommandText>
+        <CommandText>report.upGetSQLObjectColumns</CommandText>
       </Query>
       <Fields>
         <Field Name="ServerName">
@@ -163,7 +163,7 @@
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>dbo.upSqlDocObjectReferences</CommandText>
+        <CommandText>report.upGetSQLObjectReferences</CommandText>
       </Query>
       <Fields>
         <Field Name="ServerName">
@@ -217,7 +217,7 @@
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>dbo.upSqlDocObject</CommandText>
+        <CommandText>report.upGetSQLObject</CommandText>
       </Query>
       <Fields>
         <Field Name="ServerName">
@@ -293,7 +293,7 @@
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>dbo.upSqlDocObjectCode</CommandText>
+        <CommandText>report.upGetSQLObjectCode</CommandText>
       </Query>
       <Fields>
         <Field Name="code">
@@ -323,7 +323,7 @@
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>dbo.upSqlDocObjectChildObjects</CommandText>
+        <CommandText>report.upGetSQLObjectChildObjects</CommandText>
       </Query>
       <Fields>
         <Field Name="ServerName">
@@ -416,7 +416,7 @@
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>dbo.upSqlDocObjectChildFK</CommandText>
+        <CommandText>report.upGetSQLObjectChildFK</CommandText>
       </Query>
       <Fields>
         <Field Name="RecID">
@@ -521,7 +521,7 @@
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>dbo.upSqlDocObjectChildFK</CommandText>
+        <CommandText>report.upGetSQLObjectChildFK</CommandText>
       </Query>
       <Fields>
         <Field Name="RecID">

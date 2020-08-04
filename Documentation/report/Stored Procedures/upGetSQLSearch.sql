@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[upSqlDocSearch] (
+CREATE PROCEDURE [report].[upGetSQLSearch] (
 	@Search VARCHAR(255)
 	,@server VARCHAR(255) = NULL
 	,@database VARCHAR(255) = NULL

@@ -257,4 +257,147 @@
     <Property Name="NewSchema" Value="staging" />
     <Property Name="IsNewSchemaExternal" Value="False" />
   </Operation>
+  <Operation Name="Move Schema" Key="f0df6837-b2ec-4b0b-87f7-1b6517032c68" ChangeDateTime="08/04/2020 20:34:36">
+    <Property Name="ElementName" Value="[dbo].[upSqlDocAutoMapFK]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="report" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="bc2037ac-bbba-45bd-8755-a1e4078d0938" ChangeDateTime="08/04/2020 20:35:00">
+    <Property Name="ElementName" Value="[dbo].[upSqlDocDatabaseInformation]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="report" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="e77fbe81-0e76-4c22-92bf-035a95cf654a" ChangeDateTime="08/04/2020 20:35:19">
+    <Property Name="ElementName" Value="[dbo].[upSqlDocDatabases]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="report" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="a7360ee3-67fc-4061-bfa4-473f60ec5563" ChangeDateTime="08/04/2020 20:35:29">
+    <Property Name="ElementName" Value="[dbo].[upSqlDocObject]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="report" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="78115592-15bb-4c0e-b1b9-d6a8b98c5c2b" ChangeDateTime="08/04/2020 20:35:47">
+    <Property Name="ElementName" Value="[dbo].[upSqlDocObjectChildFK]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="report" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="3c4c583a-3947-4096-8ecf-27ea209ba64d" ChangeDateTime="08/04/2020 20:35:59">
+    <Property Name="ElementName" Value="[dbo].[upSqlDocObjectChildObjects]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="report" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="c7dec0f7-fe8f-4db3-979e-b38338f019ad" ChangeDateTime="08/04/2020 20:36:18">
+    <Property Name="ElementName" Value="[dbo].[upSqlDocDatabaseObjects]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="report" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="4394b4d3-fa93-4703-8b10-7fa40219d371" ChangeDateTime="08/04/2020 20:36:36">
+    <Property Name="ElementName" Value="[dbo].[upSqlDocObjectCode]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="report" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="7db69591-8ce0-431d-9f79-4667846ea883" ChangeDateTime="08/04/2020 20:36:48">
+    <Property Name="ElementName" Value="[dbo].[upSqlDocObjectColumns]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="report" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="bdcf29fc-25d1-4675-8bb4-7b71961be172" ChangeDateTime="08/04/2020 20:37:10">
+    <Property Name="ElementName" Value="[dbo].[upSqlDocObjectReferences]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="report" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="f56d17be-2505-4cb4-be34-a694c4a51827" ChangeDateTime="08/04/2020 20:37:23">
+    <Property Name="ElementName" Value="[dbo].[upSqlDocSearch]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="NewSchema" Value="report" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="96c24669-a3fd-4678-926b-ee702689e530" ChangeDateTime="08/04/2020 20:37:53">
+    <Property Name="ElementName" Value="[report].[upSqlDocSearch]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[report]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[upGetSQLSearch]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e4565c3a-e3be-494a-8324-f84e65b54b96" ChangeDateTime="08/04/2020 20:38:10">
+    <Property Name="ElementName" Value="[report].[upSqlDocObjectReferences]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[report]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[upGetSQLObjectReferences]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2ab9fac9-4d0e-4bf1-96a2-ab4da5e091aa" ChangeDateTime="08/04/2020 20:38:33">
+    <Property Name="ElementName" Value="[report].[upSqlDocAutoMapFK]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[report]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[upGetSQLAutoMapFK]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2990798b-cc23-495c-a04c-6283c9ade02d" ChangeDateTime="08/04/2020 20:39:13">
+    <Property Name="ElementName" Value="[report].[upSqlDocDatabaseInformation]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[report]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="upGetSQLDatabaseInformation" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d90855ee-066e-4c55-9006-816a0cacd74c" ChangeDateTime="08/04/2020 20:39:31">
+    <Property Name="ElementName" Value="[report].[upSqlDocDatabaseObjects]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[report]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[upGetSQLDatabaseObjects]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4d3d454b-9762-427e-9f4e-98bcd4e4932a" ChangeDateTime="08/04/2020 20:39:51">
+    <Property Name="ElementName" Value="[report].[upSqlDocDatabases]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[report]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[upGetSQLDatabases]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d469173b-02a1-4fb0-a870-512b3112671a" ChangeDateTime="08/04/2020 20:40:05">
+    <Property Name="ElementName" Value="[report].[upSqlDocObject]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[report]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[upGetSQLObject]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e4fc3d33-dc4c-42df-ba83-a09a7e064697" ChangeDateTime="08/04/2020 20:40:33">
+    <Property Name="ElementName" Value="[report].[upSqlDocObjectChildFK]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[report]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[upGetSQLObjectChildFK]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f3f78f3f-0161-4b5f-a28a-e018716b3c06" ChangeDateTime="08/04/2020 20:40:50">
+    <Property Name="ElementName" Value="[report].[upSqlDocObjectChildObjects]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[report]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[upGetSQLObjectChildObjects]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e58618f1-6e7e-4b90-a65f-9ce18a48d63f" ChangeDateTime="08/04/2020 20:41:12">
+    <Property Name="ElementName" Value="[report].[upSqlDocObjectCode]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[report]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[upGetSQLObjectCode]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="03c8e9d5-a0d1-4143-a828-0d8357c93e5b" ChangeDateTime="08/04/2020 20:41:28">
+    <Property Name="ElementName" Value="[report].[upSqlDocObjectColumns]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[report]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[upGetSQLObjectColumns]" />
+  </Operation>
 </Operations>

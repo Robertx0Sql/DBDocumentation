@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[upSqlDocObjectColumns] (
+﻿CREATE PROCEDURE [report].[upGetSQLObjectColumns] (
 	@Server VARCHAR(255)
 	,@DatabaseName VARCHAR(255)
 	,@Schema VARCHAR(255) = NULL

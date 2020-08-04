@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[upSqlDocDatabaseObjects] (
+CREATE PROCEDURE [report].[upGetSQLDatabaseObjects] (
 	@Server VARCHAR(255) = NULL
 	,@DatabaseName VARCHAR(255) = NULL
 	,@ObjectType VARCHAR(10) = NULL

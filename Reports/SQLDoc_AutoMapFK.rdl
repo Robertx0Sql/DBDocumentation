@@ -22,7 +22,7 @@
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>dbo.upSqlDocAutoMapFK</CommandText>
+        <CommandText>report.upGetSQLAutoMapFK</CommandText>
       </Query>
       <Fields>
         <Field Name="ServerName">

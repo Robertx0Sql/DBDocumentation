@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[upSqlDocAutoMapFK] (
+﻿CREATE PROCEDURE [report].[upGetSQLAutoMapFK] (
 	@Server VARCHAR(255)
 	,@DatabaseName VARCHAR(255)
 	)
