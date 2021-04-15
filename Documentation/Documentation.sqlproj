@@ -135,6 +135,8 @@
     <Build Include="dbo\Tables\SQLColumnReference.sql" />
     <Build Include="dbo\User Defined Types\SQLColumnReferenceTableType.sql" />
     <Build Include="dbo\Stored Procedures\uspUpdateSQLDocColumnReference.sql" />
+    <Build Include="dbo\Stored Procedures\upSqlDocSchema.sql" />
+    <Build Include="dbo\Stored Procedures\upSqlDocBusMatrix.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">
