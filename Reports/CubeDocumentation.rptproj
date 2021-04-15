@@ -58,6 +58,7 @@
     <Report Include="CubeDoc_MeasureGroup.rdl" />
     <Report Include="CubeDoc_Search.rdl" />
     <Report Include="SQLDb Documentation.rdl" />
+    <Report Include="SQLDoc BusMatrix.rdl" />
     <Report Include="SQLDoc_AutoMapFK.rdl" />
     <Report Include="SQLDoc_Database.rdl" />
     <Report Include="SQLDoc_DatabaseObjects.rdl" />
