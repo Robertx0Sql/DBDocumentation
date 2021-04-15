@@ -221,7 +221,6 @@
                                     <Parameter Name="UserMode">
                                       <Value>=Parameters!UserMode.Value</Value>
                                     </Parameter>
-
                                   </Parameters>
                                 </Drillthrough>
                               </Action>
@@ -437,7 +436,7 @@
       <DataType>Boolean</DataType>
       <DefaultValue>
         <Values>
-          <Value>=true</Value>
+          <Value>=false</Value>
         </Values>
       </DefaultValue>
       <Prompt>User Mode</Prompt>
