@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [TOOLS].[usp_ETLLogDetailInsert] (
+CREATE PROCEDURE [TOOLS].[uspETLLogDetailInsert] (
 	@LOGID INT
 	,@message NVARCHAR(2048)
 	,@Starttime DATETIME OUTPUT 

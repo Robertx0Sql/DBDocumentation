@@ -123,11 +123,11 @@
     <Build Include="dbo\User Defined Types\SQLColumnReferenceTableType.sql" />
     <Build Include="TOOLS\Tables\ETLLOG.sql" />
     <Build Include="TOOLS\Tables\ETLLogDetail.sql" />
-    <Build Include="TOOLS\Stored Procedures\usp_ETLLOGUpdate.sql" />
-    <Build Include="TOOLS\Stored Procedures\usp_ETLLOGInsertProc.sql" />
-    <Build Include="TOOLS\Stored Procedures\usp_ETLLOGInsert.sql" />
-    <Build Include="TOOLS\Stored Procedures\usp_ETLLogDetailInsert.sql" />
-    <Build Include="TOOLS\Stored Procedures\csp_RethrowError.sql" />
+    <Build Include="TOOLS\Stored Procedures\uspETLLOGUpdate.sql" />
+    <Build Include="TOOLS\Stored Procedures\uspETLLOGInsertProc.sql" />
+    <Build Include="TOOLS\Stored Procedures\uspETLLOGInsert.sql" />
+    <Build Include="TOOLS\Stored Procedures\uspETLLogDetailInsert.sql" />
+    <Build Include="TOOLS\Stored Procedures\uspRethrowError.sql" />
     <Build Include="Security\TOOLS.sql" />
     <Build Include="Security\Report.sql" />
     <Build Include="Report\Tables\DatabaseObjectDocumentation.sql" />

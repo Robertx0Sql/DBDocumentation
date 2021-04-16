@@ -400,4 +400,39 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[upGetSQLObjectColumns]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="91d97003-87a5-459b-a35b-2373fac89224" ChangeDateTime="04/16/2021 11:14:07">
+    <Property Name="ElementName" Value="[TOOLS].[csp_RethrowError]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[TOOLS]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[uspRethrowError]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="387532fb-4916-4dd6-9957-e184ca51a62f" ChangeDateTime="04/16/2021 11:24:31">
+    <Property Name="ElementName" Value="[TOOLS].[usp_ETLLogDetailInsert]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[TOOLS]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[uspETLLogDetailInsert]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c16a4173-50ea-4088-b7fd-bbf293376719" ChangeDateTime="04/16/2021 11:26:22">
+    <Property Name="ElementName" Value="[TOOLS].[usp_ETLLOGInsert]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[TOOLS]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[uspETLLOGInsert]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2c16b588-cbef-4fc0-8545-9f933cd02d72" ChangeDateTime="04/16/2021 11:26:41">
+    <Property Name="ElementName" Value="[TOOLS].[usp_ETLLOGInsertProc]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[TOOLS]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[uspETLLOGInsertProc]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7e367267-3657-4944-a3fa-799b27860cf2" ChangeDateTime="04/16/2021 11:26:56">
+    <Property Name="ElementName" Value="[TOOLS].[usp_ETLLOGUpdate]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[TOOLS]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[uspETLLOGUpdate]" />
+  </Operation>
 </Operations>

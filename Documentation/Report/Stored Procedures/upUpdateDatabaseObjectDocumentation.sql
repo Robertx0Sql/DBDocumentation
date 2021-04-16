@@ -16,7 +16,7 @@ BEGIN
 		DECLARE @LogDescription NVARCHAR(2000) = 	'@Server = ' + COALESCE(''''+@Server+ '''' , 'NULL') 
 													+', @DatabaseName = '+ COALESCE(''''+@DatabaseName + '''' , 'NULL')         
 		
-		EXECUTE  @LogID = [TOOLS].[usp_ETLLOGInsertProc] @source_object_id= @@PROCID , @LogDescription=@LogDescription;
+		EXECUTE  @LogID = [TOOLS].[uspETLLOGInsertProc] @source_object_id= @@PROCID , @LogDescription=@LogDescription;
 
         DECLARE @RowCountStart AS BIGINT, @TotalRows BIGINT;
         DECLARE @MergeRowInsert INT, @MergeRowUpdate INT, @MergeRowDelete INT;
@@ -159,7 +159,7 @@ BEGIN
 
 	SET @LogDetailMessage = 'Get Data From Staging';
 
-	EXECUTE [TOOLS].[usp_ETLLogDetailInsert] @LOGID = @LOGID
+	EXECUTE [TOOLS].[uspETLLogDetailInsert] @LOGID = @LOGID
 		,@message = @LogDetailMessage 
 		,@Starttime = @LogDetailTime OUTPUT
 		,@rows = @LogDetailrows
@@ -258,7 +258,7 @@ BEGIN
 
 	SET @LogDetailMessage = 'Merge Data';
 
-	EXECUTE [TOOLS].[usp_ETLLogDetailInsert] @LOGID = @LOGID
+	EXECUTE [TOOLS].[uspETLLogDetailInsert] @LOGID = @LOGID
 		,@message = @LogDetailMessage 
 		,@Starttime = @LogDetailTime OUTPUT
 		,@rows = @LogDetailrows
@@ -268,10 +268,10 @@ BEGIN
 
         SET @MergeRowInsert = @TotalRows - @RowCountStart - @MergeRowUpdate;
 
-        EXECUTE [TOOLS].[usp_ETLLOGUpdate] @LogID = @LogID, @DataCountInsert = @MergeRowInsert, @DataCountUpdate = @MergeRowUpdate, @DataCountDelete = @MergeRowDelete, @DataCountTotalRows = @TotalRows;
+        EXECUTE [TOOLS].[uspETLLOGUpdate] @LogID = @LogID, @DataCountInsert = @MergeRowInsert, @DataCountUpdate = @MergeRowUpdate, @DataCountDelete = @MergeRowDelete, @DataCountTotalRows = @TotalRows;
 
     END TRY  
     BEGIN CATCH       -- Execute error retrieval routine.  
-        EXECUTE [TOOLS].[csp_RethrowError] @logID = @LogID ;
+        EXECUTE [TOOLS].[uspRethrowError] @logID = @LogID ;
     END CATCH; 
 END;

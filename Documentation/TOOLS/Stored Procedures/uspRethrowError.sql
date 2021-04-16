@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [TOOLS].[csp_RethrowError]
+CREATE PROCEDURE [TOOLS].[uspRethrowError]
 @pStepName VARCHAR (100)=NULL, @LogID INT = NULL
 AS
 IF NULLIF(@pStepName, '') IS NULL

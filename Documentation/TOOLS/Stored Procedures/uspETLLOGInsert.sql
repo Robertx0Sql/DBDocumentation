@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [TOOLS].[usp_ETLLOGInsert] 
+CREATE PROCEDURE [TOOLS].[uspETLLOGInsert] 
     @source NVARCHAR(1024),
     @starttime DATETIME,
     @endtime DATETIME = NULL,

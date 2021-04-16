@@ -11,7 +11,7 @@ BEGIN
 		DECLARE @LogDescription NVARCHAR(2000) = 	'@Server = ' + COALESCE(''''+@Server+ '''' , 'NULL') 
 													+', @DatabaseName = '+ COALESCE(''''+@DatabaseName + '''' , 'NULL');         
 		
-		EXECUTE  @LogID = [TOOLS].[usp_ETLLOGInsertProc] @source_object_id= @@PROCID , @LogDescription=@LogDescription;
+		EXECUTE  @LogID = [TOOLS].[uspETLLOGInsertProc] @source_object_id= @@PROCID , @LogDescription=@LogDescription;
 		
 		BEGIN -- Update Report tables
 			--MUST BE DONE First :
@@ -22,13 +22,13 @@ BEGIN
 
 		 END 
 
-		 EXECUTE [TOOLS].[usp_ETLLOGUpdate] @LogID = @LogID
+		 EXECUTE [TOOLS].[uspETLLOGUpdate] @LogID = @LogID
 
 	--COMMIT; 
     END TRY  
     BEGIN CATCH       -- Execute error retrieval routine.  
         IF @@TRANCOUNT >0 
 		ROLLBACK;
-		EXECUTE [TOOLS].[csp_RethrowError] ;
+		EXECUTE [TOOLS].[uspRethrowError] ;
     END CATCH; 
 END;

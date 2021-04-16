@@ -1,6 +1,6 @@
 ﻿
 
-CREATE PROCEDURE [TOOLS].[usp_ETLLOGUpdate] 
+CREATE PROCEDURE [TOOLS].[uspETLLOGUpdate] 
 	 @LOGID INT
 	,@DataCountInsert INT = NULL
 	,@DataCountUpdate INT = NULL

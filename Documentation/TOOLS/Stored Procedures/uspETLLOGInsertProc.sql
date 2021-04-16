@@ -1,6 +1,6 @@
 ﻿
 
-CREATE PROCEDURE [TOOLS].[usp_ETLLOGInsertProc] 
+CREATE PROCEDURE [TOOLS].[uspETLLOGInsertProc] 
     @source_object_id INT,
     @starttime DATETIME=NULL,
     @endtime DATETIME = NULL,
@@ -24,7 +24,7 @@ FROM sys.objects WHERE OBJECT_ID =@source_object_id;
 
 -- TODO: Set parameter values here.
 DECLARE   @RC INT;
-EXECUTE @RC = [TOOLS].[usp_ETLLOGInsert] 
+EXECUTE @RC = [TOOLS].[uspETLLOGInsert] 
    @source
   ,@starttime
   ,@endtime
