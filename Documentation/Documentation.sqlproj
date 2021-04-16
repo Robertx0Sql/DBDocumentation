@@ -153,6 +153,8 @@
     <Build Include="Report\Stored Procedures\upGetSQLObjectColumns.sql" />
     <Build Include="Report\Stored Procedures\upGetSQLObjectReferences.sql" />
     <Build Include="Report\Stored Procedures\upGetSQLSearch.sql" />
+    <Build Include="REPORT\Stored Procedures\upGetSqlSchema.sql" />
+    <Build Include="REPORT\Stored Procedures\upGetSqlBusMatrix.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">
