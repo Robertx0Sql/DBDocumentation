@@ -779,7 +779,7 @@
       <DataType>Boolean</DataType>
       <DefaultValue>
         <Values>
-          <Value>=true</Value>
+          <Value>=false</Value>
         </Values>
       </DefaultValue>
       <Prompt>User Mode</Prompt>
