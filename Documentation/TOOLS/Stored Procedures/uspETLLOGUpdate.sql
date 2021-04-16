@@ -10,6 +10,7 @@ CREATE PROCEDURE [TOOLS].[uspETLLOGUpdate]
 	,@message NVARCHAR(2048) = NULL
 
 AS 
+BEGIN
 	SET NOCOUNT ON; 
 	SET XACT_ABORT ON;  
 
@@ -31,3 +32,4 @@ AS
 	    ,[DataCountDelete] = @DataCountDelete
 	    ,[TotalRows] = @DataCountTotalRows
     WHERE [LOGID] = @LOGID;
+END

@@ -9,6 +9,7 @@ CREATE PROCEDURE [TOOLS].[uspETLLOGInsert]
     @DataCountDelete INT = NULL,
 	@LogDescription nvarchar(2000)=NULL
 AS 
+BEGIN
 	SET NOCOUNT ON; 
 	SET XACT_ABORT ON;  
 	DECLARE   @LOGID INT;
@@ -20,10 +21,6 @@ AS
 	SET @LOGID = SCOPE_IDENTITY();
                
 	COMMIT;
-	-- Begin Return Select <- do not remove
-	--SELECT [LOGID], [source], [starttime], [endtime], [message], [DataCountInsert], [DataCountUpdate], [DataCountDelete]
-	--FROM   [TOOLS].[ETLLOG]
-	--WHERE  [LOGID] = @LOGID;
-	-- End Return Select <- do not remove
-
+	
 	RETURN @LOGID;
+END
