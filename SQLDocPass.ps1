@@ -296,6 +296,7 @@ LEFT JOIN /*PK fields*/
 					SELECT ', ' + COL_NAME(t.OBJECT_ID, t.column_id)
 					FROM sys.index_columns AS T
 					WHERE T.OBJECT_ID = IC.OBJECT_ID
+						AND T.index_id = pk.index_id
 					FOR XML PATH('')
 					), 1, 2, N''), N'')
 	FROM sys.tables tab
@@ -402,6 +403,7 @@ LEFT JOIN (
 					SELECT ', ' + COL_NAME(t.OBJECT_ID, t.column_id)
 					FROM sys.index_columns AS T
 					WHERE T.OBJECT_ID = O.OBJECT_ID
+						AND t.index_id = O.index_id
 					FOR XML PATH('')
 					), 1, 2, N''), N'')
 	FROM sys.index_columns O
