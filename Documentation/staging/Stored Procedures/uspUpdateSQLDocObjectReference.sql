@@ -1,4 +1,4 @@
-CREATE PROCEDURE [dbo].[uspUpdateSQLDocObjectReference] 
+CREATE PROCEDURE [staging].[uspUpdateSQLDocObjectReference] 
 (
 	@TVPObjRef [SQLDocObjectReferenceTableType] READONLY
 )

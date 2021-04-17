@@ -41,7 +41,7 @@ BEGIN
 		AND AFK.ServerName = @Server
 		AND AFK.DatabaseName = @Database
 
-INSERT INTO [dbo].[SQLColumnReference] (
+INSERT INTO [Staging].[SQLColumnReference] (
 		[ServerName]
 		,[DatabaseName]
 		,[SchemaName]
@@ -69,7 +69,7 @@ INSERT INTO [dbo].[SQLColumnReference] (
 		,[referenced_column] AS [ReferencedColumnName]
 
 	FROM [dbo].[vwAutoMapFKList] AFK
-	LEFT JOIN [dbo].[SQLColumnReference]  E
+	LEFT JOIN [Staging].[SQLColumnReference]  E
 		ON E.ServerName = AFK.ServerName
 			AND E.DatabaseName = afk.DatabaseName
 			AND e.[SchemaName] = afk.[ObjectSchemaName]

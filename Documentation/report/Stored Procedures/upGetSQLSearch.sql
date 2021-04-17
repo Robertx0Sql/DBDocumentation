@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[upSqlDocSearch] (
+CREATE PROCEDURE [report].[upGetSQLSearch] (
 	@Search VARCHAR(255)
 	,@server VARCHAR(255) = NULL
 	,@database VARCHAR(255) = NULL
@@ -17,7 +17,7 @@ AS (
 		,CAST([ObjectName] AS VARCHAR(255)) AS ReferencedObjectName
 		,CAST(t.TypeCode AS VARCHAR(255)) as ReferencedTypeCode
 		,CAST(ot.TypeDescriptionUser AS VARCHAR(255)) AS TypeDescriptionUser
-	FROM [dbo].[vwColumnDoc] t
+	FROM [Staging].[vwColumnDoc] t
 	LEFT JOIN dbo.vwObjectType ot
 		ON ot.TypeCode = t.TypeCode
 	WHERE (
@@ -42,8 +42,8 @@ AS (
 		,CAST(t.parentObjectName AS VARCHAR(255)) AS ReferencedObjectName
 		,CAST(t.ParentTypeCode AS VARCHAR(255)) as ReferencedTypeCode
 		,CAST(p.TypeDescriptionUser AS VARCHAR(255)) AS TypeDescriptionUser
-	FROM [dbo].vwObjectDoc t
-	LEFT JOIN [dbo].vwObjectDoc p
+	FROM [REPORT].[DatabaseObjectDocumentation] t
+	LEFT JOIN [REPORT].[DatabaseObjectDocumentation] p
 		ON t.ParentObjectName = p.ObjectName
 			AND t.ParentSchemaName = p.SchemaName
 	WHERE (

@@ -1,5 +1,5 @@
 ﻿
-CREATE VIEW [dbo].[vwColumnDoc]
+CREATE VIEW [Staging].[vwColumnDoc]
 AS
 WITH cte
 AS (

@@ -25,7 +25,7 @@
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>dbo.upSqlDocDatabaseObjects</CommandText>
+        <CommandText>report.upGetSQLDatabaseObjects</CommandText>
       </Query>
       <Fields>
         <Field Name="ServerName">
@@ -90,7 +90,7 @@
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>dbo.upSqlDocDatabaseInformation</CommandText>
+        <CommandText>report.upGetSQLDatabaseInformation</CommandText>
       </Query>
       <Fields>
         <Field Name="ServerName">
@@ -1045,7 +1045,7 @@
               </Actions>
             </ActionInfo>
             <Top>3.28049cm</Top>
-            <Left>13.48164cm</Left>
+            <Left>13.47635cm</Left>
             <Height>0.6cm</Height>
             <Width>12.98869cm</Width>
             <ZIndex>7</ZIndex>

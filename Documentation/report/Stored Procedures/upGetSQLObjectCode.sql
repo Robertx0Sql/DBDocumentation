@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[upSqlDocObjectCode] (
+CREATE PROCEDURE [report].[upGetSQLObjectCode] (
 	@Server VARCHAR(255)
 	,@DatabaseName VARCHAR(255)
 	,@Schema VARCHAR(255)

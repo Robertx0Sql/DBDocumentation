@@ -58,8 +58,8 @@ FROM (
 			,od.ReferencedSchemaName
 			,od.[ReferencedObjectName]
 			,od.[ReferencedColumnName]
-		FROM vwColumnDoc cd
-		LEFT JOIN dbo.SQLColumnReference od ON cd.SERVERNAME = od.ServerName
+		FROM [Staging].vwColumnDoc cd
+		LEFT JOIN [Staging].SQLColumnReference od ON cd.SERVERNAME = od.ServerName
 			AND cd.DatabaseName = od.DatabaseName
 			AND cd.[ObjectSchemaName] = od.[SchemaName]
 			AND cd.[ObjectName] = od.[ObjectName]
@@ -72,8 +72,8 @@ INNER JOIN (
 			,od.ReferencedSchemaName
 			,od.[ReferencedObjectName]
 			,od.[ReferencedColumnName]
-		FROM vwColumnDoc cd
-		LEFT JOIN dbo.SQLColumnReference od ON cd.SERVERNAME = od.ServerName
+		FROM [Staging].vwColumnDoc cd
+		LEFT JOIN [Staging].SQLColumnReference od ON cd.SERVERNAME = od.ServerName
 			AND cd.DatabaseName = od.DatabaseName
 			AND cd.[ObjectSchemaName] = od.[SchemaName]
 			AND cd.[ObjectName] = od.[ObjectName]

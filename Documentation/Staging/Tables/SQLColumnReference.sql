@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[SQLColumnReference] (
+﻿CREATE TABLE [Staging].[SQLColumnReference] (
     [SQLColumnReferenceId] INT            IDENTITY (1, 1) NOT NULL,
     [ServerName]           VARCHAR (100)  NULL,
     [DatabaseName]         NVARCHAR (128) NULL,

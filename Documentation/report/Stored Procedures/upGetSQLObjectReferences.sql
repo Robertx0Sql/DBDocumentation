@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[upSqlDocObjectReferences] (
+﻿CREATE PROCEDURE [report].[upGetSQLObjectReferences] (
 	@Server VARCHAR(255)
 	,@DatabaseName VARCHAR(255)
 	,@Schema VARCHAR(255)

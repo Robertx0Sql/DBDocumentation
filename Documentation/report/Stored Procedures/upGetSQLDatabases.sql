@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[upSqlDocDatabases]
+CREATE PROCEDURE [report].[upGetSQLDatabases]
 AS
 SELECT DISTINCT ServerName
 	,DatabaseName

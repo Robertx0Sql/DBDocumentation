@@ -24,7 +24,7 @@
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>dbo.upSqlDocSearch</CommandText>
+        <CommandText>report.upGetSQLSearch</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -73,7 +73,7 @@
       <Query>
         <DataSourceName>DocumentationDB</DataSourceName>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>dbo.upSqlDocDatabases</CommandText>
+        <CommandText>report.upGetSQLDatabases</CommandText>
       </Query>
       <Fields>
         <Field Name="ServerName">

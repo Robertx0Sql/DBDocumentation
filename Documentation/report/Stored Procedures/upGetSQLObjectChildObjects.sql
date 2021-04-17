@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[upSqlDocObjectChildObjects] (
+﻿CREATE PROCEDURE [report].[upGetSQLObjectChildObjects] (
 	@Server VARCHAR(255)
 	,@DatabaseName VARCHAR(255)
 	,@Schema VARCHAR(255) = NULL

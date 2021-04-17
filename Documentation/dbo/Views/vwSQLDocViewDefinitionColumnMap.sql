@@ -17,13 +17,13 @@ SELECT vc.[ServerName]
 	,od.TypeDescriptionSQL
 	,od.TypeDescriptionUser
 FROM [Staging].[SQLDocViewDefinitionColumnMap] vc
-LEFT JOIN [dbo].[vwColumnDoc] cd
+LEFT JOIN [Staging].[vwColumnDoc] cd
 	ON cd.SERVERNAME = vc.SERVERNAME
 		AND cd.DatabaseName = vc.DatabaseName
 		AND cd.[ObjectSchemaName] = vc.[SourceTableSchema]
 		AND cd.[ObjectName] = vc.[SourceTableName]
 		AND cd.[ColumnName] = vc.[ColumnName]
-LEFT JOIN [dbo].[vwObjectDoc] od
+LEFT JOIN [REPORT].[DatabaseObjectDocumentation] od
 	ON od.SERVERNAME = vc.SERVERNAME
 		AND od.DatabaseName = vc.DatabaseName
 		AND od.[SchemaName] = vc.[SourceTableSchema]

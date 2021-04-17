@@ -28,7 +28,7 @@
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>dbo.upSqlDocBusMatrix</CommandText>
+        <CommandText>report.upGetSqlBusMatrix</CommandText>
       </Query>
       <Fields>
         <Field Name="SERVERNAME">
@@ -93,7 +93,7 @@
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>dbo.upSqlDocSchema</CommandText>
+        <CommandText>report.upGetSqlSchema</CommandText>
       </Query>
       <Fields>
         <Field Name="SchemaName">

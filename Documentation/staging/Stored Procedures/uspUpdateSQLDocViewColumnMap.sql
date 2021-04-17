@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[uspUpdateSQLDocViewDefinitionColumnMap] 
+CREATE PROCEDURE [staging].[uspUpdateSQLDocViewDefinitionColumnMap] 
 	@TVPViewCol [SQLDocViewDefinitionColumnMapTableType] READONLY
 AS
 BEGIN

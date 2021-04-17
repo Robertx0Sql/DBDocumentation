@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[upSqlDocDatabaseObjects] (
+CREATE PROCEDURE [report].[upGetSQLDatabaseObjects] (
 	@Server VARCHAR(255) = NULL
 	,@DatabaseName VARCHAR(255) = NULL
 	,@ObjectType VARCHAR(10) = NULL
@@ -20,7 +20,7 @@ SELECT [ServerName]
 	,[DocumentationDescription]
 	,DocumentationLoadDate
 
-FROM dbo.vwObjectDoc
+FROM [REPORT].[DatabaseObjectDocumentation]
 WHERE DatabaseName = @DatabaseName
 	AND SERVERNAME = @Server
 	AND Typecode != 'C' -- Check Constraint

@@ -73,7 +73,7 @@ function Save-DoctoDb($SQLConnectionString, $Procedure, $ProcedureParamName, $Pr
     $SQLconn.Close()
     Write-Verbose  "$($ProcedureParamValue.Rows.Count) rows added /updated for $Procedure"
 }  
-function Save-AutoMapForeignKeys($Server , $Database, $SQLConnectionString)
+function Update-ReportData($Server , $Database, $SQLConnectionString)
 { 
 
     $SQLConn = new-object System.Data.SQLClient.SQLConnection
@@ -81,11 +81,11 @@ function Save-AutoMapForeignKeys($Server , $Database, $SQLConnectionString)
     $SQLConn.Open()
 
     $SQLCmd = New-object System.Data.SQLClient.SQLCommand
-	$SQLCmd.CommandText = "[dbo].[uspUpdateSQLDocAutoMapFK]"
+	$SQLCmd.CommandText = "[report].[uspOrchestrate]"
 	$SQLCmd.CommandType = [System.Data.CommandType]::StoredProcedure
     $SQLCmd.Connection = $SQLConn
     $SQLCmd.Parameters.AddWithValue("@Server", $Server ) | Out-Null
-    $SQLCmd.Parameters.AddWithValue("@Database", $Database ) | Out-Null
+    $SQLCmd.Parameters.AddWithValue("@DatabaseName", $Database ) | Out-Null
     $SQLCmd.ExecuteNonQuery() | Out-Null
 	
     $SQLconn.Close()
@@ -648,7 +648,7 @@ WHERE fk_obj.name IS NOT NULL
 }
 
 function Save-SQLObjectCode($Server, $Database , [PSCredential]$SourceCredential) {
-    $Procedure = "[dbo].[uspUpdateSQLDocObjectCode]"
+    $Procedure = "[staging].[uspUpdateSQLDocObjectCode]"
     $ProcedureParamName = "@TVPObjectCode"
 
     [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.SMO') | out-null
@@ -701,7 +701,7 @@ function Save-SQLObjectCode($Server, $Database , [PSCredential]$SourceCredential
 	
 	$so.ClusteredIndexes = $True;
 	$so.ConvertUserDefinedDataTypesToBaseType = $false;
-	$so.NonClusteredIndexes = $false
+	$so.NonClusteredIndexes = $True
 	$so.WithDependencies = $False
 	$so.Indexes = $True   
 	$so.DriAllConstraints = $True
@@ -763,15 +763,13 @@ function Save-SQLObjectCode($Server, $Database , [PSCredential]$SourceCredential
 				
                 if ($ObjectType -eq "Table") {
 					#Write-Verbose  " ... table sub objects"
-
 				
                     $tableObjects = $objs.Indexes
                     $tableObjects += $objs.ForeignKeys
                     $tableObjects += $objs.Checks
-                    $tableObjects += $objs.Triggers
-#ignore check or IsSystemObject https://mitchwheat.com/2011/07/14/fixing-slow-sql-server-management-objects-smo-performance/
+                   # $tableObjects += $objs.Triggers
+					#ignore check for IsSystemObject https://mitchwheat.com/2011/07/14/fixing-slow-sql-server-management-objects-smo-performance/
                     foreach ($tableSub in $tableObjects <#| Where-Object { !($_.IsSystemObject) }#>) {   
-						$schema = $tableSub.Schema
                         $ObjName = $tableSub.Name 
 						$tableSubType = $tableSub.GetType().Name 
 
@@ -801,36 +799,36 @@ function Save-SQLObjectCode($Server, $Database , [PSCredential]$SourceCredential
 
 Write-Verbose "Start  SQLDocColumnQuery"
 $query = SQLDocColumnQuery  -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocColumn]" -ProcedureParamName  "@TVP"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[staging].[uspUpdateSQLDocColumn]" -ProcedureParamName  "@TVP"
 
 Write-Verbose "Start  SQLColumnReference"
 $query = SQLColumnReference
-Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocColumnReference]" -ProcedureParamName  "@TVP"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[staging].[uspUpdateSQLDocColumnReference]" -ProcedureParamName  "@TVP"
 
 
 Write-Verbose "Start Get-SQLDOCReferencedObjectQuery"
 $query = Get-SQLDOCReferencedObjectQuery  -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocObjectReference]" -ProcedureParamName  "@TVPObjRef"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[staging].[uspUpdateSQLDocObjectReference]" -ProcedureParamName  "@TVPObjRef"
 
  
 Write-Verbose "Start  SQLDOCObjects"
 $query = Get-SQLDOCObjectQuery -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocObjectDocumentation]" -ProcedureParamName  "@TVPObjDoc"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[staging].[uspUpdateSQLDocObjectDocumentation]" -ProcedureParamName  "@TVPObjDoc"
 
 Write-Verbose "Start ViewColumnMap Query"
 $query = Get-ViewColumnMapQuery -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocViewDefinitionColumnMap]" -ProcedureParamName  "@TVPViewCol"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[staging].[uspUpdateSQLDocViewDefinitionColumnMap]" -ProcedureParamName  "@TVPViewCol"
 
 
 Write-Verbose "Start Database Info"
 $query = SQLDatabaseInformation -extentedPropertyName $extentedPropertyName 
-Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[dbo].[uspUpdateSQLDocDatabaseInformation]" -ProcedureParamName  "@TVPDbInfo"
+Save-QueryResult -Server $SourceServer -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString -Query $query -Procedure "[staging].[uspUpdateSQLDocDatabaseInformation]" -ProcedureParamName  "@TVPDbInfo"
 
 
 Write-Verbose "Start Get-SQLObjectCode" #this has to happen all within the function as cannot marshall the dataset out of the function 
 Save-SQLObjectCode -Server $SourceServer -Database $SourceDatabase -SourceCredential $SourceCredential
 
 
-Write-Verbose "Save-AutoMapForeignKeys"
+Write-Verbose "Update-ReportData"
 $SourceServerNoPort = Get-ServerInstance -Server $SourceServer -Database $SourceDatabase #Note this returns the Server & instance but not the port number.
-Save-AutoMapForeignKeys -Server $SourceServerNoPort -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString 
+Update-ReportData -Server $SourceServerNoPort -Database $SourceDatabase  -SQLConnectionString $SQLConnectionString 

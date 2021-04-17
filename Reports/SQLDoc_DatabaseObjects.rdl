@@ -30,7 +30,7 @@
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>dbo.upSqlDocDatabaseObjects</CommandText>
+        <CommandText>report.upGetSQLDatabaseObjects</CommandText>
       </Query>
       <Fields>
         <Field Name="ServerName">

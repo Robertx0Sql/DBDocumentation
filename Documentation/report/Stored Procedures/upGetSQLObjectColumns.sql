@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[upSqlDocObjectColumns] (
+﻿CREATE PROCEDURE [report].[upGetSQLObjectColumns] (
 	@Server VARCHAR(255)
 	,@DatabaseName VARCHAR(255)
 	,@Schema VARCHAR(255) = NULL
@@ -56,8 +56,8 @@ BEGIN
 		,iif(od.[FK_NAME] IS NOT NULL, 'yes', NULL) AS isFK
 		,iif(cd.TypeCode = 'V', 'Source', 'FK') AS fk_title
 		,cd.DocumentationLoadDate
-	FROM [dbo].[vwColumnDoc] cd
-	left join dbo.SQLColumnReference od
+	FROM [Staging].[vwColumnDoc] cd
+	left join [Staging].SQLColumnReference od
 		ON cd.SERVERNAME = od.ServerName
 			AND cd.DatabaseName = od.DatabaseName
 			AND cd.[ObjectSchemaName] = od.[SchemaName]
