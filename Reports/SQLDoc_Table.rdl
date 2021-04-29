@@ -647,7 +647,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>=FORMAT(Today(),"dd/MM/yyyy")</Value>
+                        <Value>="Loaded: " &amp; FORMAT(First(Fields!DocumentationLoadDate.Value, "dsColumns"),"dd MMM yyyy")</Value>
                         <Style />
                       </TextRun>
                     </TextRuns>
