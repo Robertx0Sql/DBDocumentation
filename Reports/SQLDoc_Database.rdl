@@ -78,7 +78,7 @@
         </Field>
       </Fields>
     </DataSet>
-    <DataSet Name="DataSet1">
+    <DataSet Name="dsDBProperties">
       <Query>
         <DataSourceName>DocumentationDB</DataSourceName>
         <QueryParameters>
@@ -156,7 +156,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>=FORMAT(Today(),"dd/MM/yyyy")</Value>
+                        <Value>="Loaded: " &amp; FORMAT(First(Fields!DocumentationLoadDate.Value, "dsObjects"),"dd MMM yyyy")</Value>
                         <Style />
                       </TextRun>
                     </TextRuns>
@@ -944,7 +944,7 @@
                     </TablixMember>
                   </TablixMembers>
                 </TablixRowHierarchy>
-                <DataSetName>DataSet1</DataSetName>
+                <DataSetName>dsDBProperties</DataSetName>
                 <Top>0.9825cm</Top>
                 <Height>1.2cm</Height>
                 <Width>16.63369cm</Width>

@@ -24,7 +24,8 @@ BEGIN
         ,ReferencedObjectName
         ,ReferencedColumnName
 		 ,1 AS Relationship
-    FROM dbo.vwChildObjects
+		 ,co.DocumentationLoadDate
+    FROM dbo.vwChildObjects co
     WHERE TypeCode = 'F'
         AND DatabaseName = @DatabaseName
         AND SERVERNAME = @Server
