@@ -17,8 +17,9 @@ BEGIN
 			--MUST BE DONE First :
 			EXECUTE [dbo].[uspUpdateSQLDocAutoMapFK] @Server =@Server,@Database =@DatabaseName--,@PrintLog =@PrintLog;
 
-			
 			EXEC [report].[upUpdateDatabaseObjectDocumentation] @Server =@Server,@DatabaseName =@DatabaseName,@PrintLog =@PrintLog;
+			
+			EXEC [report].[upUpdateDatabaseObjectColumns] @Server =@Server,@DatabaseName =@DatabaseName,@PrintLog =@PrintLog;
 
 		 END 
 
