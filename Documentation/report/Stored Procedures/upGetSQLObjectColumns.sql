@@ -16,13 +16,23 @@ BEGIN
 		,cd.[ColumnName] as [name]
 		,COALESCE(cd.[DocumentationDescription], vc.[DocumentationDescription]) AS [DocumentationDescription]
 		,cd.[ColumnId] as [column_id]
-		,cd.[datatype] + iif(cd.[is_identity] = 1,  ' ' + cd.[Column_Default] , '') + iif(cd.[datatype] LIKE '%char%', '(' + CASE 
-				WHEN cd.[max_length] = - 1
-					THEN 'max'
-				WHEN LEFT(cd.[datatype], 1) = 'n'
-					THEN CAST(CAST(cd.[max_length] / 2.0 AS INT) AS VARCHAR(10))
-				ELSE CAST(cd.[max_length] AS VARCHAR(10))
-				END + ')', '') AS [datatype]
+		,cd.[datatype] 
+			+ CASE 
+				WHEN cd.[is_identity] = 1 
+					THEN ' ' + cd.[Column_Default]
+				WHEN cd.[datatype] IN ('numeric' ,'decimal' ) THEN 
+				'(' + CAST( cd.[precision] AS VARCHAR(10) )  + ',' + CAST(cd.scale AS VARCHAR(10) ) + ')'
+				WHEN cd.[datatype] LIKE '%char%' THEN 
+				'(' + CASE 
+					WHEN cd.[max_length] = - 1
+						THEN 'max'
+					WHEN LEFT(cd.[datatype], 1) = 'n'
+						THEN CAST(CAST(cd.[max_length] / 2.0 AS INT) AS VARCHAR(10))
+					ELSE CAST(cd.[max_length] AS VARCHAR(10))
+					END + ')'
+				ELSE  '' 
+			END 
+			AS [datatype]
 		,CASE 
 			WHEN cd.[datatype] = 'uniqueidentifier'
 				THEN '36'
