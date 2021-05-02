@@ -20,7 +20,7 @@ BEGIN
 		--,[referenced_entity_name]
 		--,DocumentationLoadDate
 		,DependencyTypeCode
-	FROM dbo.[vwSQLDocObjectReference]
+	FROM [staging].[vwSQLDocObjectReference]
 	WHERE DatabaseName = @DatabaseName
 		AND SERVERNAME = @Server
 		AND [referenced_schema_name] = @Schema

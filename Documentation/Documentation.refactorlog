@@ -447,4 +447,10 @@
     <Property Name="NewSchema" Value="staging" />
     <Property Name="IsNewSchemaExternal" Value="False" />
   </Operation>
+  <Operation Name="Move Schema" Key="5eb38b46-a294-4f51-ae6d-22c0bd718e0d" ChangeDateTime="05/02/2021 22:17:39">
+    <Property Name="ElementName" Value="[dbo].[vwSQLDocObjectReference]" />
+    <Property Name="ElementType" Value="SqlView" />
+    <Property Name="NewSchema" Value="staging" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
 </Operations>

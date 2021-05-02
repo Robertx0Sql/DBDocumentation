@@ -102,7 +102,6 @@
     <Build Include="Staging\Tables\SQLDocObjectReference.sql" />
     <Build Include="dbo\User Defined Types\SQLDocObjectReferenceTableType.sql" />
     <Build Include="dbo\Views\vwObjectType.sql" />
-    <Build Include="dbo\Views\vwSQLDocObjectReference.sql" />
     <Build Include="Staging\Tables\ObjectDocumentation.sql" />
     <Build Include="dbo\User Defined Types\ObjectDocumentationTableType.sql" />
     <Build Include="Staging\Tables\SQLDocViewDefinitionColumnMap.sql" />
@@ -160,6 +159,7 @@
     <Build Include="REPORT\Stored Procedures\upUpdateDatabaseColumnReference.sql" />
     <Build Include="Report\Views\vwChildObjects.sql" />
     <Build Include="Staging\Views\vwSQLDocViewDefinitionColumnMap.sql" />
+    <Build Include="Staging\Views\vwSQLDocObjectReference.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">

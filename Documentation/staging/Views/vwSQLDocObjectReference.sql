@@ -1,4 +1,4 @@
-﻿CREATE VIEW [dbo].[vwSQLDocObjectReference]
+﻿CREATE VIEW [staging].[vwSQLDocObjectReference]
 AS
 WITH cte
 AS (
