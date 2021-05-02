@@ -21,6 +21,7 @@ BEGIN
 			
 			EXEC [report].[upUpdateDatabaseObjectColumns] @Server =@Server,@DatabaseName =@DatabaseName,@PrintLog =@PrintLog;
 
+			EXEC [report].[upUpdateDatabaseColumnReference] @Server =@Server,@DatabaseName =@DatabaseName,@PrintLog =@PrintLog;
 		 END 
 
 		 EXECUTE [TOOLS].[uspETLLOGUpdate] @LogID = @LogID

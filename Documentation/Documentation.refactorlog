@@ -435,4 +435,10 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[uspETLLOGUpdate]" />
   </Operation>
+  <Operation Name="Move Schema" Key="eaeeb920-7900-4608-9a78-7785a6d85eed" ChangeDateTime="05/02/2021 22:03:44">
+    <Property Name="ElementName" Value="[dbo].[vwChildObjects]" />
+    <Property Name="ElementType" Value="SqlView" />
+    <Property Name="NewSchema" Value="report" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
 </Operations>

@@ -32,7 +32,7 @@ AS (
 		--,TypeCode
 		--,DocumentationLoadDate
 		,CASE WHEN ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object THEN 1 ELSE 0 END AS isChildFK
-	FROM dbo.vwChildObjects
+	FROM [report].vwChildObjects
 	WHERE TypeCode = 'F'
 		AND DatabaseName = @DatabaseName
 		AND SERVERNAME = @Server
