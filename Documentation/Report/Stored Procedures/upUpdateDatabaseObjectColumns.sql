@@ -104,7 +104,7 @@ BEGIN
 			AND cd.[ObjectSchemaName] = od.[SchemaName]
 			AND cd.[ObjectName] = od.[ObjectName]
 	AND cd.[ColumnName] = od.ColumnName 
-	LEFT JOIN dbo.[vwSQLDocViewDefinitionColumnMap] vc
+	LEFT JOIN [staging].[vwSQLDocViewDefinitionColumnMap] vc
 		ON cd.SERVERNAME = vc.SERVERNAME
 			AND cd.DatabaseName = vc.DatabaseName
 			AND cd.[ObjectSchemaName] = vc.[ViewSchema]

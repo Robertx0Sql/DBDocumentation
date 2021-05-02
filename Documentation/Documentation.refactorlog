@@ -441,4 +441,10 @@
     <Property Name="NewSchema" Value="report" />
     <Property Name="IsNewSchemaExternal" Value="False" />
   </Operation>
+  <Operation Name="Move Schema" Key="fa723851-8222-412c-ad20-5a83f9122b83" ChangeDateTime="05/02/2021 22:13:38">
+    <Property Name="ElementName" Value="[dbo].[vwSQLDocViewDefinitionColumnMap]" />
+    <Property Name="ElementType" Value="SqlView" />
+    <Property Name="NewSchema" Value="staging" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
 </Operations>
