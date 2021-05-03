@@ -180,7 +180,7 @@ dbo.[sp_generateMerge] @DestinationTable = '[report].[DatabaseColumnReference]'
 		,@rows = @LogDetailrows
 		,@verbose = @PrintLog;
 
-		SELECT @TotalRows = COUNT(*)	FROM [Report].[DatabaseObjectDocumentation];
+		SELECT @TotalRows = COUNT(*)	FROM [report].[DatabaseColumnReference];
 
         SET @MergeRowInsert = @TotalRows - @RowCountStart - @MergeRowUpdate;
 
