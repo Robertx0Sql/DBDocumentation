@@ -453,4 +453,17 @@
     <Property Name="NewSchema" Value="staging" />
     <Property Name="IsNewSchemaExternal" Value="False" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="99d1da2a-ce4a-4cd6-a292-c2c9a0d33b81" ChangeDateTime="05/03/2021 16:31:57">
+    <Property Name="ElementName" Value="[staging].[vwSQLDocObjectReference]" />
+    <Property Name="ElementType" Value="SqlView" />
+    <Property Name="ParentElementName" Value="" />
+    <Property Name="ParentElementType" Value="" />
+    <Property Name="NewName" Value="[vwDatabaseObjectReference]" />
+  </Operation>
+  <Operation Name="Move Schema" Key="5265fde4-591d-4e8d-b4c3-3a8a37cb7e18" ChangeDateTime="05/03/2021 16:32:15">
+    <Property Name="ElementName" Value="[staging].[vwDatabaseObjectReference]" />
+    <Property Name="ElementType" Value="SqlView" />
+    <Property Name="NewSchema" Value="report" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
 </Operations>
