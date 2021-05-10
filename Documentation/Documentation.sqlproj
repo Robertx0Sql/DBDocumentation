@@ -163,6 +163,7 @@
     <Build Include="Report\Tables\DatabaseObjectCode.sql" />
     <Build Include="REPORT\Stored Procedures\upUpdateDatabaseObjectReference.sql" />
     <Build Include="Report\Views\vwDatabaseObjectReference.sql" />
+    <Build Include="REPORT\Stored Procedures\upUpdateDatabaseObjectCode.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">
