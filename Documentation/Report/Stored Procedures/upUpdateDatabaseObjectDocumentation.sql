@@ -91,6 +91,7 @@ BEGIN
 		WHERE isnull(d.[SchemaName] ,d.ParentSchemaName ) 	IS NOT NULL	
 			AND d.ObjectName IS NOT NULL
 			AND t.TypeCode IS NOT NULL
+			AND d.[ParentObjectName] IS NOT NULL
 			)
 
 		INSERT INTO #temp (
@@ -148,6 +149,7 @@ BEGIN
 			, CONCAT(			[ServerName]
 				,':'	,[DatabaseName]
 				,':'	,[SchemaName]
+				,':'	,[ParentObjectName]
 				,':'	,[ObjectName]
 				,':'	,[TypeCode]
 			) AS BusinessKey
@@ -208,6 +210,7 @@ BEGIN
 				AND DST.[SchemaName] = SRC.[SchemaName]
 				AND DST.[ObjectName] = SRC.[ObjectName]
 				AND DST.[TypeCode] = SRC.[TypeCode]
+				AND DST.[ParentObjectName] = SRC.[ParentObjectName]
 			)
 		WHEN NOT MATCHED BY TARGET 
 			THEN 
