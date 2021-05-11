@@ -6,6 +6,7 @@ param(
     , [string]$DocDatabase = "Documentation"
     , [PSCredential]$SourceCredential 
 	, [PSCredential]$DocCredential 
+	, [bool]$ScriptTableCode = $false 
 )
 
 $extentedPropertyName = "MS_Description"
@@ -739,56 +740,57 @@ function Save-SQLObjectCode($Server, $Database , [PSCredential]$SourceCredential
     $dt.columns.add($col6)
 
     #$result =
-    foreach ($Type in $IncludeTypes) {
-	#$smoDbtype=	$smoDb.$Type 
-	$TypeCounter=0
-		Write-Verbose "... $Type $(get-date -format G)"
-		foreach ($objs in $smoDb.$Type  <#| Where-Object { !($_.IsSystemObject) }#>) { 
-            If ($ExcludeSchemas -notcontains $objs.Schema ) {
-				$TypeCounter++
-				if($TypeCounter % 100 -eq 0) 
-				{
-					Write-Verbose "..... Processed $TypeCounter $(get-date -format G)"
-				}       
-                $schema = $objs.Schema
-                $ObjName = $objs.Name 
-                $ObjectType = $objs.GetType().Name 
+	foreach ($Type in $IncludeTypes) {
+		if ($Type -ne "Tables" -or ($Type -eq "Tables" -and $true -eq $ScriptTableCode ) ) {
+			#$smoDbtype=	$smoDb.$Type 
+			$TypeCounter = 0
+			Write-Verbose "... $Type $(get-date -format G)"
+			foreach ($objs in $smoDb.$Type  <#| Where-Object { !($_.IsSystemObject) }#>) { 
+				If ($ExcludeSchemas -notcontains $objs.Schema ) {
+					$TypeCounter++
+					if ($TypeCounter % 100 -eq 0) {
+						Write-Verbose "..... Processed $TypeCounter $(get-date -format G)"
+					}       
+					$schema = $objs.Schema
+					$ObjName = $objs.Name 
+					$ObjectType = $objs.GetType().Name 
 
-				#Write-Verbose  "$ObjectType, $schema , $ObjName"
+					#Write-Verbose  "$ObjectType, $schema , $ObjName"
 
-                $ofs = ""
-                $sql = ( [string]$objs.Script($so) ).replace("SET ANSI_NULLS ONSET QUOTED_IDENTIFIER ON", "")
+					$ofs = ""
+					$sql = ( [string]$objs.Script($so) ).replace("SET ANSI_NULLS ONSET QUOTED_IDENTIFIER ON", "")
 
-			    [void]$dt.Rows.Add($SourceServer, $SourceDatabase , $ObjectType , $schema , $ObjName , $sql )
+					[void]$dt.Rows.Add($SourceServer, $SourceDatabase , $ObjectType , $schema , $ObjName , $sql )
 				
-                if ($ObjectType -eq "Table") {
-					#Write-Verbose  " ... table sub objects"
+					if ($ObjectType -eq "Table" -and $true -eq $ScriptTableCode ) {
+						#Write-Verbose  " ... table sub objects"
 				
-                    $tableObjects = $objs.Indexes
-                    $tableObjects += $objs.ForeignKeys
-                    $tableObjects += $objs.Checks
-                   # $tableObjects += $objs.Triggers
-					#ignore check for IsSystemObject https://mitchwheat.com/2011/07/14/fixing-slow-sql-server-management-objects-smo-performance/
-                    foreach ($tableSub in $tableObjects <#| Where-Object { !($_.IsSystemObject) }#>) {   
-                        $ObjName = $tableSub.Name 
-						$tableSubType = $tableSub.GetType().Name 
+						$tableObjects = $objs.Indexes
+						$tableObjects += $objs.ForeignKeys
+						$tableObjects += $objs.Checks
+						# $tableObjects += $objs.Triggers
+						#ignore check for IsSystemObject https://mitchwheat.com/2011/07/14/fixing-slow-sql-server-management-objects-smo-performance/
+						foreach ($tableSub in $tableObjects <#| Where-Object { !($_.IsSystemObject) }#>) {   
+							$ObjName = $tableSub.Name 
+							$tableSubType = $tableSub.GetType().Name 
 
-						# check to see if index is PrimaryKey	
-						if ($tableSubType -eq "Index") {
-							if ( $tableSub.IndexKeyType -eq "DriPrimaryKey") { 
-                                $tableSubType = "PrimaryKey" 
-                            }
-                        }
+							# check to see if index is PrimaryKey	
+							if ($tableSubType -eq "Index") {
+								if ( $tableSub.IndexKeyType -eq "DriPrimaryKey") { 
+									$tableSubType = "PrimaryKey" 
+								}
+							}
 			
-						#Write-Verbose  " ... $tableSubType, $schema , $ObjName"
+							#Write-Verbose  " ... $tableSubType, $schema , $ObjName"
 
-                        $sql = ( [string]$tableSub.Script($so) ).replace("SET ANSI_NULLS ONSET QUOTED_IDENTIFIER ON", "")
-                        [void]$dt.Rows.Add($SourceServer, $SourceDatabase , $tableSubType , $schema , $ObjName , $sql )
-						#Write-Verbose " complete"
-                    }
-                }
-            }
-        }
+							$sql = ( [string]$tableSub.Script($so) ).replace("SET ANSI_NULLS ONSET QUOTED_IDENTIFIER ON", "")
+							[void]$dt.Rows.Add($SourceServer, $SourceDatabase , $tableSubType , $schema , $ObjName , $sql )
+							#Write-Verbose " complete"
+						}
+					}
+				}
+			}
+		}
     }     
 	
 
