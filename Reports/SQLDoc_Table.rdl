@@ -253,7 +253,11 @@
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="hasColumns">
-          <Value>=iif(Fields!TypeCode.Value = "V" or Fields!TypeCode.Value = "U" ,true, false)</Value>
+          <Value>
+            =iif(Fields!TypeCode.Value = "V"
+            or Fields!TypeCode.Value = "U"
+            or Fields!TypeCode.Value = "TT"
+            ,true, false)</Value>
         </Field>
         <Field Name="TypeCode">
           <DataField>TypeCode</DataField>
@@ -1816,6 +1820,7 @@
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox55</rd:DefaultName>
+                    <Top>0.0635cm</Top>
                     <Height>0.6cm</Height>
                     <Width>2.5cm</Width>
                     <Style>
@@ -1845,7 +1850,7 @@
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox55</rd:DefaultName>
-                    <Top>1.89553cm</Top>
+                    <Top>2.11778cm</Top>
                     <Height>0.6cm</Height>
                     <Width>2.5cm</Width>
                     <ZIndex>1</ZIndex>
@@ -2872,7 +2877,7 @@
                         <Color>White</Color>
                       </Style>
                     </MapBorderSkin>
-                    <Top>4.48126cm</Top>
+                    <Top>4.57651cm</Top>
                     <Height>9.62959cm</Height>
                     <Width>15.68463cm</Width>
                     <ZIndex>4</ZIndex>
@@ -3252,7 +3257,7 @@
                         <Color>White</Color>
                       </Style>
                     </MapBorderSkin>
-                    <Top>4.48126cm</Top>
+                    <Top>4.57651cm</Top>
                     <Left>18.18294cm</Left>
                     <Height>9.62959cm</Height>
                     <Width>15.68463cm</Width>
@@ -3287,7 +3292,7 @@
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox55</rd:DefaultName>
-                    <Top>3.88845cm</Top>
+                    <Top>3.9837cm</Top>
                     <Height>0.5cm</Height>
                     <Width>12.10438cm</Width>
                     <ZIndex>6</ZIndex>
@@ -3319,7 +3324,7 @@
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox55</rd:DefaultName>
-                    <Top>3.88845cm</Top>
+                    <Top>3.9837cm</Top>
                     <Left>18.1739cm</Left>
                     <Height>0.5cm</Height>
                     <Width>10.14646cm</Width>
@@ -4077,6 +4082,7 @@
                   </Paragraph>
                 </Paragraphs>
                 <rd:DefaultName>Textbox11</rd:DefaultName>
+                <Top>0.09525cm</Top>
                 <Height>0.6cm</Height>
                 <Width>2.5cm</Width>
                 <ZIndex>1</ZIndex>
