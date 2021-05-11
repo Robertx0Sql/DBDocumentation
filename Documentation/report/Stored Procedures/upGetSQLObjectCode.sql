@@ -1,5 +1,4 @@
-﻿
-CREATE PROCEDURE [report].[upGetSQLObjectCode] (
+﻿CREATE PROCEDURE [report].[upGetSQLObjectCode] (
 	@Server VARCHAR(255)
 	,@DatabaseName VARCHAR(255)
 	,@Schema VARCHAR(255)
@@ -7,17 +6,15 @@ CREATE PROCEDURE [report].[upGetSQLObjectCode] (
 	,@ObjectType VARCHAR(10)
 	)
 AS
-SELECT code
-FROM [Staging].[ObjectCode] oc
-INNER JOIN [dbo].[vwObjectType] ot
-	ON ot.SMOObjectType = oc.SMOObjectType
+SELECT ObjectCode AS code
+FROM [report].[DatabaseObjectCode] AS oc
 WHERE oc.SERVERNAME = @Server
 	AND oc.DatabaseName = @DatabaseName
 	AND (
 		(
-			oc.[SchemaName] = @Schema
+			oc.[objectSchemaName] = @Schema
 			AND oc.[ObjectName] = @Object
-			AND ot.TypeCode = @ObjectType
+			AND oc.TypeCode = @ObjectType
 			)
 		OR (
 			@Schema IS NULL

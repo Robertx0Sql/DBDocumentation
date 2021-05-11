@@ -435,4 +435,35 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[uspETLLOGUpdate]" />
   </Operation>
+  <Operation Name="Move Schema" Key="eaeeb920-7900-4608-9a78-7785a6d85eed" ChangeDateTime="05/02/2021 22:03:44">
+    <Property Name="ElementName" Value="[dbo].[vwChildObjects]" />
+    <Property Name="ElementType" Value="SqlView" />
+    <Property Name="NewSchema" Value="report" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="fa723851-8222-412c-ad20-5a83f9122b83" ChangeDateTime="05/02/2021 22:13:38">
+    <Property Name="ElementName" Value="[dbo].[vwSQLDocViewDefinitionColumnMap]" />
+    <Property Name="ElementType" Value="SqlView" />
+    <Property Name="NewSchema" Value="staging" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Move Schema" Key="5eb38b46-a294-4f51-ae6d-22c0bd718e0d" ChangeDateTime="05/02/2021 22:17:39">
+    <Property Name="ElementName" Value="[dbo].[vwSQLDocObjectReference]" />
+    <Property Name="ElementType" Value="SqlView" />
+    <Property Name="NewSchema" Value="staging" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="99d1da2a-ce4a-4cd6-a292-c2c9a0d33b81" ChangeDateTime="05/03/2021 16:31:57">
+    <Property Name="ElementName" Value="[staging].[vwSQLDocObjectReference]" />
+    <Property Name="ElementType" Value="SqlView" />
+    <Property Name="ParentElementName" Value="" />
+    <Property Name="ParentElementType" Value="" />
+    <Property Name="NewName" Value="[vwDatabaseObjectReference]" />
+  </Operation>
+  <Operation Name="Move Schema" Key="5265fde4-591d-4e8d-b4c3-3a8a37cb7e18" ChangeDateTime="05/03/2021 16:32:15">
+    <Property Name="ElementName" Value="[staging].[vwDatabaseObjectReference]" />
+    <Property Name="ElementType" Value="SqlView" />
+    <Property Name="NewSchema" Value="report" />
+    <Property Name="IsNewSchemaExternal" Value="False" />
+  </Operation>
 </Operations>

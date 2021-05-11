@@ -20,7 +20,7 @@ BEGIN
 		--,[referenced_entity_name]
 		--,DocumentationLoadDate
 		,DependencyTypeCode
-	FROM dbo.[vwSQLDocObjectReference]
+	FROM [report].[vwDatabaseObjectReference]
 	WHERE DatabaseName = @DatabaseName
 		AND SERVERNAME = @Server
 		AND [referenced_schema_name] = @Schema
@@ -51,7 +51,7 @@ BEGIN
 		--,ReferencedObjectName AS [referenced_entity_name]
 		--,DocumentationLoadDate
 		,DependencyTypeCode = 'X'
-	FROM [dbo].[vwChildObjects]
+	FROM [report].[vwChildObjects]
 	WHERE DatabaseName = @DatabaseName
 		AND SERVERNAME = @Server
 		AND ReferencedSchemaName = @Schema

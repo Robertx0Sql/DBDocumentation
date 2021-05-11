@@ -61,14 +61,14 @@ BEGIN
 				,RTRIM(d.[objectType]) AS TypeCode
 				,t.TypeDescriptionUser
 				,t.TypeDescriptionSQL
-				,d.[SchemaName]
+				,isnull(d.[SchemaName] ,d.ParentSchemaName ) as [SchemaName]
 				,d.[ObjectName]
 				,d.[DocumentationDescription]
 				,t.TypeGroupOrder
 				,t.TypeOrder
 				,t.TypeCount
 				,d.StagingDateTime AS DocumentationLoadDate
-				,QUOTENAME(d.[SchemaName]) + '.' + QUOTENAME(d.[ObjectName]) AS QualifiedFullName
+				,QUOTENAME(isnull(d.[SchemaName] ,d.ParentSchemaName ) ) + '.' + QUOTENAME(d.[ObjectName]) AS QualifiedFullName
 				,d.ParentObjectName
 				,d.ParentSchemaName
 				,RTRIM(pd.[ObjectType]) AS ParentTypeCode
@@ -88,9 +88,10 @@ BEGIN
 					AND pd.DatabaseName = d.DatabaseName
 					AND pd.ObjectName = d.ParentObjectName
 					AND pd.SchemaName = d.ParentSchemaName
-		WHERE d.SchemaName	IS NOT NULL	
+		WHERE isnull(d.[SchemaName] ,d.ParentSchemaName ) 	IS NOT NULL	
 			AND d.ObjectName IS NOT NULL
 			AND t.TypeCode IS NOT NULL
+			AND d.[ParentObjectName] IS NOT NULL
 			)
 
 		INSERT INTO #temp (
@@ -148,6 +149,7 @@ BEGIN
 			, CONCAT(			[ServerName]
 				,':'	,[DatabaseName]
 				,':'	,[SchemaName]
+				,':'	,[ParentObjectName]
 				,':'	,[ObjectName]
 				,':'	,[TypeCode]
 			) AS BusinessKey
@@ -208,6 +210,7 @@ BEGIN
 				AND DST.[SchemaName] = SRC.[SchemaName]
 				AND DST.[ObjectName] = SRC.[ObjectName]
 				AND DST.[TypeCode] = SRC.[TypeCode]
+				AND DST.[ParentObjectName] = SRC.[ParentObjectName]
 			)
 		WHEN NOT MATCHED BY TARGET 
 			THEN 

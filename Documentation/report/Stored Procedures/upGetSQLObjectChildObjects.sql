@@ -22,7 +22,7 @@ SELECT [ServerName]
 	,ReferencedSchemaName  as ReferencedSchemaName
 	,	ReferencedTypeCode
 	,ReferencedObjectType = 'Table'
-FROM dbo.vwChildObjects
+FROM [report].vwChildObjects
 WHERE DatabaseName = @DatabaseName
 	AND SERVERNAME = @Server
 	AND ParentSchemaName = @Schema

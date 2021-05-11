@@ -9,14 +9,14 @@ BEGIN
 		SELECT SERVERNAME
 			,DatabaseName
 			,schemaName
-		FROM dbo.vwChildObjects
+		FROM [report].vwChildObjects
 		
 		UNION ALL
 		
 		SELECT SERVERNAME
 			,DatabaseName
 			,ParentschemaName
-		FROM dbo.vwChildObjects
+		FROM [report].vwChildObjects
 		) AS T
 	WHERE SchemaName IS NOT NULL
 		AND DatabaseName = @DatabaseName

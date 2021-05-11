@@ -1,4 +1,4 @@
-﻿CREATE VIEW [dbo].[vwChildObjects]
+﻿CREATE VIEW [report].[vwChildObjects]
 AS
 SELECT d.[ServerName]
 	,d.[DatabaseName]
@@ -22,8 +22,8 @@ SELECT d.[ServerName]
 	,od.ReferencedSchemaName
 	,od.ReferencedObjectType
 	,d.UserModeFlag
-FROM [REPORT].[DatabaseObjectDocumentation] d
-LEFT JOIN [Staging].SQLColumnReference od
+FROM [report].[DatabaseObjectDocumentation] d
+LEFT JOIN [report].[DatabaseColumnReference] od
 	ON  d.SERVERNAME = od.ServerName
 		AND d.DatabaseName = od.DatabaseName
 		AND d.ParentSchemaName = od.[SchemaName]

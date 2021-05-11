@@ -1,4 +1,4 @@
-﻿CREATE VIEW [dbo].[vwSQLDocViewDefinitionColumnMap]
+﻿CREATE VIEW [staging].[vwSQLDocViewDefinitionColumnMap]
 AS
 SELECT vc.[ServerName]
 	,vc.[DatabaseName]

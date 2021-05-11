@@ -13,11 +13,11 @@ AS (
 		,CAST([DocumentationDescription] AS VARCHAR(4000)) AS [Description]
 		,CAST(SERVERNAME AS VARCHAR(255)) AS ServerName
 		,CAST(DatabaseName AS VARCHAR(255)) AS DatabaseName
-		,CAST([ObjectSchemaName] AS VARCHAR(255)) AS ReferencedSchemaName
-		,CAST([ObjectName] AS VARCHAR(255)) AS ReferencedObjectName
+		,CAST([TableSchemaName] AS VARCHAR(255)) AS ReferencedSchemaName
+		,CAST([TableName] AS VARCHAR(255)) AS ReferencedObjectName
 		,CAST(t.TypeCode AS VARCHAR(255)) as ReferencedTypeCode
 		,CAST(ot.TypeDescriptionUser AS VARCHAR(255)) AS TypeDescriptionUser
-	FROM [Staging].[vwColumnDoc] t
+	FROM [report].[DatabaseObjectColumn] t
 	LEFT JOIN dbo.vwObjectType ot
 		ON ot.TypeCode = t.TypeCode
 	WHERE (
@@ -42,8 +42,8 @@ AS (
 		,CAST(t.parentObjectName AS VARCHAR(255)) AS ReferencedObjectName
 		,CAST(t.ParentTypeCode AS VARCHAR(255)) as ReferencedTypeCode
 		,CAST(p.TypeDescriptionUser AS VARCHAR(255)) AS TypeDescriptionUser
-	FROM [REPORT].[DatabaseObjectDocumentation] t
-	LEFT JOIN [REPORT].[DatabaseObjectDocumentation] p
+	FROM [report].[DatabaseObjectDocumentation] t
+	LEFT JOIN [report].[DatabaseObjectDocumentation] p
 		ON t.ParentObjectName = p.ObjectName
 			AND t.ParentSchemaName = p.SchemaName
 	WHERE (

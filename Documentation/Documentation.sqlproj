@@ -78,6 +78,7 @@
     <Folder Include="REPORT\Stored Procedures\" />
     <Folder Include="Staging\Views" />
     <Folder Include="Staging\Stored Procedures" />
+    <Folder Include="Report\Views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Staging\Tables\ColumnDoc.sql" />
@@ -101,17 +102,14 @@
     <Build Include="Staging\Tables\SQLDocObjectReference.sql" />
     <Build Include="dbo\User Defined Types\SQLDocObjectReferenceTableType.sql" />
     <Build Include="dbo\Views\vwObjectType.sql" />
-    <Build Include="dbo\Views\vwSQLDocObjectReference.sql" />
     <Build Include="Staging\Tables\ObjectDocumentation.sql" />
     <Build Include="dbo\User Defined Types\ObjectDocumentationTableType.sql" />
     <Build Include="Staging\Tables\SQLDocViewDefinitionColumnMap.sql" />
-    <Build Include="dbo\Views\vwSQLDocViewDefinitionColumnMap.sql" />
     <Build Include="dbo\User Defined Types\ViewColumnTableType.sql" />
     <Build Include="Staging\Tables\ObjectCode.sql" />
     <Build Include="dbo\User Defined Types\ObjectCodeTableType.sql" />
     <Build Include="Staging\Tables\DatabaseInformation.sql" />
     <Build Include="dbo\User Defined Types\DatabaseInformationTableType.sql" />
-    <Build Include="dbo\Views\vwChildObjects.sql" />
     <Build Include="dbo\Tables\SQLDOCObjectType.sql" />
     <Build Include="dbo\Tables\AutoMapFKBuildFilter.sql" />
     <Build Include="dbo\Stored Procedures\uspUpdateSQLDOCObjectType.sql" />
@@ -155,6 +153,17 @@
     <Build Include="Report\Stored Procedures\upGetSQLSearch.sql" />
     <Build Include="REPORT\Stored Procedures\upGetSqlSchema.sql" />
     <Build Include="REPORT\Stored Procedures\upGetSqlBusMatrix.sql" />
+    <Build Include="Report\Tables\DatabaseObjectColumn.sql" />
+    <Build Include="REPORT\Stored Procedures\upUpdateDatabaseObjectColumns.sql" />
+    <Build Include="Report\Tables\DatabaseColumnReference.sql" />
+    <Build Include="REPORT\Stored Procedures\upUpdateDatabaseColumnReference.sql" />
+    <Build Include="Report\Views\vwChildObjects.sql" />
+    <Build Include="Staging\Views\vwSQLDocViewDefinitionColumnMap.sql" />
+    <Build Include="Report\Tables\DatabaseObjectReference.sql" />
+    <Build Include="Report\Tables\DatabaseObjectCode.sql" />
+    <Build Include="REPORT\Stored Procedures\upUpdateDatabaseObjectReference.sql" />
+    <Build Include="Report\Views\vwDatabaseObjectReference.sql" />
+    <Build Include="REPORT\Stored Procedures\upUpdateDatabaseObjectCode.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">
