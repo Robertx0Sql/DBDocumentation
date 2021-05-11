@@ -1009,6 +1009,9 @@
                 <Value>=Fields!TypeDescriptionUser.Value</Value>
               </SortExpression>
               <SortExpression>
+                <Value>=Fields!ReferencedSchemaName.Value</Value>
+              </SortExpression>
+              <SortExpression>
                 <Value>=Fields!ReferencedObjectName.Value</Value>
               </SortExpression>
             </SortExpressions>
@@ -4324,6 +4327,9 @@
             <SortExpressions>
               <SortExpression>
                 <Value>=Fields!TypeDescriptionUser.Value</Value>
+              </SortExpression>
+              <SortExpression>
+                <Value>=Fields!ReferencedSchemaName.Value</Value>
               </SortExpression>
               <SortExpression>
                 <Value>=Fields!ReferencedObjectName.Value</Value>

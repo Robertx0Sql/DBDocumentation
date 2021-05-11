@@ -1,4 +1,5 @@
-﻿CREATE VIEW [report].[vwDatabaseObjectReference]
+﻿
+CREATE VIEW [report].[vwDatabaseObjectReference]
 AS
 WITH cte
 AS (
@@ -7,8 +8,8 @@ AS (
 		,r.referencingschemaname as [referencing_schema_name]
 		,[referencingentityname] as [referencing_entity_name]
 		,[referencingTypeCode] as [referencing_TypeCode]
-		,COALESCE(isnull([referencedservername],''), [ServerName]) AS [referenced_server_name]
-		,COALESCE(isnull([referenceddatabasename], ''), [DatabaseName]) AS [referenced_database_name]
+		,COALESCE(NULLIF([referencedservername],''), [ServerName]) AS [referenced_server_name]
+		,COALESCE(NULLIF([referenceddatabasename], ''), [DatabaseName]) AS [referenced_database_name]
 		,[referencedschemaname] as [referenced_schema_name]
 		,[referencedentityname]  as [referenced_entity_name]
 		,r.referencedTypeCode AS [referenced_entity_TypeCode]
@@ -18,8 +19,8 @@ AS (
 	
 	UNION ALL
 	
-	SELECT COALESCE(ISNULL([referencedservername],''), r.[ServerName])
-		,COALESCE(ISNULL([referenceddatabasename], ''), r.[DatabaseName])
+	SELECT COALESCE(NULLIF([referencedservername],''), r.[ServerName])
+		,COALESCE(NULLIF([referenceddatabasename], ''), r.[DatabaseName])
 		,[referencedschemaname]
 		,[referencedentityname]
 		,od.TypeCode
