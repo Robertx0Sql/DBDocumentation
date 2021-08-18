@@ -22,10 +22,63 @@ BEGIN
 
         SELECT @RowCountStart = COUNT(*)	FROM [report].[DatabaseObjectReference] 
 
-		SELECT *
+	SELECT [ServerName]
+			,[DatabaseName]
+			,[referencingSchemaName]
+			,[referencingEntityName]
+			,[referencingTypeCode]
+			,[referencedServerName]
+			,[referencedDatabaseName]
+			,[referencedSchemaName]
+			,[referencedEntityName]
+			,[referencedTypeCode]
+			,[DocumentationDateTime]
 		INTO #Temp
 		FROM [report].[DatabaseObjectReference]
-		WHERE 1 = 0
+		WHERE 1 = 0;
+
+		WITH CTE_BASE  AS ( /*need to do ISNULL here to set referenced_server_name / referenced_database_name as sometimes its filled and sometimes NULL */
+
+			SELECT [ServerName],[DatabaseName]
+					,ISNULL(referencing_schema_name, '') AS referencing_schema_name
+					,ISNULL(referencing_entity_name, '') AS referencing_entity_name
+					,ISNULL(referencing_TypeCode, '') AS referencing_TypeCode
+					,ISNULL(referenced_server_name, ServerName) AS referenced_server_name
+					,ISNULL(referenced_database_name, DatabaseName) AS referenced_database_name
+					,ISNULL(referenced_schema_name, '') AS referenced_schema_name
+					,ISNULL(referenced_entity_name, '') AS referenced_entity_name
+					,ISNULL(referenced_TypeCode, '') AS referenced_TypeCode
+					,s.StagingDateTime 
+				FROM [Staging].[SQLDocObjectReference] s
+				WHERE DatabaseName = @DatabaseName
+					AND SERVERNAME = @Server
+			)
+
+			, cte_rnk as (
+				SELECT 	
+					[ServerName],[DatabaseName]
+					,referencing_schema_name
+					,referencing_entity_name
+					,referencing_TypeCode
+					,referenced_server_name
+					,referenced_database_name
+					,referenced_schema_name
+					,referenced_entity_name
+					,referenced_TypeCode
+
+					,s.StagingDateTime 
+					, rnk = ROW_NUMBER() over (PARTITION BY [ServerName],[DatabaseName]
+												,referencing_schema_name
+												,referencing_entity_name
+												,referencing_TypeCode
+												,referenced_server_name
+												,referenced_database_name
+												,referenced_schema_name
+												,referenced_entity_name
+												,referenced_TypeCode
+					ORDER by s.StagingDateTime )
+			FROM CTE_BASE as s
+		)
 
 		INSERT INTO #Temp (
 			[ServerName]
@@ -51,9 +104,8 @@ BEGIN
 			,ISNULL(referenced_entity_name, '')
 			,ISNULL(referenced_TypeCode, '')
 			,s.StagingDateTime 
-		FROM [Staging].[SQLDocObjectReference] s
-		WHERE DatabaseName = @DatabaseName
-			AND SERVERNAME = @Server;
+		FROM cte_rnk s
+		WHERE rnk=1;
 
 		SET @LogDetailRows = @@ROWCOUNT;
 

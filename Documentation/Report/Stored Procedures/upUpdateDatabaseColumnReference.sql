@@ -25,7 +25,7 @@ BEGIN
 		SELECT *
 		INTO #Temp
 		FROM [report].[DatabaseColumnReference]
-		WHERE 1 = 0
+		WHERE 1 = 0;
 
 		INSERT INTO #Temp (
 			[ServerName]
@@ -55,9 +55,9 @@ BEGIN
 			,ReferencedObjectType
 			,ReferencedColumnName
 			,LoadDateTime
-		FROM [Staging].SQLColumnReference
-		WHERE DatabaseName = @DatabaseName
-			AND SERVERNAME = @Server;
+		FROM [Staging].vwSQLColumnReference
+			WHERE DatabaseName = @DatabaseName
+			AND SERVERNAME = @Server
 		
 	SET @LogDetailRows = @@ROWCOUNT;
 
