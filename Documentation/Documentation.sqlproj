@@ -164,6 +164,7 @@
     <Build Include="REPORT\Stored Procedures\upUpdateDatabaseObjectReference.sql" />
     <Build Include="Report\Views\vwDatabaseObjectReference.sql" />
     <Build Include="REPORT\Stored Procedures\upUpdateDatabaseObjectCode.sql" />
+    <Build Include="Staging\Views\vwSQLColumnReference.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">

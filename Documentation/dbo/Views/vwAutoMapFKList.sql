@@ -54,21 +54,38 @@ SELECT fk.ServerName
 		,' (Auto Generated)'
 		) AS description
 FROM (
-		SELECT cd.*
+		SELECT 
+			cd.ServerName	
+			,cd.DatabaseName
+			,cd.TypeCode
+			,cd.ObjectSchemaName
+			,cd.ObjectName
+			,cd.ColumnName
+			,cd.StagingId			
 			,od.ReferencedSchemaName
 			,od.[ReferencedObjectName]
 			,od.[ReferencedColumnName]
 		FROM [Staging].vwColumnDoc cd
-		LEFT JOIN [Staging].SQLColumnReference od ON cd.SERVERNAME = od.ServerName
-			AND cd.DatabaseName = od.DatabaseName
-			AND cd.[ObjectSchemaName] = od.[SchemaName]
-			AND cd.[ObjectName] = od.[ObjectName]
-			AND cd.[ColumnName] = od.ColumnName
+		LEFT JOIN [Staging].vwSQLColumnReference od 
+			ON cd.SERVERNAME = od.ServerName
+				AND cd.DatabaseName = od.DatabaseName
+				AND cd.[ObjectSchemaName] = od.[SchemaName]
+				AND cd.[ObjectName] = od.[ObjectName]
+				AND cd.[ColumnName] = od.ColumnName
 		WHERE cd.pkfieldcount = 1
 			AND od.FK_NAME IS NULL
 	) pk
 INNER JOIN (
-		SELECT cd.*
+		SELECT   
+			cd.ServerName
+			,cd.DatabaseName
+			,cd.TypeCode
+			,cd.ObjectSchemaName
+			,cd.ObjectName
+			,cd.ColumnName
+			,cd.DocumentationDescription
+			,cd.ColumnId
+			,cd.DocumentationLoadDate
 			,od.ReferencedSchemaName
 			,od.[ReferencedObjectName]
 			,od.[ReferencedColumnName]

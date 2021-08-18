@@ -98,7 +98,7 @@ BEGIN
 
 	INTO #temp
 	FROM [Staging].[vwColumnDoc] cd
-	LEFT JOIN [Staging].SQLColumnReference od
+	LEFT JOIN [Staging].vwSQLColumnReference od
 		ON cd.SERVERNAME = od.SERVERNAME
 			AND cd.DatabaseName = od.DatabaseName
 			AND cd.[ObjectSchemaName] = od.[SchemaName]
@@ -150,6 +150,8 @@ BEGIN
 						);
 			END;
 		END;
+
+
 	
 	/* Merge Statement
 	dbo.[sp_generateMerge] @DestinationTable ='[Report].[DatabaseObjectColumn]', @sourcetable = '#temp', @JoinFieldList='BusinessKey'
