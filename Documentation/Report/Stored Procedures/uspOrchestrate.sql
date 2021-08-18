@@ -17,6 +17,8 @@ BEGIN
 			--MUST BE DONE First :
 			EXECUTE [dbo].[uspUpdateSQLDocAutoMapFK] @Server =@Server,@Database =@DatabaseName--,@PrintLog =@PrintLog;
 
+			--now reports
+
 			EXEC [report].[upUpdateDatabaseObjectDocumentation] @Server =@Server,@DatabaseName =@DatabaseName,@PrintLog =@PrintLog;
 			
 			EXEC [report].[upUpdateDatabaseObjectColumns] @Server =@Server,@DatabaseName =@DatabaseName,@PrintLog =@PrintLog;
@@ -35,6 +37,6 @@ BEGIN
     BEGIN CATCH       -- Execute error retrieval routine.  
         IF @@TRANCOUNT >0 
 		ROLLBACK;
-		EXECUTE [TOOLS].[uspRethrowError] ;
+		EXECUTE [TOOLS].[uspRethrowError] @LogID = @LogID;
     END CATCH; 
 END;
