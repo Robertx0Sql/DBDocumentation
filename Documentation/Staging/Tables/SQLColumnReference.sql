@@ -7,7 +7,7 @@
 	[ObjectType]           VARCHAR(10)    NULL,
     [ColumnName]           [sysname]      NULL,
     [ColumnId]             INT            NULL,
-    [FK_NAME]              [sysname]      NULL,
+    [FK_NAME]              NVARCHAR (1000) NULL,
     [ReferencedSchemaName] NVARCHAR (128) NULL,
     [ReferencedObjectName] NVARCHAR (128) NULL,
 	[ReferencedObjectType] VARCHAR(10)    NULL,
