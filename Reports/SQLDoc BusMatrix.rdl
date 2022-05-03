@@ -625,7 +625,7 @@
                                   <TextRun>
                                     <Value>=Fields!fields.Value</Value>
                                     <Style>
-                                      <FontWeight>Bold</FontWeight>
+                                      <FontWeight>Normal</FontWeight>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
@@ -682,7 +682,8 @@
                                 <Value>=Fields!ParentName.Value</Value>
                                 <Style>
                                   <FontFamily>Arial</FontFamily>
-                                  <FontWeight>Bold</FontWeight>
+                                  <TextDecoration>Underline</TextDecoration>
+                                  <Color>Blue</Color>
                                 </Style>
                               </TextRun>
                             </TextRuns>
@@ -690,6 +691,35 @@
                           </Paragraph>
                         </Paragraphs>
                         <rd:DefaultName>ParentName</rd:DefaultName>
+                        <ActionInfo>
+                          <Actions>
+                            <Action>
+                              <Drillthrough>
+                                <ReportName>SQLDoc_Table</ReportName>
+                                <Parameters>
+                                  <Parameter Name="Server">
+                                    <Value>=Fields!SERVERNAME.Value</Value>
+                                  </Parameter>
+                                  <Parameter Name="Database">
+                                    <Value>=Fields!DatabaseName.Value</Value>
+                                  </Parameter>
+                                  <Parameter Name="ObjectType">
+                                    <Value>=Fields!ParentTypeCode.Value</Value>
+                                  </Parameter>
+                                  <Parameter Name="Schema">
+                                    <Value>=Fields!ParentSchemaName.Value</Value>
+                                  </Parameter>
+                                  <Parameter Name="Object">
+                                    <Value>=Fields!ParentObjectName.Value</Value>
+                                  </Parameter>
+                                  <Parameter Name="UserMode">
+                                    <Value>=Parameters!UserMode.Value</Value>
+                                  </Parameter>
+                                </Parameters>
+                              </Drillthrough>
+                            </Action>
+                          </Actions>
+                        </ActionInfo>
                         <Style>
                           <Border>
                             <Color>LightGrey</Color>
