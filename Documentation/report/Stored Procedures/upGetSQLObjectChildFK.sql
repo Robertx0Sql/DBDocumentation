@@ -15,8 +15,8 @@ BEGIN
 	SET @Stretch = 1.4;
 
 WITH CTE
-AS (
-	SELECT [ServerName]
+AS ( 
+	SELECT DISTINCT [ServerName]
 		,[DatabaseName]
 		,ObjectName AS FKName --AS [referenced_database_name]
 		,IIF(ReferencedSchemaName = @Schema AND ReferencedObjectName = @Object, ParentSchemaName, ReferencedSchemaName) AS [referencing_schema_name]
@@ -57,13 +57,27 @@ AS (
 		,referencing_schema_name as ReferencedSchemaName
 		,referencing_entity_name as ReferencedObjectName
 		,[referencing_TypeCode] as ReferencedTypeCode
-		,FKName
 		,isChildFK
+		,COUNT(1) as fkcount
+		,STUFF(( SELECT Char(10) + FKName
+                FROM cte as T
+				where x.ServerName  =		T.ServerName
+		AND X.DatabaseName				 		=T.DatabaseName
+		AND X.referencing_schema_name 	 		=T.referencing_schema_name 
+		AND X.referencing_entity_name 	 		=T.referencing_entity_name 
+		AND X.[referencing_TypeCode] 	 		=T.[referencing_TypeCode] 
+		AND X.isChildFK					 		=T.isChildFK
+           
+		   FOR
+                XML PATH('')
+              ), 1, 1, '') AS FKName
 
+
+	
 		,CONCAT (
 			[referencing_schema_name]
 			,[referencing_entity_name]
-			,FKName
+		--	,FKName
 			--,referenced_column
 			) AS Seq
 		,CONCAT (
@@ -78,9 +92,17 @@ AS (
 			) AS MeasureGroupCaption
 		
 		,'Table' AS [TypeDescriptionUser]
-	FROM CTE
-	where isChildFK=@FKType 
-	and referencing_entity_name is not null
+		
+	FROM CTE AS X
+	WHERE isChildFK=@FKType 
+		and referencing_entity_name is not null
+	GROUP BY 
+		ServerName
+		,DatabaseName
+		,referencing_schema_name 
+		,referencing_entity_name 
+		,[referencing_TypeCode] 
+		,isChildFK
 )
 		,TotCount
 	AS (
